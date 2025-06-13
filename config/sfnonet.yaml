@@ -1,24 +1,24 @@
 base_config: &BASE_CONFIG
 
     # metadata file for the dataset
-    metadata_json_path: "/metadata/data.json"
+    metadata_json_path: ""
 
     # data 
-    train_data_path: "/train"
-    valid_data_path: "/test"
-    exp_dir: "/runs"
+    train_data_path: ""
+    valid_data_path: ""
+    exp_dir: ""
     n_years: 1
-    img_shape_x: 721
     img_shape_y: 1440
+    img_shape_x: 721
 
     # files used for normalization of the data
-    min_path: "/stats/mins.npy"
-    max_path: "/stats/maxs.npy"
-    time_means_path:   "/stats/time_means.npy"
-    global_means_path: "/stats/global_means.npy"
-    global_stds_path:  "/stats/global_stds.npy"
-    time_diff_means_path: "/stats/time_diff_means.npy"
-    time_diff_stds_path: "/stats/time_diff_stds.npy"
+    min_path: ""
+    max_path: ""
+    time_means_path:   ""
+    global_means_path: ""
+    global_stds_path:  ""
+    time_diff_means_path: ""
+    time_diff_stds_path: ""
 
     # architecture related 
     nettype: "SFNO"
@@ -45,7 +45,7 @@ base_config: &BASE_CONFIG
     lr: 1E-3
     n_eval_samples: 8760
     max_epochs: 500
-    batch_size: 64
+    batch_size: 1 # must be the N * num(gpus) originally 64 lkkbox250429
     weight_decay: 0.0
 
     # scheduler parameters
@@ -64,8 +64,8 @@ base_config: &BASE_CONFIG
     wireup_info: "mpi"
     wireup_store: "tcp"
 
-    num_data_workers: 2
-    num_visualization_workers: 2
+    num_data_workers: 1
+    num_visualization_workers: 1
     dt: 1 # how many timesteps ahead the model will predict
     n_history: 0 # how many previous timesteps to consider
     prediction_type: "iterative"
@@ -89,7 +89,8 @@ base_config: &BASE_CONFIG
     normalize_residual: false
 
     # define channels to be read from data
-    channel_names: ["u10m", "v10m", "u100m", "v100m", "t2m", "sp", "msl", "tcwv", "u50", "u100", "u150", "u200", "u250", "u300", "u400", "u500", "u600", "u700", "u850", "u925", "u1000", "v50", "v100", "v150", "v200", "v250", "v300", "v400", "v500", "v600", "v700", "v850", "v925", "v1000", "z50", "z100", "z150", "z200", "z250", "z300", "z400", "z500", "z600", "z700", "z850", "z925", "z1000", "t50", "t100", "t150", "t200", "t250", "t300", "t400", "t500", "t600", "t700", "t850", "t925", "t1000", "q50", "q100", "q150", "q200", "q250", "q300", "q400", "q500", "q600", "q700", "q850", "q925", "q1000"]
+    # channel_names: ["u10m", "v10m", "u100m", "v100m", "t2m", "sp", "msl", "tcwv", "u50", "u100", "u150", "u200", "u250", "u300", "u400", "u500", "u600", "u700", "u850", "u925", "u1000", "v50", "v100", "v150", "v200", "v250", "v300", "v400", "v500", "v600", "v700", "v850", "v925", "v1000", "z50", "z100", "z150", "z200", "z250", "z300", "z400", "z500", "z600", "z700", "z850", "z925", "z1000", "t50", "t100", "t150", "t200", "t250", "t300", "t400", "t500", "t600", "t700", "t850", "t925", "t1000", "q50", "q100", "q150", "q200", "q250", "q300", "q400", "q500", "q600", "q700", "q850", "q925", "q1000"]
+    # channel_names: ["u10m", "v10m", "t2m", "sp", "msl", "tcwv", "u1000", "v1000", "z1000", "t850", "u850", "v850", "z850", "r850", "t500", "u500", "v500", "z500", "r500", "z500", "z50", "tcwv"]
     normalization: "zscore" # options zscore or minmax or none
 
     # extra channels
@@ -100,16 +101,16 @@ base_config: &BASE_CONFIG
     add_zenith: !!bool True
     # invariants
     add_orography: !!bool True
-    orography_path: /invariants/orography.nc
+    orography_path: "./datasets/source/invariant/orography.nc"
     add_landmask: !!bool True
-    landmask_path: /invariants/land_sea_mask.nc
+    landmask_path: "./datasets/source/invariant/land_sea_mask.nc"
 
     finetune: !!bool False
 
     # logging options
     log_to_screen: !!bool True
-    log_to_wandb: !!bool True
-    log_video: 20 # if > 0 will log every i-th epoch
+    log_to_wandb: !!bool False 
+    log_video: 0 # if > 0 will log every i-th epoch
     save_checkpoint: "legacy"
 
     optimizer_type: "AdamW"
@@ -120,13 +121,25 @@ base_config: &BASE_CONFIG
     crop_size_y: None
 
     # required for validation and scoring
-    inf_data_path: "/out_of_sample"
+    inf_data_path: ""
 
     # Weights and biases configuration
     wandb_name: None # If None, wandb will assign a random name, recommended
     wandb_group: "sfnonet development" # If None, will be "era5_wind" + config, but you can override it here
     wandb_project: "sfno architecture validation"
     wandb_entity: "sfno-large-model-training"
+
+predict_base: &PREDICT_BASE
+    predict_with_best_ckpt: !!bool True # otherwise use the checkpoint of the latest epoch
+    predict_output_skipExists: !!bool True
+    predict_output_overwrite: !!bool False
+    predict_output_dir: "./"     # [str]
+    predict_ic_path: './'           # [str]
+    predict_ic_mode: 'incontinuous' # ["continuous"], ["incontinuous"]
+    predict_ic_start: null          # [null], [int]
+    predict_ic_stop: null          # [null], [int]
+    predict_ic_step: null          # [null], [int]
+    predict_ic_list: null           # [null], [list(int)]
 
 ###########################################################################################################################
 # 73 channels + Q base
@@ -158,7 +171,7 @@ sfno_linear_73chq_sc3_layers8_edim384_wstgl2:
     loss: "weighted squared temp-std geometric l2"
     channel_weights: "auto"
 
-sfno_linear_73chq_sc3_layers8_edim384_asgl2:
+sfno_linear_73chq_sc3_layers8_edim384_asgl2: &OUT_OF_BOX_CONFIG
     <<: *BASELINE_73CHQ
     wandb_group: "sfno_linear_73chq_sc3_layers8_edim384_asgl2"
 
@@ -172,3 +185,93 @@ sfno_linear_73chq_sc3_layers8_edim384_asgl2:
     optimizer_type: "Adam"
 
     loss: "absolute squared geometric l2"
+
+small_test1:
+    <<: *OUT_OF_BOX_CONFIG
+    metadata_json_path: "./datasets/era5/small_test1.json"
+    train_data_path: "./datasets/small_test1/train"
+    valid_data_path: "./datasets/small_test1/test"
+    exp_dir: "./runs/tests"
+    n_eval_samples: 500
+    max_epochs: 1
+    n_train_samples_per_epoch: 100
+
+large_test1:
+    <<: *OUT_OF_BOX_CONFIG
+    metadata_json_path: "./datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "./datasets/small_test1/train"
+    valid_data_path: "./datasets/small_test1/test"
+    inf_data_path: "./datasets/small_test1/inf"
+    global_means_path: "./datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "./datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "./datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "./runs/tests"
+    n_eval_samples: 500 # for validation
+    max_epochs: 1
+    n_train_samples_per_epoch: 100  # for training
+
+ehv05a_y1:
+    <<: *OUT_OF_BOX_CONFIG
+    metadata_json_path: "./datasets/ehv05a_y1/data.json"
+    time_means_path:   "./datasets/source/era5_hycom_vars05_a/time_means_2011-2012.npy"
+    global_means_path: "./datasets/source/era5_hycom_vars05_a/global_means_2011-2012.npy"
+    global_stds_path:  "./datasets/source/era5_hycom_vars05_a/global_stds_2011-2012.npy"
+    train_data_path: "./datasets/ehv05a_y1/train"
+    valid_data_path: "./datasets/ehv05a_y1/valid"
+    exp_dir: "./runs/ehv05a_y1_01"
+    max_epochs: 1
+    n_train_samples_per_epoch: 100  # for training
+    n_eval_samples: 100 # for validation
+    inf_data_path: "./datasets/ehv05a_y1/inference"
+
+ehv05a_y3a:
+    <<: 
+        - *OUT_OF_BOX_CONFIG
+        - *PREDICT_BASE
+    exp_dir: "./runs/ehv05a_y3a_01"
+
+    metadata_json_path: "./datasets/ehv05a_y3a/data.json"
+
+    time_means_path:   "./datasets/ehv05a_y3a/stat/time_means_2011-2014.npy"
+    global_means_path:   "./datasets/ehv05a_y3a/stat/global_means_2011-2014.npy"
+    global_stds_path:   "./datasets/ehv05a_y3a/stat/global_stds_2011-2014.npy"
+
+    train_data_path: "./datasets/ehv05a_y3a/train"
+    valid_data_path: "./datasets/ehv05a_y3a/valid"
+
+    max_epochs: 32
+    n_train_samples_per_epoch: 256  # for training
+    n_eval_samples: 64 # for validation
+    inf_data_path: "./datasets/ehv05a_y3a/inference"
+
+    predict_output_overwrite: !!bool True
+    predict_output_skipExists: !!bool False
+    predict_output_dir: "./out_ehv05a_y3a/250602/predict/2015"     # [str]
+    predict_ic_path: '/home/lkkbox945/makani/v250508/datasets/ehv05a_y3a/predict/2015.nc' 
+    predict_ic_mode: 'continuous' # ["continuous"]:use start + count, ["incontinuous"]: use list
+    predict_ic_start: 0 # [null], [int]
+    predict_ic_stop: 1           # [null], [int]
+    predict_ic_step: 1             # [null], [int]
+    predict_ic_list: null           # [null], [list(int)]
+    
+
+v20_fcn1_y4a:
+    <<: 
+        - *OUT_OF_BOX_CONFIG
+        - *PREDICT_BASE
+    exp_dir: "./runs/v20_fcn1_y4a_01"
+
+    metadata_json_path: "./datasets/v20_fcn1_y4a/data.json"
+
+    time_means_path:   "./datasets/v20_fcn1_y4a/stat/time_means_2011-2014.npy"
+    global_means_path:   "./datasets/v20_fcn1_y4a/stat/global_means_2011-2014.npy"
+    global_stds_path:   "./datasets/v20_fcn1_y4a/stat/global_stds_2011-2014.npy"
+
+    train_data_path: "./datasets/v20_fcn1_y4a/train"
+    valid_data_path: "./datasets/v20_fcn1_y4a/valid"
+
+    max_epochs: 32
+    n_train_samples_per_epoch: 256  # for training
+    n_eval_samples: 64 # for validation
+    inf_data_path: "./datasets/v20_fcn1_y4a/inference"
+
