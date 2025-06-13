@@ -1,3 +1,37 @@
+Metadata-Version: 2.4
+Name: makani
+Version: 0.1.0
+Summary: Massively parallel training of machine-learning based weather and climate models
+Author: Animashree Anandkumar, Kamyar Azizzadenesheli, Noah Brenowitz, Ashesh Chattopadhyay, Yair Cohen, David Hall, Peter Harrington, Pedram Hassanzadeh, Christian Hundt, Alexey Kamenev, Karthik Kashinath, Zongyi Li, Morteza Mardani, Jaideep Pathak, Mike Pritchard, David Pruitt, Sanjeev Raja, Shashank Subramanian
+Author-email: Thorsten Kurth <tkurth@nvidia.com>, Boris Bonev <bbonev@nvidia.com>, Jean Kossaifi <jkossaifi@nvidia.com>
+Maintainer-email: Thorsten Kurth <tkurth@nvidia.com>, Boris Bonev <bbonev@nvidia.com>
+Classifier: Development Status :: Alpha
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: torch>=2.0.0
+Requires-Dist: numpy>=1.22.4
+Requires-Dist: numba>=0.50.0
+Requires-Dist: nvidia_dali_cuda110>=1.16.0
+Requires-Dist: nvidia-modulus>=0.5.0a0
+Requires-Dist: torch-harmonics>=0.6.5
+Requires-Dist: tensorly>=0.8.1
+Requires-Dist: tensorly-torch>=0.4.0
+Requires-Dist: numba>=0.50.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0.0; extra == "dev"
+Requires-Dist: black>=22.10.0; extra == "dev"
+Requires-Dist: coverage>=6.5.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: wandb>=0.13.7; extra == "all"
+Requires-Dist: imageio>=2.28.1; extra == "all"
+Requires-Dist: moviepy>=1.0.3; extra == "all"
+Requires-Dist: tqdm>=4.60.0; extra == "all"
+Dynamic: license-file
+
 # Makani: Massively parallel training of machine-learning based weather and climate models
 
 [**Overview**](#overview) | [**Getting started**](#getting-started) | [**More information**](#more-about-makani) | [**Known issues**](#known-issues) | [**Contributing**](#contributing) | [**Further reading**](#further-reading) | [**References**](#references)

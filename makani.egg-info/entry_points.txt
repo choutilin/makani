@@ -1,0 +1,10 @@
+[makani.models]
+AFNO = makani.models.networks.afnonet_v2:AdaptiveFourierNeuralOperatorNet
+AFNOv1 = makani.models.networks.afnonet:AdaptiveFourierNeuralOperatorNet
+DebugNet = makani.models.networks.debug:DebugNet
+FNO = makani.models.networks.sfnonet:FourierNeuralOperatorNet
+SFNO = makani.models.networks.sfnonet:SphericalFourierNeuralOperatorNet
+ViT = makani.models.networks.vit:VisionTransformer
+
+[modulus.models]
+SFNO = makani.models.networks.sfnonet:SFNO

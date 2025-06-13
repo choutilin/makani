@@ -277,14 +277,6 @@ class Trainer:
         if hasattr(self.params, "log_to_wandb") and self.params.log_to_wandb:
             wandb.finish()
 
-        # lkkbox 250509 - add for safe close
-        if dist.is_initialized():
-            try:
-                dist.destroy_process_group()
-            except Exception as e:
-                print(e)
-                print('failed: dist.distroy_process_group()')
-
     def __init__(self, params, world_rank, job_type="train"):
         self.params = None
         self.world_rank = world_rank
@@ -994,8 +986,7 @@ class Trainer:
             checkpoint_fname = checkpoint_path.format(mp_rank=comm.get_rank("model"))
             if self.params.log_to_screen:
                 self.logger.info("Loading checkpoint %s in legacy mode" % checkpoint_fname)
-            # lkkbox 250509 - wights_only=False to fix the loading error
-            checkpoint = torch.load(checkpoint_fname, map_location="cpu", weights_only=False)
+            checkpoint = torch.load(checkpoint_fname, map_location="cpu")
 
             # this is reworked to avoid loading modules related to the SHT
             state_dict = checkpoint["model_state"]

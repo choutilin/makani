@@ -19,6 +19,7 @@ import numpy as np
 import argparse
 import torch
 import logging
+import warnings
 
 # utilities
 from makani.utils import logging_utils
@@ -31,8 +32,12 @@ from makani.utils import comm
 from makani.utils.parse_dataset_metada import parse_dataset_metadata
 from makani import Inferencer
 
+# lkkbox
+from makani.utils.checktools import checkType
+
 
 if __name__ == "__main__":
+    warnings.simplefilter(action='ignore', category=FutureWarning) # lkkbox ignore future warning
     parser = argparse.ArgumentParser()
     parser.add_argument("--fin_parallel_size", default=1, type=int, help="Input feature paralellization")
     parser.add_argument("--fout_parallel_size", default=1, type=int, help="Output feature paralellization")
@@ -62,8 +67,6 @@ if __name__ == "__main__":
     # lkkbox 250509 for saving the output path
     parser.add_argument("--inference_output_path", default="./out.nc", type=str, help="path to save the output of inference")
     parser.add_argument("--overwrite_output_path", default=False, type=bool, help="overwrite the output path path")
-    parser.add_argument("--inference_ic", default=False, type=bool, help="num of inits to infer")
-    parser.add_argument("--inference_num_channels", default=False, type=bool, help="num of channels to infer")
 
     # parse
     args = parser.parse_args()
@@ -164,61 +167,117 @@ if __name__ == "__main__":
     else:
         raise RuntimeError(f"Error, please specify a dataset descriptor file in json format")
 
-    # instantiate trainer / inference / ensemble object
-    if args.mode == "score":
-        # lkkbox 250509 - modified
-        # ---- check the stat paths
-        for path in [
-            params.global_means_path,
-            params.global_stds_path,
-        ]:
-            if not os.path.exists(path):
-                raise FileNotFoundError(path)
+    # below is modeified from inference.py # lkkbox 250529
+    # ---- validate prediction arguments
+    predict_arguments = [
+        'predict_with_best_ckpt',
+        'predict_output_overwrite',
+        'predict_output_dir',
+        'predict_ic_mode',
+        'predict_ic_start',
+        'predict_ic_stop',
+        'predict_ic_list',
+        'predict_skipExists',
+    ]
+    for predict_argument in predict_arguments: # check existence
+        if predict_argument not in params.params.keys():
+            raise ValueError(f'key "{predict_argument}" not found in "{args.yaml_config}" - "{args.config}"')
+    
+    # spam the predict parameters to local
+    predict_with_best_ckpt = params['predict_with_best_ckpt']
+    predict_skipExists = params['predict_skipExists']
+    predict_output_overwrite = params['predict_output_overwrite']
+    predict_output_dir = params['predict_output_dir']
+    predict_ic_mode = params['predict_ic_mode']
+    predict_ic_start = params['predict_ic_start']
+    predict_ic_stop = params['predict_ic_stop']
+    predict_ic_step = params['predict_ic_step']
+    predict_ic_list = params['predict_ic_list']
 
-        # ---- read normalization stats
-        global_means = np.load(params.global_means_path)
-        global_stds = np.load(params.global_stds_path)
+    # check types
+    checkType(predict_output_overwrite, bool, "predict_output_overwrite")
+    checkType(predict_skipExists, bool, "predict_skipExists")
+    checkType(predict_output_dir, str, "predict_output_dir")
+    checkType(predict_ic_mode, str, "predict_ic_mode")
+    checkType(predict_ic_start, [None, int], "predict_ic_start")
+    checkType(predict_ic_stop, [None, int], "predict_ic_stop")
+    checkType(predict_ic_step, [None, int], "predict_ic_step")
+    checkType(predict_ic_list, [None, list], "predict_ic_list")
+    
+    if predict_ic_list is not None:
+        for predict_ic in predict_ic_list:
+            checkType(predict_ic, int, 'element in predict_ic_list')
 
-        # ---- check output path
-        output_path = args.inference_output_path
-        overwrite = args.overwrite_output_path
+    MODE_CONTINUOUS = 'continuous'
+    MODE_INCONTINUOUS = 'incontinuous'
+    MODE_VALIDS = [MODE_CONTINUOUS, MODE_INCONTINUOUS]
+    if predict_ic_mode not in MODE_VALIDS:
+        raise ValueError(f'invalid {predict_ic_mode=} (valid={MODE_VALIDS})')
 
-        if not overwrite and os.path.exists(output_path):
-            raise FileExistsError(output_path)
-        elif overwrite and os.path.exists(output_path):
-            logging.info(f'overwriting {output_path = }')
-        else:
-            logging.info(f'{output_path = }')
+    # set which check point to be used
+    if predict_with_best_ckpt: # update the checkpoint path
+        params["checkpoint_path"] = params["best_checkpoint_path"] 
 
+    # check inconsistent settings, and generate predict_ics
+    if predict_ic_mode == MODE_CONTINUOUS:  # (O) start + count (X) list
+        err_prefix = f'predict_ic_mode is {MODE_CONTINUOUS}'
+        if predict_ic_start is None:
+            raise ValueError(f'{err_prefix}, but predict_ic_start is null')
+        if predict_ic_stop is None:
+            raise ValueError(f'{err_prefix}, but predict_ic_stop is null')
+        if predict_ic_step is None:
+            raise ValueError(f'{err_prefix}, but predict_ic_step is null')
+        if predict_ic_list is not None:
+            raise ValueError(f'{err_prefix}, but predict_ic_list is not null')
+        predict_ics = list(range(predict_ic_start, predict_ic_stop, predict_ic_step))
 
-        # ---- get the number of channels from inf data path
-        pathdir = params['inf_data_path']
-        files = os.listdir(pathdir)
-        files = [f for f in files if f[-3:] in ['.h5', '.nc']]
+    elif predict_ic_mode == MODE_INCONTINUOUS:  # (X) start + count (O) list
+        err_prefix = f'predict_ic_mode is {MODE_INCONTINUOUS}'
+        if predict_ic_start is not None:
+            raise ValueError(f'{err_prefix}, but predict_ic_start is not null')
+        if predict_ic_stop is not None:
+            raise ValueError(f'{err_prefix}, but predict_ic_stop is not null')
+        if predict_ic_step is not None:
+            raise ValueError(f'{err_prefix}, but predict_ic_step is not null')
+        if predict_ic_list is None:
+            raise ValueError(f'{err_prefix}, but predict_ic_list is null')
+        predict_ics = predict_ic_list
 
-        if not files:
-            raise FileNotFoundError(pathdir)
-        with netCDF4.Dataset(f'{pathdir}/{files[0]}', 'r') as h:
-            variable_shape = h['fields'].shape
-        
-        output_channels = list(range(variable_shape[1]))
+    logging.info(f'{predict_ics = }')
+    logging.info(f'{len(predict_ics) = }')
 
+    # ---- check output path
+    predict_output_paths = [
+        f'{predict_output_dir}/ic_{ic:05d}.nc'
+        for ic in predict_ics
+    ]
 
-        # ---- run inferencer and get predictions
-        inferencer = Inferencer(params, world_rank)
-        inferencer.inference_single(
-            ic=args.inference_ic, output_data=True, output_channels=output_channels
-        )
-        predictions = np.array(inferencer.pred_outputs).squeeze(axis=1)
+    if not predict_output_overwrite and not predict_skipExists:
+        for path in predict_output_paths:
+            if os.path.exists(path):
+                raise FileExistsError(f'output path already exists. mannualy delete it or set predict_output_overwrite to True. {path}')
 
-        # ---- de-normalization
-        predictions = predictions * global_stds + global_means
+    if not os.path.exists(predict_output_dir):
+        logging.info(f'creating {predict_output_dir=}')
+        os.system(f'mkdir -p {predict_output_dir}')
 
-        # ---- save to the file
-        if overwrite and os.path.exists(output_path):
+    if not os.access(predict_output_dir, os.W_OK):
+        raise PermissionError(f'denied to write to {predict_output_dir=}')
+
+    # ---- run inferencer and get predictions
+    inferencer = Inferencer(params, world_rank)
+
+    for ic, output_path in zip(predict_ics, predict_output_paths):
+        if os.path.exists(output_path) and predict_skipExists:
+            logging.info(f'skip existing {output_path}')
+            continue
+        inferencer.inference_single(ic=ic, output_data=True, output_channels=list(range(5)))
+        predictions = np.array(inferencer.pred_outputs)
+        predictions = predictions.squeeze(axis=1)
+
+        # ---- save to file
+        if predict_output_overwrite and os.path.exists(output_path):
             os.remove(output_path)
-
-        print(f'prediction data shape = {predictions.shape}')
 
         numVars = predictions.shape[1]
         dimNames = [f'dim{iDim}' for iDim in range(predictions.ndim - 1)] # -1 for ivar
@@ -235,13 +294,7 @@ if __name__ == "__main__":
 
             # variables
             for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
+                h.createVariable(varName, 'float', dimNames, compression='zlib', complevel=9, shuffle=True)
                 h[varName][:] = predictions[:, iVar, :, :].squeeze()
 
-        print(f'predictions saved to {output_path}')
-        
-        # # lkkbox 250509 - original
-        # inferencer.score_model() 
-
-    else:
-        raise ValueError(f"Unknown training mode {args.mode}")
+        logging.info(f'predictions saved to {output_path}')

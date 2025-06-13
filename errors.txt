@@ -1,0 +1,40 @@
+x.shape = torch.Size([1, 5, 721, 1440])
+static.shape = torch.Size([1, 35, 0, 0])
+self.static_features.shape = torch.Size([1, 35, 0, 0])
+
+x.shape = torch.Size([1, 6, 721, 1440])
+static.shape = torch.Size([1, 35, 721, 1440])
+self.static_features.shape = torch.Size([1, 35, 721, 1440])
+
+params.N_in_channels = 41
+params.N_out_channels = 5
+
+
+RuntimeError: Given groups=1, weight of size [384, 41, 1, 1], expected input[1, 40, 721, 1440] to have 41 channels, but got 40 channels instead
+
+lkkbox-a inp.shape = torch.Size([1, 5, 721, 1440])
+lkkbox-b inpa.shape = torch.Size([1, 5, 721, 1440])
+lkkbox-c inpa.shape = torch.Size([1, 5, 721, 1440])
+lkkbox-c inpan.shape = torch.Size([1, 5, 721, 1440])
+lkkbox-d inpans.shape = torch.Size([1, 40, 721, 1440])
+
+lkkbox-a inp.shape = torch.Size([1, 5, 721, 1440])
+lkkbox-b inpa.shape = torch.Size([1, 6, 721, 1440])
+lkkbox-c inpa.shape = torch.Size([1, 6, 721, 1440])
+lkkbox-c inpan.shape = torch.Size([1, 6, 721, 1440])
+lkkbox-d inpans.shape = torch.Size([1, 41, 721, 1440])
+
+
+between a and b
+    def append_unpredicted_features(self, inp):
+        if self.training:
+            if self.unpredicted_inp_train is not None:
+                inp = self.append_channels(inp, self.unpredicted_inp_train)
+        else:
+            if self.unpredicted_inp_eval is not None:
+                inp = self.append_channels(inp, self.unpredicted_inp_eval)
+        return inp
+
+
+add_zenith = True
+     

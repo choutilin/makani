@@ -39,6 +39,7 @@ def parse_dataset_metadata(metadata_json_path, params):
                 else:
                     idx = channel_names.index(pchn)
                     channels_idx.append(idx)
+
         else:
             params["channel_names"] = channel_names
             channels_idx = list(range(len(channel_names)))

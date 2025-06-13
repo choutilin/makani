@@ -19,7 +19,7 @@ import torch.nn.functional as F
 import numpy as np
 import math
 
-from torch.cuda import amp 
+from torch.cuda import amp
 
 # import FactorizedTensor from tensorly for tensorized operations
 import tensorly as tl

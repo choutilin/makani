@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import os
-import netCDF4
 import numpy as np
 import argparse
 import torch
@@ -58,12 +57,6 @@ if __name__ == "__main__":
 
     # checkpoint format
     parser.add_argument("--checkpoint_format", default="legacy", choices=["legacy", "flexible"], type=str, help="Format in which to load checkpoints.")
-
-    # lkkbox 250509 for saving the output path
-    parser.add_argument("--inference_output_path", default="./out.nc", type=str, help="path to save the output of inference")
-    parser.add_argument("--overwrite_output_path", default=False, type=bool, help="overwrite the output path path")
-    parser.add_argument("--inference_ic", default=False, type=bool, help="num of inits to infer")
-    parser.add_argument("--inference_num_channels", default=False, type=bool, help="num of channels to infer")
 
     # parse
     args = parser.parse_args()
@@ -166,82 +159,7 @@ if __name__ == "__main__":
 
     # instantiate trainer / inference / ensemble object
     if args.mode == "score":
-        # lkkbox 250509 - modified
-        # ---- check the stat paths
-        for path in [
-            params.global_means_path,
-            params.global_stds_path,
-        ]:
-            if not os.path.exists(path):
-                raise FileNotFoundError(path)
-
-        # ---- read normalization stats
-        global_means = np.load(params.global_means_path)
-        global_stds = np.load(params.global_stds_path)
-
-        # ---- check output path
-        output_path = args.inference_output_path
-        overwrite = args.overwrite_output_path
-
-        if not overwrite and os.path.exists(output_path):
-            raise FileExistsError(output_path)
-        elif overwrite and os.path.exists(output_path):
-            logging.info(f'overwriting {output_path = }')
-        else:
-            logging.info(f'{output_path = }')
-
-
-        # ---- get the number of channels from inf data path
-        pathdir = params['inf_data_path']
-        files = os.listdir(pathdir)
-        files = [f for f in files if f[-3:] in ['.h5', '.nc']]
-
-        if not files:
-            raise FileNotFoundError(pathdir)
-        with netCDF4.Dataset(f'{pathdir}/{files[0]}', 'r') as h:
-            variable_shape = h['fields'].shape
-        
-        output_channels = list(range(variable_shape[1]))
-
-
-        # ---- run inferencer and get predictions
         inferencer = Inferencer(params, world_rank)
-        inferencer.inference_single(
-            ic=args.inference_ic, output_data=True, output_channels=output_channels
-        )
-        predictions = np.array(inferencer.pred_outputs).squeeze(axis=1)
-
-        # ---- de-normalization
-        predictions = predictions * global_stds + global_means
-
-        # ---- save to the file
-        if overwrite and os.path.exists(output_path):
-            os.remove(output_path)
-
-        print(f'prediction data shape = {predictions.shape}')
-
-        numVars = predictions.shape[1]
-        dimNames = [f'dim{iDim}' for iDim in range(predictions.ndim - 1)] # -1 for ivar
-        dimVals = [list(range(predictions.shape[i])) for i in [0, 2, 3]]
-
-        varNames = [f'var{iVar}' for iVar in range(predictions.shape[1])]
-
-        with netCDF4.Dataset(output_path, 'w') as h:
-            # dimensions
-            for dimName, dimVal in zip(dimNames, dimVals):
-                h.createDimension(dimName, len(dimVal))
-                h.createVariable(dimName, np.int16, [dimName])
-                h[dimName][:] = dimVal
-
-            # variables
-            for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
-                h[varName][:] = predictions[:, iVar, :, :].squeeze()
-
-        print(f'predictions saved to {output_path}')
-        
-        # # lkkbox 250509 - original
-        # inferencer.score_model() 
-
+        inferencer.score_model()
     else:
         raise ValueError(f"Unknown training mode {args.mode}")
