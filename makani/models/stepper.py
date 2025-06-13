@@ -34,10 +34,18 @@ class SingleStepWrapper(nn.Module):
 
         # now add static features if requested
         inpans = self.preprocessor.add_static_features(inpan)
-
+        #
+        # choutilin1 250613
+        # currently the land-sea mask is inpans[0,-2,:,:]
+        # for example, mask out land in the 3rd and 4th channel maps (it's actually the 4th and 5th since i starts from 0)
+        inpans[0,3,:,:] *= inpans[0,-2,:,:]
+        inpans[0,4,:,:] *= inpans[0,-2,:,:]
         # forward pass
         yn = self.model(inpans)
-
+        # mask both the input and output of the model
+        yn[0,3,:,:] *= inpans[0,-2,:,:]
+        yn[0,4,:,:] *= inpans[0,-2,:,:]
+        #
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
 
