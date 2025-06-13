@@ -40,7 +40,7 @@ from makani.models import model_registry
 from makani.utils import comm
 from makani.utils import visualize
 
-import itertools # lkkbox 250509
+from itertools import islice # lkkbox 250509
 
 class Inferencer(Trainer):
     """
@@ -124,13 +124,6 @@ class Inferencer(Trainer):
         # save params
         self.params = params
 
-        # # lkkbox debug
-        # print(f'{params.img_crop_shape_x = }')
-        # print(f'{params.img_crop_shape_y = }')
-        # print(f'{params.N_in_channels = }')
-        # print(f'{params.N_out_channels = }')
-        # print(f'{params["n_future"] = }')
-        
         self.model = model_registry.get_model(params).to(self.device)
         self.preprocessor = self.model.preprocessor
 
@@ -148,17 +141,6 @@ class Inferencer(Trainer):
         # loss handler
         self.loss_obj = LossHandler(self.params)
         self.loss_obj = self.loss_obj.to(self.device)
-
-        # ---- check the stat paths
-        for path in [
-            params.global_means_path,
-            params.global_stds_path,
-        ]:
-            if not os.path.exists(path):
-                raise FileNotFoundError(path)
-
-        self.global_means_paths = params.global_means_path
-        self.global_stds_paths = params.global_stds_path
 
     def _autoregressive_inference(self, data, compute_metrics=False, output_data=False, output_channels=[0, 1]):
         # map to gpu
@@ -187,8 +169,8 @@ class Inferencer(Trainer):
                 self.metrics.update(pred, targ, loss, idt)
 
             if output_data:
-                self.pred_outputs.append(pred[:, output_channels].to("cpu"))
-                self.targ_outputs.append(targ[:, output_channels].to("cpu"))
+                self.pred_outputs.append(pred[:, output_channels].cpu())
+                self.targ_outputs.append(targ[:, output_channels].cpu())
 
             # append history
             inpt = self.preprocessor.append_history(inpt, pred, idt)
@@ -221,7 +203,7 @@ class Inferencer(Trainer):
                 # data = map(lambda x: x.unsqueeze(0), data)
 
                 # lkkbox 250509 - modified
-                data = next(itertools.islice(self.valid_dataloader, ic, ic+1))
+                data = next(islice(self.valid_dataloader, ic, ic+1))
 
                 self._autoregressive_inference(data, compute_metrics=compute_metrics, output_data=output_data, output_channels=output_channels)
 
@@ -237,38 +219,6 @@ class Inferencer(Trainer):
             result = result + [logs, acc_curves.cpu(), rmse_curves.cpu()]
 
         return tuple(result)
-
-
-    def predict(self, ic=0):
-        """
-        lkkbox 250525
-        To make the prediction of a timestep from 'inf_data_path'.
-        The function was modified from "inference_single"
-        """
-
-        # ---- read normalization stats
-        global_means = np.load(self.global_means_paths)
-        global_stds = np.load(self.global_stds_paths)
-
-        # ---- calculate predictions
-        channels = self.valid_dataloader.in_channels
-        print(f'{channels = }')
-        self._set_eval()
-        self.targ_outputs = []
-        self.pred_outputs = []
-
-        with torch.inference_mode():
-            with torch.no_grad():
-                data = next(itertools.islice(self.valid_dataloader, ic, ic+1))
-                self._autoregressive_inference(data, output_data=True, output_channels=channels)
-
-        predictions = np.array(torch.stack(self.pred_outputs, dim=0)).squeeze()
-
-        # ---- de-normalization
-        predictions = predictions * global_stds + global_means
-
-        return predictions
-
 
     def inference_epoch(self):
         """
