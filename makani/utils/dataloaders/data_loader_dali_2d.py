@@ -97,6 +97,11 @@ class ERA5DaliESDataloader(object):
             if self.add_noise:
                 inp = fn.noise.gaussian(inp, device="gpu", stddev=self.noise_std, seed=self.local_seed)
 
+            # choutilin1 250616
+            lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_ehv05a.npy").gpu()
+            inp = inp * lsm
+            tar = tar * lsm
+
             # add zenith angle if requested
             if self.add_zenith:
                 pipeline.set_outputs(inp, tar, izen, tzen)
