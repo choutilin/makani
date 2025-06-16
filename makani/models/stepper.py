@@ -40,8 +40,8 @@ class SingleStepWrapper(nn.Module):
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
         # for example, mask out land in the 3rd and 4th channel maps (it's actually the 4th and 5th since i starts from 0)
-        #inpans[0,3,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,4,:,:] *= inpans[0,-1,:,:]
+        inpans[0,3,:,:] *= inpans[0,-1,:,:]
+        inpans[0,4,:,:] *= inpans[0,-1,:,:]
         # forward pass
         yn = self.model(inpans)
 
