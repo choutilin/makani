@@ -39,20 +39,19 @@ class SingleStepWrapper(nn.Module):
         #np.save("/work/choutilin1/inpans.npy",inpans.detach().cpu().numpy())  # remember to import numpy first
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
-        # for example, mask out land in the 3rd and 4th channel maps (it's actually the 4th and 5th since i starts from 0)
-        inpans[0,3,:,:] *= inpans[0,-1,:,:]
-        inpans[0,4,:,:] *= inpans[0,-1,:,:]
+        inpans[0,20,:,:] *= inpans[0,-1,:,:]
+        inpans[0,21,:,:] *= inpans[0,-1,:,:]
         # forward pass
         yn = self.model(inpans)
 
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
-        # mask not just the input, but also the DENORMALIZED output of the model
-        y[0,3,:,:] *= inpans[0,-1,:,:]
-        y[0,4,:,:] *= inpans[0,-1,:,:]
+        # mask not just the input, but also the denormalized output of the model
+        y[0,20,:,:] *= inpans[0,-1,:,:]
+        y[0,21,:,:] *= inpans[0,-1,:,:]
         #
         # add residual (for residual learning, no-op for direct learning
-        #y = self.preprocessor.add_residual(inp, y)
+        #y = self.preprocessor.add_residual(inp, y)  # choutilin: I don't know how my change will affect this, might as well cause an error
 
         return y
 
