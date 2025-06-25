@@ -98,7 +98,8 @@ class ERA5DaliESDataloader(object):
                 inp = fn.noise.gaussian(inp, device="gpu", stddev=self.noise_std, seed=self.local_seed)
 
             # choutilin1 250616
-            lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_ehv05a.npy").gpu()
+            # lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_ehv05a.npy").gpu()
+            lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars22a.npy").gpu()
             inp = inp * lsm
             tar = tar * lsm
 
