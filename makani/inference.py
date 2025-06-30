@@ -61,6 +61,7 @@ if __name__ == "__main__":
 
     # lkkbox 250509 for saving the output path
     parser.add_argument("--inference_output_path", default="./out.nc", type=str, help="path to save the output of inference")
+    parser.add_argument("--inference_target_path", default="./out_targ.nc", type=str, help="path to save the inference target (truth)")
     parser.add_argument("--overwrite_output_path", default=False, type=bool, help="overwrite the output path path")
     parser.add_argument("--inference_ic", default=False, type=bool, help="num of inits to infer")
     parser.add_argument("--inference_num_channels", default=False, type=bool, help="num of channels to infer")
@@ -181,6 +182,7 @@ if __name__ == "__main__":
 
         # ---- check output path
         output_path = args.inference_output_path
+        target_path = args.inference_target_path
         overwrite = args.overwrite_output_path
 
         if not overwrite and os.path.exists(output_path):
@@ -213,9 +215,11 @@ if __name__ == "__main__":
         # FutureWarning: The input object of type 'Tensor' is an array-like implementing one of the corresponding protocols (`__array__`, `__array_interface__` or `__array_struct__`); but not a sequence (or 0-D). In the future, this object will be coerced as if it was first converted using `np.array(obj)`. To retain the old behaviour, you have to either modify the type 'Tensor', or assign to an empty array created with `np.empty(correct_shape, dtype=object)`.
         #predictions = np.array(inferencer.pred_outputs).squeeze(axis=1)
         predictions = torch.stack(inferencer.pred_outputs, dim=0).numpy().squeeze(axis=1)
+        targets     = torch.stack(inferencer.targ_outputs, dim=0).numpy().squeeze(axis=1)
 
         # ---- de-normalization
         predictions = predictions * global_stds + global_means
+        targets     = targets     * global_stds + global_means
 
         # ---- save to the file
         if overwrite and os.path.exists(output_path):
@@ -242,6 +246,20 @@ if __name__ == "__main__":
                 h[varName][:] = predictions[:, iVar, :, :].squeeze()
 
         print(f'predictions saved to {output_path}')
+
+        # choutilin 250630
+        if overwrite and os.path.exists(target_path):
+            os.remove(target_path)
+        with netCDF4.Dataset(target_path, 'w') as h:
+            # dimensions
+            for dimName, dimVal in zip(dimNames, dimVals):
+                h.createDimension(dimName, len(dimVal))
+                h.createVariable(dimName, np.int16, [dimName])
+                h[dimName][:] = dimVal
+            # variables
+            for iVar, varName in enumerate(varNames):
+                h.createVariable(varName, 'float', dimNames)
+                h[varName][:] = targets[:, iVar, :, :].squeeze()
         
         # # lkkbox 250509 - original
         # inferencer.score_model() 
