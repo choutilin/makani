@@ -236,6 +236,14 @@ class Inferencer(Trainer):
             logs, acc_curves, rmse_curves = self.metrics.finalize(final_inference=True)
             result = result + [logs, acc_curves.cpu(), rmse_curves.cpu()]
 
+            # save the acc curve
+            if self.world_rank == 0:
+                np.save(os.path.join(self.params.experiment_dir, "acc_curves.npy"), acc_curves.cpu().numpy())
+                np.save(os.path.join(self.params.experiment_dir, "rmse_curves.npy"), rmse_curves.cpu().numpy())
+                # visualize the result and log it to wandb. The dummy epoch 0 is used for logging to wandb
+                visualize.plot_rollout_metrics(acc_curves, rmse_curves, self.params, epoch=0, model_name=self.params.nettype,
+                        comparison_channels=["mslp","t2m","sp","sst","ssh"])
+
         return tuple(result)
 
 
