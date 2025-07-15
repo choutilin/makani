@@ -209,6 +209,7 @@ if __name__ == "__main__":
         # ---- run inferencer and get predictions
         inferencer = Inferencer(params, world_rank)
         inferencer.inference_single(
+            compute_metrics = True,  #choutilin 250715
             ic=args.inference_ic, output_data=True, output_channels=output_channels
         )
         # choutilin1 250617:  I ran into this error. I managed to get it to work by changing the following:
