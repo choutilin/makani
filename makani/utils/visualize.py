@@ -100,7 +100,7 @@ def plot_rollout_metrics(acc_curves, rmse_curves, params, epoch, model_name, com
     "Plots rollout metrics such as RMSE and ACC and saves them to the experiment directory"
 
     channel_names = params.channel_names
-
+    channel_names = ["u10m", "v10m", "mslp", "t2m", "sp", "u1000", "v1000", "z1000", "t850", "u850", "v850", "z850", "r850", "t500", "u500", "v500", "z500", "r500", "z50", "tcwv", "sst", "ssh"]
     for metric in ["acc", "rmse"]:
         curves = acc_curves if metric == "acc" else rmse_curves
 
