@@ -98,10 +98,10 @@ class ERA5DaliESDataloader(object):
                 inp = fn.noise.gaussian(inp, device="gpu", stddev=self.noise_std, seed=self.local_seed)
 
             # choutilin1 250616
-            # lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_ehv05a.npy").gpu()
-            lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars22a.npy").gpu()
-            inp = inp * lsm
-            tar = tar * lsm
+            #lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars22a.npy").gpu()
+            #lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars26.npy").gpu()
+            inp = inp * self.lsm_static
+            tar = tar * self.lsm_static
 
             # add zenith angle if requested
             if self.add_zenith:
@@ -112,6 +112,9 @@ class ERA5DaliESDataloader(object):
         return pipeline
 
     def __init__(self, params, location, train, seed=333, final_eval=False):
+        # choutilin1 250723
+        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars26.npy").gpu()
+        #
         self.num_data_workers = params.num_data_workers
         self.device_index = torch.cuda.current_device()
         self.device = torch.device(f"cuda:{self.device_index}")
