@@ -196,19 +196,96 @@ small_test1:
     max_epochs: 1
     n_train_samples_per_epoch: 100
 
-large_test1:
+large_test1_Chou:
     <<: *OUT_OF_BOX_CONFIG
-    metadata_json_path: "./datasets/era5/data_fcn1Vars20.json"
-    train_data_path: "./datasets/small_test1/train"
-    valid_data_path: "./datasets/small_test1/test"
-    inf_data_path: "./datasets/small_test1/inf"
-    global_means_path: "./datasets/stats/fcn1Vars20/global_means.npy"
-    global_stds_path: "./datasets/stats/fcn1Vars20/global_stds.npy"
-    time_means_path: "./datasets/stats/fcn1Vars20/time_means.npy"
-    exp_dir: "./runs/tests"
-    n_eval_samples: 500 # for validation
-    max_epochs: 1
-    n_train_samples_per_epoch: 100  # for training
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "/work/choutilin1/out_large_test1/train"
+    valid_data_path: "/work/choutilin1/out_large_test1/test"
+    inf_data_path: "/work/choutilin1/out_large_test1/inf"
+    global_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "/work/choutilin1/out_large_test1"
+    n_eval_samples: 200 # for validation
+    max_epochs: 7
+    n_train_samples_per_epoch: 1460  # for training
+
+large_test2_Chou:
+    <<: *OUT_OF_BOX_CONFIG
+    num_layers: 6  # hyperparameter trial and error go!!!!!  #choutilin 250623
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "/work/choutilin1/out_large_test1/train"
+    valid_data_path: "/work/choutilin1/out_large_test1/test"
+    inf_data_path: "/work/choutilin1/out_large_test1/inf"
+    global_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "/work/choutilin1/out_large_test1"
+    n_eval_samples: 200 # for validation
+    max_epochs: 8
+    n_train_samples_per_epoch: 1460  # for training
+
+large_test3_Chou:
+    <<:
+        - *OUT_OF_BOX_CONFIG
+        - *PREDICT_BASE
+    num_layers: 4  # hyperparameter trial and error go!!!!!  #choutilin 250623
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "/work/choutilin1/out_large_test1/train"
+    valid_data_path: "/work/choutilin1/out_large_test1/test"
+    inf_data_path: "/work/choutilin1/out_large_test1/inf"
+    global_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "/work/choutilin1/out_large_test1"
+    n_eval_samples: 200 # for validation
+    max_epochs: 9
+    n_train_samples_per_epoch: 1460  # for training
+
+    predict_output_overwrite: !!bool True
+    predict_output_skipExists: !!bool False
+    predict_output_dir: "/work/choutilin1/out_large_test1/"     # [str]
+    predict_ic_path: '/work/choutilin1/out_large_test1/inf/2013.h5'
+    predict_ic_mode: 'continuous' # ["continuous"]:use start + count, ["incontinuous"]: use list
+    predict_ic_start: 0 # [null], [int]
+    predict_ic_stop: 1           # [null], [int]
+    predict_ic_step: 1             # [null], [int]
+    predict_ic_list: null           # [null], [list(int)]
+
+large_test4_Chou:
+    <<:
+        - *OUT_OF_BOX_CONFIG
+#        - *PREDICT_BASE
+    num_layers: 4  # hyperparameter trial and error go!!!!!  #choutilin 250623
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "/work/choutilin1/out_large_test4/train"
+    valid_data_path: "/work/choutilin1/out_large_test4/test"
+    inf_data_path: "/work/choutilin1/out_large_test4/inf"
+    global_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "/work/choutilin1/out_large_test4"
+    n_eval_samples: 200 # for validation
+    max_epochs: 25
+    n_train_samples_per_epoch: 1460  # for training
+
+large_test5_Chou:
+    <<:
+        - *OUT_OF_BOX_CONFIG
+#        - *PREDICT_BASE
+    num_layers: 8  # hyperparameter trial and error go!!!!!  #choutilin 250623
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    train_data_path: "/work/choutilin1/out_large_test4/train"
+    valid_data_path: "/work/choutilin1/out_large_test4/test"
+    inf_data_path: "/work/choutilin1/out_large_test4/inf"
+    global_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_means.npy"
+    global_stds_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/global_stds.npy"
+    time_means_path: "/work/lkkbox945/models/makani/v250508/datasets/stats/fcn1Vars20/time_means.npy"
+    exp_dir: "/work/choutilin1/out_large_test4"
+    n_eval_samples: 200 # for validation
+    max_epochs: 7
+    n_train_samples_per_epoch: 1460  # for training
+
 
 ehv05a_y1:
     <<: *OUT_OF_BOX_CONFIG
@@ -224,54 +301,73 @@ ehv05a_y1:
     n_eval_samples: 100 # for validation
     inf_data_path: "./datasets/ehv05a_y1/inference"
 
-ehv05a_y3a:
-    <<: 
+ehv05a_y3a_Chou:
+    <<:
         - *OUT_OF_BOX_CONFIG
-        - *PREDICT_BASE
-    exp_dir: "./runs/ehv05a_y3a_01"
+    #    - *PREDICT_BASE
+    exp_dir: "/work/choutilin1/out_ehv05a_y3a"
 
-    metadata_json_path: "./datasets/ehv05a_y3a/data.json"
+    metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/ehv05a_y3a/data.json"
 
-    time_means_path:   "./datasets/ehv05a_y3a/stat/time_means_2011-2014.npy"
-    global_means_path:   "./datasets/ehv05a_y3a/stat/global_means_2011-2014.npy"
-    global_stds_path:   "./datasets/ehv05a_y3a/stat/global_stds_2011-2014.npy"
+    time_means_path:   "/work/lkkbox945/models/makani/v250508/datasets/ehv05a_y3a/stat/time_means_2011-2014.npy"
+    global_means_path:   "/work/lkkbox945/models/makani/v250508/datasets/ehv05a_y3a/stat/global_means_2011-2014.npy"
+    global_stds_path:   "/work/lkkbox945/models/makani/v250508/datasets/ehv05a_y3a/stat/global_stds_2011-2014.npy"
 
-    train_data_path: "./datasets/ehv05a_y3a/train"
-    valid_data_path: "./datasets/ehv05a_y3a/valid"
+    train_data_path: "/work/choutilin1/out_ehv05a_y3a/train"
+    valid_data_path: "/work/choutilin1/out_ehv05a_y3a/valid"
 
-    max_epochs: 32
-    n_train_samples_per_epoch: 256  # for training
-    n_eval_samples: 64 # for validation
-    inf_data_path: "./datasets/ehv05a_y3a/inference"
+    max_epochs: 1
+    n_train_samples_per_epoch: 8 #256  # for training
+    n_eval_samples: 4 #64 # for validation
+    inf_data_path: "/work/choutilin1/out_ehv05a_y3a/inference"
 
-    predict_output_overwrite: !!bool True
-    predict_output_skipExists: !!bool False
-    predict_output_dir: "./out_ehv05a_y3a/250602/predict/2015"     # [str]
-    predict_ic_path: '/home/lkkbox945/makani/v250508/datasets/ehv05a_y3a/predict/2015.nc' 
+    predict_output_overwrite: !!bool False
+    predict_output_skipExists: !!bool True
+    predict_output_dir: "/work/choutilin1/out_ehv05a_y3a/"     # [str]
+    predict_ic_path: '/work/lkkbox945/data/era5_hycom_vars05_a/2015.nc'
     predict_ic_mode: 'continuous' # ["continuous"]:use start + count, ["incontinuous"]: use list
     predict_ic_start: 0 # [null], [int]
     predict_ic_stop: 1           # [null], [int]
     predict_ic_step: 1             # [null], [int]
     predict_ic_list: null           # [null], [list(int)]
-    
 
-v20_fcn1_y4a:
-    <<: 
-        - *OUT_OF_BOX_CONFIG
-        - *PREDICT_BASE
-    exp_dir: "./runs/v20_fcn1_y4a_01"
 
-    metadata_json_path: "./datasets/v20_fcn1_y4a/data.json"
 
-    time_means_path:   "./datasets/v20_fcn1_y4a/stat/time_means_2011-2014.npy"
-    global_means_path:   "./datasets/v20_fcn1_y4a/stat/global_means_2011-2014.npy"
-    global_stds_path:   "./datasets/v20_fcn1_y4a/stat/global_stds_2011-2014.npy"
+vars22a_Chou:
+    <<: *OUT_OF_BOX_CONFIG
+    num_layers: 8  # we are getting CUDA out of memory issues!???  #choutilin 250623
+    valid_autoreg_steps: 19  # choutilin 250708: Set this to 1 or 0 during training, otherwise you will OOM
+    log_to_wandb: !!bool False
+    optimizer_type: "AdamW"
+    #metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    metadata_json_path: "/work/choutilin1/out_vars22a/fcn1Vars20_vars22a.json"
+    train_data_path: "/work/choutilin1/out_vars22a/train"
+    valid_data_path: "/work/choutilin1/out_vars22a/test"
+    inf_data_path: "/work/choutilin1/out_vars22a/inf"
+    global_means_path: "/work/choutilin1/out_vars22a/global_means_2011-2014.npy"
+    global_stds_path: "/work/choutilin1/out_vars22a/global_stds_2011-2014.npy"
+    time_means_path: "/work/choutilin1/out_vars22a/time_means_2011-2014.npy"
+    exp_dir: "/work/choutilin1/out_vars22a"
+    n_eval_samples: 500 # for validation
+    max_epochs: 10
+    n_train_samples_per_epoch: 4380  # for training
 
-    train_data_path: "./datasets/v20_fcn1_y4a/train"
-    valid_data_path: "./datasets/v20_fcn1_y4a/valid"
 
-    max_epochs: 32
-    n_train_samples_per_epoch: 256  # for training
-    n_eval_samples: 64 # for validation
-    inf_data_path: "./datasets/v20_fcn1_y4a/inference"
+vars26:
+    <<: *OUT_OF_BOX_CONFIG
+    num_layers: 8  # we are getting CUDA out of memory issues!???  #choutilin 250623
+    valid_autoreg_steps: 0 #19  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
+    optimizer_type: "AdamW"
+    #metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
+    metadata_json_path: "/work/choutilin1/out_vars26/vars26.json"
+    train_data_path: "/work/choutilin1/data_4d/train"
+    valid_data_path: "/work/choutilin1/data_4d/test"
+    inf_data_path: "/work/choutilin1/data_4d/inf"
+    global_means_path: "/work/choutilin1/out_vars26/global_means_2011-2014.npy"
+    global_stds_path: "/work/choutilin1/out_vars26/global_stds_2011-2014.npy"
+    time_means_path: "/work/choutilin1/out_vars26/time_means_2011-2014.npy"
+    exp_dir: "/work/choutilin1/out_vars26"
+    n_eval_samples: 1460 # for validation
+    max_epochs: 13
+    n_train_samples_per_epoch: 4380  # for training
 
