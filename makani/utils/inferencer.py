@@ -130,7 +130,7 @@ class Inferencer(Trainer):
         # print(f'{params.N_in_channels = }')
         # print(f'{params.N_out_channels = }')
         # print(f'{params["n_future"] = }')
-        
+
         self.model = model_registry.get_model(params).to(self.device)
         self.preprocessor = self.model.preprocessor
 
@@ -160,6 +160,10 @@ class Inferencer(Trainer):
         self.global_means_paths = params.global_means_path
         self.global_stds_paths = params.global_stds_path
 
+        # choutilin 250725
+        self.RMSE_over_time  = torch.zeros((params.valid_autoreg_steps+1, params.N_out_channels), dtype=torch.float32, device=self.device)
+        self.RMSE_over_space = torch.zeros((params.N_out_channels, 721, 1440), dtype=torch.float32, device=self.device)
+
     def _autoregressive_inference(self, data, compute_metrics=False, output_data=False, output_channels=[0, 1]):
         # map to gpu
         gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
@@ -185,6 +189,12 @@ class Inferencer(Trainer):
             # put in the metrics handler
             if compute_metrics:
                 self.metrics.update(pred, targ, loss, idt)
+                # choutilin 250725  # pred and targ have shapes (1, 26, 721, 1440)
+                sqdif = (pred-targ)[0]**2
+                sqdif_over_time  = torch.mean(sqdif,dim=(-1,-2))
+                #sqdif_over_space = torch.mean(sqdif,dim=0)
+                self.RMSE_over_time[idt] += sqdif_over_time
+                self.RMSE_over_space     += sqdif
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))
@@ -230,19 +240,6 @@ class Inferencer(Trainer):
             targ = torch.stack(self.targ_outputs, dim=0)
             pred = torch.stack(self.pred_outputs, dim=0)
             result = result + [targ, pred]
-
-        # create final logs
-        if compute_metrics:
-            logs, acc_curves, rmse_curves = self.metrics.finalize(final_inference=True)
-            result = result + [logs, acc_curves.cpu(), rmse_curves.cpu()]
-
-            # save the acc curve
-            if self.world_rank == 0:
-                np.save(os.path.join(self.params.experiment_dir, "acc_curves.npy"), acc_curves.cpu().numpy())
-                np.save(os.path.join(self.params.experiment_dir, "rmse_curves.npy"), rmse_curves.cpu().numpy())
-                # visualize the result and log it to wandb. The dummy epoch 0 is used for logging to wandb
-                visualize.plot_rollout_metrics(acc_curves, rmse_curves, self.params, epoch=0, model_name=self.params.nettype,
-                        comparison_channels=["mslp","t2m","sp","sst","ssh"])
 
         return tuple(result)
 
@@ -300,6 +297,13 @@ class Inferencer(Trainer):
 
                     self._autoregressive_inference(data, compute_metrics=True, output_data=False, output_channels=False)
 
+        # choutilin 250725
+        self.RMSE_over_space /= (self.params.valid_autoreg_steps+1)
+        self.RMSE_over_time  /= eval_steps
+        self.RMSE_over_space /= eval_steps
+        self.RMSE_over_time   = torch.sqrt(self.RMSE_over_time)
+        self.RMSE_over_space  = torch.sqrt(self.RMSE_over_space)
+
         # create final logs
         logs, acc_curves, rmse_curves = self.metrics.finalize(final_inference=True)
 
@@ -307,6 +311,10 @@ class Inferencer(Trainer):
         if self.world_rank == 0:
             np.save(os.path.join(self.params.experiment_dir, "acc_curves.npy"), acc_curves.cpu().numpy())
             np.save(os.path.join(self.params.experiment_dir, "rmse_curves.npy"), rmse_curves.cpu().numpy())
+            #
+            global_stds = np.load(self.global_stds_paths)
+            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_time.npy" ), self.RMSE_over_time.cpu().numpy()  *global_stds[:,:,0,0] )
+            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_space.npy"), self.RMSE_over_space.cpu().numpy() *global_stds[0] )
 
             # visualize the result and log it to wandb. The dummy epoch 0 is used for logging to wandb
             visualize.plot_rollout_metrics(acc_curves, rmse_curves, self.params, epoch=0, model_name=self.params.nettype)
