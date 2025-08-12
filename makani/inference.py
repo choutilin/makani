@@ -53,7 +53,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpointing_level", default=0, type=int, help="How aggressively checkpointing is used")
     parser.add_argument("--epsilon_factor", default=0, type=float)
     parser.add_argument("--split_data_channels", action="store_true")
-    parser.add_argument("--mode", default="score", type=str, choices=["score", "ensemble"], help="Select inference mode")
+    parser.add_argument("--mode", default="score", type=str, choices=["score", "epoch"], help="Select inference mode")
     parser.add_argument("--enable_odirect", action="store_true")
 
     # checkpoint format
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     parser.add_argument("--inference_output_path", default="./out.nc", type=str, help="path to save the output of inference")
     parser.add_argument("--inference_target_path", default="./out_targ.nc", type=str, help="path to save the inference target (truth)")
     parser.add_argument("--overwrite_output_path", default=False, type=bool, help="overwrite the output path path")
-    parser.add_argument("--inference_ic", default=False, type=bool, help="num of inits to infer")
+    parser.add_argument("--inference_ic", default=0, type=int, help="num of inits to infer")
     parser.add_argument("--inference_num_channels", default=False, type=bool, help="num of channels to infer")
 
     # parse
@@ -193,6 +193,7 @@ if __name__ == "__main__":
             logging.info(f'{output_path = }')
 
 
+        ''' ### choutilin 250812:  This cannot handle non-continuous channel selection
         # ---- get the number of channels from inf data path
         pathdir = params['inf_data_path']
         files = os.listdir(pathdir)
@@ -202,14 +203,16 @@ if __name__ == "__main__":
             raise FileNotFoundError(pathdir)
         with netCDF4.Dataset(f'{pathdir}/{files[0]}', 'r') as h:
             variable_shape = h['fields'].shape
-        
+
         output_channels = list(range(variable_shape[1]))
+        '''
+        output_channels = list(range(len( params["out_channels"] )))
 
 
         # ---- run inferencer and get predictions
         inferencer = Inferencer(params, world_rank)
         inferencer.inference_single(
-            compute_metrics = True,  #choutilin 250715
+            compute_metrics = False,  #choutilin 250715
             ic=args.inference_ic, output_data=True, output_channels=output_channels
         )
         # choutilin1 250617:  I ran into this error. I managed to get it to work by changing the following:
@@ -219,8 +222,10 @@ if __name__ == "__main__":
         targets     = torch.stack(inferencer.targ_outputs, dim=0).numpy().squeeze(axis=1)
 
         # ---- de-normalization
-        predictions = predictions * global_stds + global_means
-        targets     = targets     * global_stds + global_means
+        #predictions = predictions * global_stds + global_means
+        # choutilin 250812
+        predictions = predictions * global_stds[:,params["out_channels"]] + global_means[:,params["out_channels"]]
+        targets     = targets     * global_stds[:,params["out_channels"]] + global_means[:,params["out_channels"]]
 
         # ---- save to the file
         if overwrite and os.path.exists(output_path):
@@ -261,9 +266,10 @@ if __name__ == "__main__":
             for iVar, varName in enumerate(varNames):
                 h.createVariable(varName, 'float', dimNames)
                 h[varName][:] = targets[:, iVar, :, :].squeeze()
-        
-        # # lkkbox 250509 - original
-        # inferencer.score_model() 
 
+    elif args.mode == "epoch":
+        inferencer = Inferencer(params, world_rank)
+        inferencer.score_model()
     else:
         raise ValueError(f"Unknown training mode {args.mode}")
+
