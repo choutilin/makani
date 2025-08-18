@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
     elif args.mode == "epoch":
         inferencer = Inferencer(params, world_rank)
-        inferencer.score_model()
+        inferencer.score_model( output_channels = params["out_channels"] )
     else:
         raise ValueError(f"Unknown training mode {args.mode}")
 
