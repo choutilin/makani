@@ -275,7 +275,7 @@ class Inferencer(Trainer):
         return predictions
 
 
-    def inference_epoch(self):
+    def inference_epoch(self, output_channels):
         """
         Runs the model in autoregressive inference mode on the entire validation dataset. Computes metrics and scores the model.
         """
@@ -313,8 +313,8 @@ class Inferencer(Trainer):
             np.save(os.path.join(self.params.experiment_dir, "rmse_curves.npy"), rmse_curves.cpu().numpy())
             #
             global_stds = np.load(self.global_stds_paths)
-            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_time.npy" ), self.RMSE_over_time.cpu().numpy()  *global_stds[:,:,0,0] )
-            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_space.npy"), self.RMSE_over_space.cpu().numpy() *global_stds[0] )
+            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_time.npy" ), self.RMSE_over_time.cpu().numpy()  *global_stds[:,output_channels,0,0] )
+            np.save(os.path.join(self.params.experiment_dir, "RMSE_over_space.npy"), self.RMSE_over_space.cpu().numpy() *global_stds[0,output_channels] )
 
             # visualize the result and log it to wandb. The dummy epoch 0 is used for logging to wandb
             visualize.plot_rollout_metrics(acc_curves, rmse_curves, self.params, epoch=0, model_name=self.params.nettype)
@@ -352,7 +352,7 @@ class Inferencer(Trainer):
 
         return
 
-    def score_model(self):
+    def score_model(self, output_channels):
         # log parameters
         if self.params.log_to_screen:
             # log memory usage so far
@@ -374,7 +374,7 @@ class Inferencer(Trainer):
         # start timer
         scoring_start = time.time()
 
-        scoring_logs = self.inference_epoch()
+        scoring_logs = self.inference_epoch(output_channels=output_channels)
 
         # end timer
         scoring_end = time.time()
