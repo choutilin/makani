@@ -98,8 +98,6 @@ class ERA5DaliESDataloader(object):
                 inp = fn.noise.gaussian(inp, device="gpu", stddev=self.noise_std, seed=self.local_seed)
 
             # choutilin1 250616
-            #lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars22a.npy").gpu()
-            #lsm  = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars26.npy").gpu()
             inp = inp * self.lsm_static
             tar = tar * self.lsm_static
 
@@ -113,7 +111,12 @@ class ERA5DaliESDataloader(object):
 
     def __init__(self, params, location, train, seed=333, final_eval=False):
         # choutilin1 250723
-        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars26.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33_I.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33_J.npy").gpu()
+        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33_L.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33_MNO.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/land_sea_mask.npy").gpu()
         #
         self.num_data_workers = params.num_data_workers
         self.device_index = torch.cuda.current_device()

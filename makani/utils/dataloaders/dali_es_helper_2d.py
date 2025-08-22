@@ -176,9 +176,13 @@ class GeneralES(object):
 
             # read the data
             if self.read_direct:
+                # choutilin 250822  ### I have no idea if this is the right thing to do
                 dset.read_direct(
                     tar, np.s_[(local_idx + self.dt) : (local_idx + self.dt * (self.n_future + 1) + 1) : self.dt, slice_out, start_x:end_x, start_y:end_y], np.s_[:, start:end, ...]
                 )
+                #dset.read_direct(
+                #    tar, np.s_[(local_idx + self.dt) : (local_idx + self.dt * 2 + 1) : self.dt, slice_out, start_x:end_x, start_y:end_y], np.s_[:, start:end, ...]
+                #)
             else:
                 tar[(local_idx + self.dt) : (local_idx + self.dt * (self.n_future + 1) + 1) : self.dt, slice_out, start_x:end_x, start_y:end_y] = dset[:, start:end, ...]
 
@@ -292,6 +296,10 @@ class GeneralES(object):
         else:
             self.n_samples_offset = 0
 
+        # choutilin 250822
+        #self.n_samples_offset = 1234
+        #
+
         # number of steps per epoch
         self.num_steps_per_cycle = self.n_samples_shard // self.batch_size
         if self.n_samples_per_epoch is None:
@@ -337,10 +345,17 @@ class GeneralES(object):
             cpx.zeros_pinned((self.n_history + 1, self.n_in_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
             cpx.zeros_pinned((self.n_history + 1, self.n_in_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
         ]
+        # choutilin 250822  ### Looks like the buffers only ever need a size of 2 ?
+        #self.tar_buffs = [
+        #    cpx.zeros_pinned(( 2 , self.n_out_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
+        #    cpx.zeros_pinned(( 2 , self.n_out_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
+        #]
+        #
         self.tar_buffs = [
             cpx.zeros_pinned((self.n_future + 1, self.n_out_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
             cpx.zeros_pinned((self.n_future + 1, self.n_out_channels, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
         ]
+        #
         if self.zenith_angle:
             self.zen_inp_buffs = [
                 cpx.zeros_pinned((self.n_history + 1, 1, self.read_shape[0], self.read_shape[1]), dtype=np.float32),
