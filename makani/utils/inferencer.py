@@ -205,6 +205,39 @@ class Inferencer(Trainer):
 
         return
 
+
+    def _autoregressive_inf_lite(self, data, output_data=False, output_channels=[0, 1]):
+        # map to gpu
+        gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
+
+        # preprocess
+        inp, tar = self.preprocessor.cache_unpredicted_features(*gdata)
+        inp = self.preprocessor.flatten_history(inp)
+
+        # split list of targets
+        tarlist = torch.split(tar, 1, dim=1)
+
+        # do autoregression
+        inpt = inp
+        for idt, targ in enumerate(tarlist):
+            # flatten history of the target
+            targ = self.preprocessor.flatten_history(targ)
+
+            break ### I'm not sure this is the right path to take...
+
+        for idt in range(self.params.valid_autoreg_steps+1):  # idt starts with 0
+            # FW pass
+            with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
+                pred = self.model(inpt)
+
+            if output_data:
+                self.pred_outputs.append(pred[:, output_channels].to("cpu"))
+
+            # append history
+            inpt = self.preprocessor.append_history(inpt, pred, idt)
+
+        return
+
     def inference_single(self, ic=0, compute_metrics=False, output_data=False, output_channels=[0, 1]):
         """
         Runs the model in autoregressive inference mode on a single initial condition.
@@ -240,6 +273,34 @@ class Inferencer(Trainer):
             targ = torch.stack(self.targ_outputs, dim=0)
             pred = torch.stack(self.pred_outputs, dim=0)
             result = result + [targ, pred]
+
+        return tuple(result)
+
+
+    def inference_lite(self, ic=0, output_data=False, output_channels=[0, 1]):
+        """
+        Runs the model in autoregressive inference mode on a single initial condition.
+        """
+
+        self._set_eval()
+
+        # clear cache
+        torch.cuda.empty_cache()
+
+        if output_data:
+            self.pred_outputs = []
+
+        with torch.inference_mode():
+            with torch.no_grad():
+                # lkkbox 250509 - modified
+                data = next(itertools.islice(self.valid_dataloader, ic, ic+1))
+
+                self._autoregressive_inf_lite(data, output_data=output_data, output_channels=output_channels)
+
+        result = []
+        if output_data:
+            pred = torch.stack(self.pred_outputs, dim=0)
+            result = result + [pred]
 
         return tuple(result)
 
