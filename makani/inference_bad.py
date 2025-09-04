@@ -53,7 +53,7 @@ if __name__ == "__main__":
     parser.add_argument("--checkpointing_level", default=0, type=int, help="How aggressively checkpointing is used")
     parser.add_argument("--epsilon_factor", default=0, type=float)
     parser.add_argument("--split_data_channels", action="store_true")
-    parser.add_argument("--mode", default="score", type=str, choices=["score", "lite", "epoch"], help="Select inference mode")
+    parser.add_argument("--mode", default="score", type=str, choices=["score", "epoch"], help="Select inference mode")
     parser.add_argument("--enable_odirect", action="store_true")
 
     # checkpoint format
@@ -193,7 +193,6 @@ if __name__ == "__main__":
             logging.info(f'{output_path = }')
 
 
-        ''' ### choutilin 250812:  This cannot handle non-continuous channel selection
         # ---- get the number of channels from inf data path
         pathdir = params['inf_data_path']
         files = os.listdir(pathdir)
@@ -205,8 +204,6 @@ if __name__ == "__main__":
             variable_shape = h['fields'].shape
 
         output_channels = list(range(variable_shape[1]))
-        '''
-        output_channels = list(range(len( params["out_channels"] )))
 
 
         # ---- run inferencer and get predictions
@@ -222,10 +219,8 @@ if __name__ == "__main__":
         targets     = torch.stack(inferencer.targ_outputs, dim=0).numpy().squeeze(axis=1)
 
         # ---- de-normalization
-        #predictions = predictions * global_stds + global_means
-        # choutilin 250812
-        predictions = predictions * global_stds[:,params["out_channels"]] + global_means[:,params["out_channels"]]
-        targets     = targets     * global_stds[:,params["out_channels"]] + global_means[:,params["out_channels"]]
+        predictions = predictions * global_stds + global_means
+        targets     = targets     * global_stds + global_means
 
         # ---- save to the file
         if overwrite and os.path.exists(output_path):
@@ -267,16 +262,11 @@ if __name__ == "__main__":
                 h.createVariable(varName, 'float', dimNames)
                 h[varName][:] = targets[:, iVar, :, :].squeeze()
 
-
-
-
-
-
+        # # lkkbox 250509 - original
+        # inferencer.score_model()
 
     elif args.mode == "epoch":
-        inferencer = Inferencer(params, world_rank)
-        inferencer.score_model( output_channels = params["out_channels"] )
-    elif args.mode == "lite":
+        # choutilin 250724 modified
         # lkkbox 250509 - modified
         # ---- check the stat paths
         for path in [
@@ -290,58 +280,62 @@ if __name__ == "__main__":
         global_means = np.load(params.global_means_path)
         global_stds = np.load(params.global_stds_path)
 
-        # ---- check output path
-        output_path = args.inference_output_path
-        target_path = args.inference_target_path
-        overwrite = args.overwrite_output_path
+        # ---- get the number of channels from inf data path
+        pathdir = params['inf_data_path']
+        files = os.listdir(pathdir)
+        files = [f for f in files if f[-3:] in ['.h5', '.nc']]
 
-        if not overwrite and os.path.exists(output_path):
-            raise FileExistsError(output_path)
-        elif overwrite and os.path.exists(output_path):
-            logging.info(f'overwriting {output_path = }')
-        else:
-            logging.info(f'{output_path = }')
+        if not files:
+            raise FileNotFoundError(pathdir)
+        with netCDF4.Dataset(f'{pathdir}/{files[0]}', 'r') as h:
+            variable_shape = h['fields'].shape
 
-        output_channels = list(range(len( params["out_channels"] )))
+        output_channels = list(range(variable_shape[1]))
+
 
         # ---- run inferencer and get predictions
         inferencer = Inferencer(params, world_rank)
-        inferencer.inference_lite(
-            ic=0, output_data=True, output_channels=output_channels
-        )
+        # choutilin 250724
+        sqsum_over_time  = None
+        sqsum_over_space = None
+        for inf_ic in range(0,args.inference_ic):
+            print(inf_ic)
+            inferencer.inference_single(
+                compute_metrics = False,  #choutilin 250715
+                ic=inf_ic, output_data=True, output_channels=output_channels
+            )
+            # choutilin1 250617:  I ran into this error. I managed to get it to work by changing the following:
+            # FutureWarning: The input object of type 'Tensor' is an array-like implementing one of the corresponding protocols (`__array__`, `__array_interface__` or `__array_struct__`); but not a sequence (or 0-D). In the future, this object will be coerced as if it was first converted using `np.array(obj)`. To retain the old behaviour, you have to either modify the type 'Tensor', or assign to an empty array created with `np.empty(correct_shape, dtype=object)`.
+            #predictions = np.array(inferencer.pred_outputs).squeeze(axis=1)
+            predictions = torch.stack(inferencer.pred_outputs, dim=0).numpy().squeeze(axis=1)
+            targets     = torch.stack(inferencer.targ_outputs, dim=0).numpy().squeeze(axis=1)
 
-        predictions = torch.stack(inferencer.pred_outputs, dim=0).numpy().squeeze(axis=1)
+            # ---- de-normalization
+            # predictions = predictions * global_stds + global_means
+            # targets     = targets     * global_stds + global_means
+            diff_squared = (predictions - targets)**2 *global_stds *global_stds
+            diff_over_time  = np.mean(diff_squared, axis=(-1,-2))
+            diff_over_space = np.mean(diff_squared, axis=0)
+            if sqsum_over_time is None:
+                sqsum_over_time = diff_over_time
+            else:
+                sqsum_over_time+= diff_over_time
+            if sqsum_over_space is None:
+                sqsum_over_space = diff_over_space
+            else:
+                sqsum_over_space+= diff_over_space
 
-        # ---- de-normalization
-        #predictions = predictions * global_stds + global_means
-        # choutilin 250812
-        predictions = predictions * global_stds[:,params["out_channels"]] + global_means[:,params["out_channels"]]
+        sqsum_over_time  /= args.inference_ic
+        sqsum_over_space /= args.inference_ic
+        sqsum_over_time  = np.sqrt(sqsum_over_time)
+        sqsum_over_space = np.sqrt(sqsum_over_space)
 
         # ---- save to the file
-        if overwrite and os.path.exists(output_path):
-            os.remove(output_path)
+        output_path = args.inference_output_path
+        np.save(output_path+"_RMSEoverTime.npy",sqsum_over_time)
+        np.save(output_path+"_RMSEoverSpace.npy",sqsum_over_space)
 
-        print(f'prediction data shape = {predictions.shape}')
-
-        numVars = predictions.shape[1]
-        dimNames = [f'dim{iDim}' for iDim in range(predictions.ndim - 1)] # -1 for ivar
-        dimVals = [list(range(predictions.shape[i])) for i in [0, 2, 3]]
-
-        varNames = [f'var{iVar}' for iVar in range(predictions.shape[1])]
-
-        with netCDF4.Dataset(output_path, 'w') as h:
-            # dimensions
-            for dimName, dimVal in zip(dimNames, dimVals):
-                h.createDimension(dimName, len(dimVal))
-                h.createVariable(dimName, np.int16, [dimName])
-                h[dimName][:] = dimVal
-
-            # variables
-            for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
-                h[varName][:] = predictions[:, iVar, :, :].squeeze()
-
-        print(f'predictions saved to {output_path}')
+        print(f'predictions saved to {output_path}_RMSE*.npy')
 
     else:
         raise ValueError(f"Unknown training mode {args.mode}")
