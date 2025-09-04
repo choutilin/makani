@@ -130,7 +130,7 @@ class Inferencer(Trainer):
         # print(f'{params.N_in_channels = }')
         # print(f'{params.N_out_channels = }')
         # print(f'{params["n_future"] = }')
-
+        
         self.model = model_registry.get_model(params).to(self.device)
         self.preprocessor = self.model.preprocessor
 
@@ -225,10 +225,20 @@ class Inferencer(Trainer):
 
             break ### I'm not sure this is the right path to take...
 
+        ### Perturb ###
+        #inpt[0, 2] += torch.normal( mean=0., std=3e-3, size=(721,1440), dtype=torch.float32, device=self.device )
+        #inpt[0, 3] += torch.normal( mean=0., std=4e-3, size=(721,1440), dtype=torch.float32, device=self.device )
+        #inpt[0,20] += torch.normal( mean=0., std=3e-1, size=(721,1440), dtype=torch.float32, device=self.device )
+
         for idt in range(self.params.valid_autoreg_steps+1):  # idt starts with 0
             # FW pass
             with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
                 pred = self.model(inpt)
+
+            #choutilin 250829  # Give up on predicting SST, always use the first image instead
+            #if not (idt+1)%4==0:   # Predict SST once every day (every four steps)
+            if True:
+                pred[0,20] = inpt[0,20]
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))

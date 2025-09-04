@@ -60,6 +60,11 @@ class LossHandler(nn.Module):
             if params.channel_weights == "auto":
                 channel_weights = torch.ones(params.N_out_channels, dtype=torch.float32)
                 for c, chn in enumerate(params.channel_names):
+                    if chn in ["sst"]:
+                        channel_weights[c] = 0.0 #1.0
+                    else:
+                        channel_weights[c] = 1.0 #0.2 #0.25 #0.1
+                    '''
                     if chn in ["u10m", "v10m", "u100m", "v100m", "tp", "sp", "msl", "tcwv"]:
                         channel_weights[c] = 0.1
                     elif chn in ["t2m", "2d"]:
@@ -69,6 +74,7 @@ class LossHandler(nn.Module):
                         channel_weights[c] = 0.001 * pressure_level
                     else:
                         channel_weights[c] = 0.01
+                    '''
             else:
                 channel_weights = torch.Tensor(params.channel_weights).float()
         else:

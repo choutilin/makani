@@ -27,7 +27,7 @@ import pynvml
 import torch
 import torch.cuda.amp as amp
 import torch.distributed as dist
-
+#from torch.cuda import nvtx  # choutilin 250618
 import logging
 import wandb
 
@@ -376,11 +376,21 @@ class Trainer:
         if params.log_to_screen:
             self.logger.info(f"Using channel names: {params.channel_names}")
             self.logger.info("initializing data loader")
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log1: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
         self.train_dataloader, self.train_dataset, self.train_sampler = get_dataloader(params, params.train_data_path, train=True, device=self.device)
+        if params.log_to_screen:
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log2: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
         self.valid_dataloader, self.valid_dataset = get_dataloader(params, params.valid_data_path, train=False, device=self.device)
 
         if params.log_to_screen:
             self.logger.info("data loader initialized")
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log3: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
 
         # update params
         params = self._update_parameters(params)
@@ -401,6 +411,9 @@ class Trainer:
         # print aux channel names:
         if params.log_to_screen:
             self.logger.info(f"Auxiliary channel names: {params.aux_channel_names}")
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log4: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
 
         # if model-parallelism is enabled, we need to sure that shared weights are matching across ranks
         # as random seeds might get out of sync during initialization
@@ -418,6 +431,9 @@ class Trainer:
         # print model
         if params.log_to_screen:
             self.logger.info(f"\n{self.model}")
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log5: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
 
         # metrics handler
         mult_cpu, clim = self._get_time_stats()
@@ -595,8 +611,12 @@ class Trainer:
         pcount = count_parameters(self.model, self.device)
         if params.log_to_screen:
             self.logger.info("Number of trainable model parameters: {}".format(pcount))
+            all_mem_gb = pynvml.nvmlDeviceGetMemoryInfo(self.nvml_handle).used / (1024.0 * 1024.0 * 1024.0)
+            max_mem_gb = torch.cuda.max_memory_allocated(device=self.device) / (1024.0 * 1024.0 * 1024.0)
+            self.logger.info(f"nvmlDeviceGetMemoryInfo used log6: {all_mem_gb} GB ({max_mem_gb} GB for pytorch)")
 
     def train(self):
+        #torch.cuda.memory._record_memory_history()  # choutilin 250630
         # log parameters
         if self.params.log_to_screen:
             # log memory usage so far
@@ -617,6 +637,7 @@ class Trainer:
 
         training_start = time.time()
         best_valid_loss = 1.0e6
+        #torch.cuda.memory._dump_snapshot("torch_memory_snapshot1.pickle")
         for epoch in range(self.startEpoch, self.params.max_epochs):
             if dist.is_initialized() and self.train_sampler is not None:
                 self.train_sampler.set_epoch(epoch)
@@ -689,75 +710,89 @@ class Trainer:
         self.preprocessor.eval()
 
     def train_one_epoch(self):
+        #torch.cuda.memory._dump_snapshot("torch_memory_snapshot2.pickle")
         self.epoch += 1
         total_data_bytes = 0
         self._set_train()
+        #with torch.autograd.profiler.emit_nvtx():  # choutilin 250618
+        if True:
+            train_steps = 0
+            train_start = time.perf_counter_ns()
+            #nvtx.range_push("Data loading")
+            for data in tqdm(self.train_dataloader, desc="Training progress  ", disable=not self.params.log_to_screen):
+                #nvtx.range_pop() # Data loading
+                train_steps += 1
+                self.iters += 1
+                #if train_steps%100 ==0:
+                #    torch.cuda.memory._dump_snapshot("/work/choutilin1/torch_memory_snapshot3.pickle")
+                #nvtx.range_push(f"train_steps {train_steps}")
+                #nvtx.range_push("map to device")
+                # map to device
+                gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
+                #nvtx.range_pop() # map to device
+                #nvtx.range_push("do preprocessing")
+                # do preprocessing
+                inp, tar = self.preprocessor.cache_unpredicted_features(*gdata)
+                inp = self.preprocessor.flatten_history(inp)
+                tar = self.preprocessor.flatten_history(tar)
+                #nvtx.range_pop() # do preprocessing
+                # assuming float32
+                total_data_bytes += (torch.numel(inp) + torch.numel(tar)) * 4
 
-        train_steps = 0
-        train_start = time.perf_counter_ns()
-        for data in tqdm(self.train_dataloader, desc="Training progress  ", disable=not self.params.log_to_screen):
-            train_steps += 1
-            self.iters += 1
+                if self.graph is not None:
+                    self.static_inp.copy_(inp)
+                    self.static_tar.copy_(tar)
+                    self.graph.replay()
+                    loss = self.static_loss
+                else:
+                    #nvtx.range_push("Forward pass")
+                    self.model_train.zero_grad(set_to_none=True)
+                    with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
+                        pred = self.model_train(inp)
+                        # choutilin 250613
+                        #np.save("/work/choutilin1/pred_train.npy",pred.detach().cpu().numpy())
+                        #np.save("/work/choutilin1/tar_train.npy" , tar.detach().cpu().numpy())
+                        loss = self.loss_obj(pred, tar, inp)
+                        #np.save("/work/choutilin1/loss.npy",loss.detach().cpu().numpy())
+                        #nvtx.range_pop() # Forward pass
+                    #nvtx.range_push("Backward pass")
+                    self.gscaler.scale(loss).backward()
 
-            # map to device
-            gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
+                # perform weight update
+                self.gscaler.step(self.optimizer)
+                self.gscaler.update()
+                #nvtx.range_pop() # Backward pass
+                #nvtx.range_pop() # train_steps
+                if (self.params.print_timings_frequency > 0) and (self.iters % self.params.print_timings_frequency == 0) and self.params.log_to_screen:
+                    running_train_time = time.perf_counter_ns() - train_start
+                    print(f"Average step time after step {self.iters}: {running_train_time / float(train_steps) * 10**(-6):.1f} ms")
+                    print(f"Average effective io rate after step {self.iters}: {total_data_bytes * float(comm.get_world_size()) / (float(running_train_time) * 10**(-9) * 1024. * 1024. * 1024.):.2f} GB/s")
+                    print(f"Current loss {loss.item()}")
 
-            # do preprocessing
-            inp, tar = self.preprocessor.cache_unpredicted_features(*gdata)
-            inp = self.preprocessor.flatten_history(inp)
-            tar = self.preprocessor.flatten_history(tar)
+                # if logging of weights and grads during training is enabled, write them out at the first step of each epoch
+                if (self.params.log_weights_and_grads > 0) and ((self.iters - 1) % self.params.log_weights_and_grads == 0):
+                    self.log_weights_and_grads(self.params["experiment_dir"], iters=self.iters, epoch=self.epoch)
+                #nvtx.range_push("Data loading")
+            #nvtx.range_pop() # Data loading
+            # add the eval loss to logs
+            logs = {"loss": loss}
 
-            # assuming float32
-            total_data_bytes += (torch.numel(inp) + torch.numel(tar)) * 4
+            if dist.is_initialized():
+                for key in sorted(logs.keys()):
+                    dist.all_reduce(logs[key].detach(), op=dist.ReduceOp.AVG, group=comm.get_group("data"))
+                    logs[key] = logs[key].item()
 
-            if self.graph is not None:
-                self.static_inp.copy_(inp)
-                self.static_tar.copy_(tar)
-                self.graph.replay()
-                loss = self.static_loss
-            else:
-                self.model_train.zero_grad(set_to_none=True)
-                with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
-                    pred = self.model_train(inp)
-                    loss = self.loss_obj(pred, tar, inp)
+            # add train steps to log
+            logs["train_steps"] = train_steps
 
-                self.gscaler.scale(loss).backward()
+            # global sync is in order
+            if dist.is_initialized():
+                dist.barrier(device_ids=[self.device.index])
 
-            # perform weight update
-            self.gscaler.step(self.optimizer)
-            self.gscaler.update()
-
-            if (self.params.print_timings_frequency > 0) and (self.iters % self.params.print_timings_frequency == 0) and self.params.log_to_screen:
-                running_train_time = time.perf_counter_ns() - train_start
-                print(f"Average step time after step {self.iters}: {running_train_time / float(train_steps) * 10**(-6):.1f} ms")
-                print(
-                    f"Average effective io rate after step {self.iters}: {total_data_bytes * float(comm.get_world_size()) / (float(running_train_time) * 10**(-9) * 1024. * 1024. * 1024.):.2f} GB/s"
-                )
-                print(f"Current loss {loss.item()}")
-
-            # if logging of weights and grads during training is enabled, write them out at the first step of each epoch
-            if (self.params.log_weights_and_grads > 0) and ((self.iters - 1) % self.params.log_weights_and_grads == 0):
-                self.log_weights_and_grads(self.params["experiment_dir"], iters=self.iters, epoch=self.epoch)
-
-        # add the eval loss to logs
-        logs = {"loss": loss}
-
-        if dist.is_initialized():
-            for key in sorted(logs.keys()):
-                dist.all_reduce(logs[key].detach(), op=dist.ReduceOp.AVG, group=comm.get_group("data"))
-                logs[key] = logs[key].item()
-
-        # add train steps to log
-        logs["train_steps"] = train_steps
-
-        # global sync is in order
-        if dist.is_initialized():
-            dist.barrier(device_ids=[self.device.index])
-
-        # finalize timers
-        train_end = time.perf_counter_ns()
-        train_time = (train_end - train_start) * 10 ** (-9)
-        total_data_gb = (total_data_bytes / (1024.0 * 1024.0 * 1024.0)) * float(comm.get_world_size())
+            # finalize timers
+            train_end = time.perf_counter_ns()
+            train_time = (train_end - train_start) * 10 ** (-9)
+            total_data_gb = (total_data_bytes / (1024.0 * 1024.0 * 1024.0)) * float(comm.get_world_size())
 
         return train_time, total_data_gb, logs
 
@@ -801,6 +836,9 @@ class Trainer:
                         # FW pass
                         with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
                             pred = self.model_eval(inpt)
+                            # choutilin 250618
+                            #np.save("/work/choutilin1/pred_validate.npy",pred.detach().cpu().numpy())
+                            #np.save("/work/choutilin1/targ_validate.npy",targ.detach().cpu().numpy())
                             loss = self.loss_obj(pred, targ, inpt)
 
                             # TODO: move all of this into the visualization handler
