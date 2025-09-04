@@ -1,0 +1,153 @@
+[W901 12:05:55.573095946 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+INFO:root:--------------- Versions ---------------
+fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+INFO:root:Torch: 2.7.0+cu126
+INFO:root:----------------------------------------
+INFO:root:------------------ Configuration ------------------
+INFO:root:Configuration file: /home/choutilin1/v250508/config/sfnonet.yaml
+INFO:root:Configuration name: vars33_H
+INFO:root:valid_autoreg_steps 180
+INFO:root:max_epochs 29
+INFO:root:channel_names ['u10m', 'v10m', 'mslp', 't2m', 'sp', 'u1000', 'v1000', 'z1000', 't850', 'u850', 'v850', 'z850', 'r850', 't500', 'u500', 'v500', 'z500', 'r500', 'z50', 'tcwv', 'sst', 'snsh', 'snlh', 'snsw', 'snlw']
+INFO:root:num_layers 8
+INFO:root:loss weighted absolute squared geometric l2
+INFO:root:channel_weights auto
+INFO:root:batch_size 1
+INFO:root:optimizer_type AdamW
+INFO:root:metadata_json_path /work/choutilin1/out_vars33/vars33.json
+INFO:root:train_data_path /work/choutilin1/data_4d/train
+INFO:root:valid_data_path /work/choutilin1/data_4d/test
+INFO:root:inf_data_path /work/choutilin1/data_4d/inf
+INFO:root:global_means_path /work/choutilin1/out_vars33/global_means_2011-2016.npy
+INFO:root:global_stds_path /work/choutilin1/out_vars33/global_stds_2011-2016.npy
+INFO:root:time_means_path /work/choutilin1/out_vars33/time_means_2011-2016.npy
+INFO:root:exp_dir /work/choutilin1/out_vars33
+INFO:root:n_eval_samples 1460
+INFO:root:n_train_samples_per_epoch 7300
+INFO:root:wandb_group sfno_linear_73chq_sc3_layers8_edim384_asgl2
+INFO:root:embed_dim 384
+INFO:root:scale_factor 3
+INFO:root:hard_thresholding_fraction 1.0
+INFO:root:n_years 1
+INFO:root:img_shape_y 1440
+INFO:root:img_shape_x 721
+INFO:root:min_path 
+INFO:root:max_path 
+INFO:root:time_diff_means_path 
+INFO:root:time_diff_stds_path 
+INFO:root:nettype SFNO
+INFO:root:model_grid_type equiangular
+INFO:root:sht_grid_type legendre-gauss
+INFO:root:filter_type linear
+INFO:root:complex_activation real
+INFO:root:normalization_layer instance_norm
+INFO:root:use_mlp True
+INFO:root:mlp_mode serial
+INFO:root:mlp_ratio 2
+INFO:root:separable False
+INFO:root:operator_type dhconv
+INFO:root:activation_function gelu
+INFO:root:pos_embed none
+INFO:root:lr 0.001
+INFO:root:weight_decay 0.0
+INFO:root:scheduler StepLR
+INFO:root:scheduler_T_max 70
+INFO:root:scheduler_factor 0.1
+INFO:root:scheduler_patience 10
+INFO:root:scheduler_step_size 100
+INFO:root:scheduler_gamma 0.5
+INFO:root:lr_warmup_steps 0
+INFO:root:verbose False
+INFO:root:wireup_info mpi
+INFO:root:wireup_store tcp
+INFO:root:num_data_workers 1
+INFO:root:num_visualization_workers 1
+INFO:root:dt 1
+INFO:root:n_history 0
+INFO:root:prediction_type iterative
+INFO:root:prediction_length 35
+INFO:root:n_initial_conditions 5
+INFO:root:ics_type specify_number
+INFO:root:save_raw_forecasts True
+INFO:root:save_channel False
+INFO:root:masked_acc False
+INFO:root:maskpath None
+INFO:root:perturb False
+INFO:root:add_noise False
+INFO:root:noise_std 0.0
+INFO:root:target default
+INFO:root:normalize_residual False
+INFO:root:normalization zscore
+INFO:root:add_grid False
+INFO:root:gridtype sinusoidal
+INFO:root:grid_num_frequencies 16
+INFO:root:roll False
+INFO:root:add_zenith True
+INFO:root:add_orography True
+INFO:root:orography_path /work/lkkbox945/models/makani/v250508/datasets/source/invariant/orography.nc
+INFO:root:add_landmask True
+INFO:root:landmask_path /home/choutilin1/makani/datasets/source/invariant/land_sea_mask.nc
+INFO:root:finetune False
+INFO:root:log_to_screen True
+INFO:root:log_to_wandb False
+INFO:root:log_video 0
+INFO:root:save_checkpoint legacy
+INFO:root:optimizer_beta1 0.9
+INFO:root:optimizer_beta2 0.95
+INFO:root:optimizer_max_grad_norm 32
+INFO:root:crop_size_x None
+INFO:root:crop_size_y None
+INFO:root:wandb_name vars33_H_inference_00
+INFO:root:wandb_project sfno architecture validation
+INFO:root:wandb_entity choutilin-national-taiwan-university
+INFO:root:epsilon_factor 0
+INFO:root:fin_parallel_size 1
+INFO:root:fout_parallel_size 1
+INFO:root:h_parallel_size 1
+INFO:root:w_parallel_size 1
+INFO:root:model_parallel_sizes [1, 1, 1, 1]
+INFO:root:model_parallel_names ['h', 'w', 'fin', 'fout']
+INFO:root:load_checkpoint legacy
+INFO:root:world_size 1
+INFO:root:global_batch_size 1
+INFO:root:experiment_dir /work/choutilin1/out_vars33/vars33_H/00
+INFO:root:checkpoint_path /work/choutilin1/out_vars33/vars33_H/00/training_checkpoints/ckpt_mp{mp_rank}.tar
+INFO:root:best_checkpoint_path /work/choutilin1/out_vars33/vars33_H/00/training_checkpoints/best_ckpt_mp{mp_rank}.tar
+INFO:root:resuming False
+INFO:root:amp_mode none
+INFO:root:jit_mode none
+INFO:root:cuda_graph_mode none
+INFO:root:enable_odirect False
+INFO:root:enable_benchy False
+INFO:root:disable_ddp False
+INFO:root:enable_nhwc False
+INFO:root:checkpointing 0
+INFO:root:enable_synthetic_data False
+INFO:root:split_data_channels False
+INFO:root:n_future 0
+INFO:root:wandb_dir /work/choutilin1/out_vars33/vars33_H/00/deterministic_scores
+INFO:root:_yaml_filename /home/choutilin1/v250508/config/sfnonet.yaml
+INFO:root:_config_name vars33_H
+INFO:root:---------------------------------------------------
+INFO:root:output_path = '/work/choutilin1/out_vars33/vars33_H/out_0000.nc'
+INFO:root:initializing data loader
+INFO:root:Getting file stats from /work/choutilin1/data_4d/inf/2017.h5
+INFO:root:Average number of samples per year: 1460.0
+INFO:root:Found data at path ['/work/choutilin1/data_4d/inf']. Number of examples: 1460. Full image Shape: 721 x 1440 x 33. Read Shape: 721 x 1440 x 25
+INFO:root:Using 1460 from the total number of available samples with 1460 samples per epoch (corresponds to 1460 steps for 1 shards with local batch size 1)
+INFO:root:Delta t: 6 hours
+INFO:root:Including 6 hours of past history in training at a frequency of 6 hours
+INFO:root:Including 1086 hours of future targets in training at a frequency of 6 hours
+INFO:root:data loader initialized
+/home/choutilin1/makani/makani/mpu/layers.py:175: FutureWarning: `torch.cuda.amp.custom_fwd(args...)` is deprecated. Please use `torch.amp.custom_fwd(args..., device_type='cuda')` instead.
+  def forward(ctx, X, weight, bias, inp_group_name, out_group_name):
+/home/choutilin1/makani/makani/mpu/layers.py:197: FutureWarning: `torch.cuda.amp.custom_bwd(args...)` is deprecated. Please use `torch.amp.custom_bwd(args..., device_type='cuda')` instead.
+  def backward(ctx, grad_out):
+INFO:root:Loading checkpoint /work/choutilin1/out_vars33/vars33_H/00/training_checkpoints/ckpt_mp0.tar in legacy mode
+/home/choutilin1/makani/makani/utils/inferencer.py:230: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
+/home/choutilin1/makani/makani/models/common/spectral_convolution.py:130: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=False):
+/home/choutilin1/makani/makani/models/common/spectral_convolution.py:140: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with amp.autocast(enabled=False):

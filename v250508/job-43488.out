@@ -1,0 +1,138 @@
+Mon Sep  1 12:54:03 CST 2025
+TORCHRUN=/work/choutilin1/.conda/envs/makani/bin/torchrun
+SingleStepWrapper(
+  (preprocessor): Preprocessor2D()
+  (model): SphericalFourierNeuralOperatorNet(
+    (trans_down): RealSHT(
+      nlat=721, nlon=1440,
+       lmax=240, mmax=241,
+       grid=equiangular, csphase=True
+    )
+    (itrans_up): InverseRealSHT(
+      nlat=721, nlon=1440,
+       lmax=240, mmax=241,
+       grid=equiangular, csphase=True
+    )
+    (trans): RealSHT(
+      nlat=240, nlon=480,
+       lmax=240, mmax=241,
+       grid=legendre-gauss, csphase=True
+    )
+    (itrans): InverseRealSHT(
+      nlat=240, nlon=480,
+       lmax=240, mmax=241,
+       grid=legendre-gauss, csphase=True
+    )
+    (encoder): EncoderDecoder(
+      (fwd): Sequential(
+        (0): Conv2d(29, 384, kernel_size=(1, 1), stride=(1, 1))
+        (1): GELU(approximate='none')
+        (2): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+    )
+    (pos_drop): Identity()
+    (blocks): ModuleList(
+      (0): FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=721, nlon=1440,
+               lmax=240, mmax=241,
+               grid=equiangular, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(384, 768, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+      (1-6): 6 x FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(384, 768, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+      (7): FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=721, nlon=1440,
+               lmax=240, mmax=241,
+               grid=equiangular, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(384, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(384, 768, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(768, 384, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+    )
+    (decoder): EncoderDecoder(
+      (fwd): Sequential(
+        (0): Conv2d(384, 384, kernel_size=(1, 1), stride=(1, 1))
+        (1): GELU(approximate='none')
+        (2): Conv2d(384, 25, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+    )
+    (residual_transform): Conv2d(29, 25, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  )
+)
+prediction data shape = (181, 25, 721, 1440)
+predictions saved to /work/choutilin1/out_vars33/vars33_H/out_0000.nc
+Mon Sep  1 12:56:01 CST 2025
