@@ -15,7 +15,7 @@
 
 import torch
 import torch.nn as nn
-
+#import numpy as np  # choutilin
 from makani.models.preprocessor import Preprocessor2D
 
 class SingleStepWrapper(nn.Module):
@@ -37,21 +37,36 @@ class SingleStepWrapper(nn.Module):
         #
         # choutilin1 250613
         #np.save("/work/choutilin1/inpans.npy",inpans.detach().cpu().numpy())  # remember to import numpy first
+        #raise Exception
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
+        #inpans[0,18,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,19,:,:] *= inpans[0,-1,:,:]
         inpans[0,20,:,:] *= inpans[0,-1,:,:]
-        inpans[0,21,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,21,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,22,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,23,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,24,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,25,:,:] *= inpans[0,-1,:,:]
+        #inpans[0,26,:,:] *= inpans[0,-1,:,:]
         # forward pass
         yn = self.model(inpans)
 
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
-        # mask not just the input, but also the denormalized output of the model
+        # mask not just the input, but also the DENORMALIZED output of the model
+        #y[0,18,:,:] *= inpans[0,-1,:,:]
+        #y[0,19,:,:] *= inpans[0,-1,:,:]
         y[0,20,:,:] *= inpans[0,-1,:,:]
-        y[0,21,:,:] *= inpans[0,-1,:,:]
+        #y[0,21,:,:] *= inpans[0,-1,:,:]
+        #y[0,22,:,:] *= inpans[0,-1,:,:]
+        #y[0,23,:,:] *= inpans[0,-1,:,:]
+        #y[0,24,:,:] *= inpans[0,-1,:,:]
+        #y[0,25,:,:] *= inpans[0,-1,:,:]
+        #y[0,26,:,:] *= inpans[0,-1,:,:]
         #
         # add residual (for residual learning, no-op for direct learning
-        #y = self.preprocessor.add_residual(inp, y)  # choutilin: I don't know how my change will affect this, might as well cause an error
+        #y = self.preprocessor.add_residual(inp, y)
 
         return y
 
@@ -130,6 +145,9 @@ class MultiStepWrapper(nn.Module):
         return y
 
     def forward(self, inp):
+        # choutilin 250618
+        raise Exception("Let me make sure we're not using MultiStepWrapper")
+        return None
         # decide which routine to call
         if self.training:
             y = self._forward_train(inp)

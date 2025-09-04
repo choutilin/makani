@@ -351,6 +351,7 @@ class Preprocessor2D(nn.Module):
         if self.history_normalization_mode in ["none", "timediff"]:
             return xn
 
+        raise Exception("choutilin 250619:  Make sure we're never using this code. See my changes to models/stepper.py")
         assert self.history_mean is not None
         assert self.history_std is not None
 
