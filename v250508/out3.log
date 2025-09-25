@@ -1,0 +1,1165 @@
+2025-09-16 12:40:45,573 - root - INFO - --------------- Versions ---------------
+2025-09-16 12:40:45,577 - root - INFO - Torch: 2.7.0+cu126
+2025-09-16 12:40:45,578 - root - INFO - ----------------------------------------
+2025-09-16 12:40:45,578 - root - INFO - ------------------ Configuration ------------------
+2025-09-16 12:40:45,578 - root - INFO - Configuration file: /home/choutilin1/v250508/config/sfnonet.yaml
+2025-09-16 12:40:45,578 - root - INFO - Configuration name: vars33_U
+2025-09-16 12:40:45,578 - root - INFO - valid_autoreg_steps 180
+2025-09-16 12:40:45,578 - root - INFO - batch_size 1
+2025-09-16 12:40:45,578 - root - INFO - max_epochs 100
+2025-09-16 12:40:45,579 - root - INFO - channel_names ['u10m', 'v10m', 'mslp', 't2m', 'sp', 'u1000', 'v1000', 'z1000', 't850', 'u850', 'v850', 'z850', 'r850', 't500', 'u500', 'v500', 'z500', 'r500', 'z50', 'tcwv', 'sst', 'ssh', 'ssu', 'ssv', 'D15', 'D20', 'snsh', 'snlh', 'snsw', 'snlw', 'sst-dt']
+2025-09-16 12:40:45,579 - root - INFO - num_layers 8
+2025-09-16 12:40:45,579 - root - INFO - embed_dim 128
+2025-09-16 12:40:45,579 - root - INFO - scale_factor 3
+2025-09-16 12:40:45,579 - root - INFO - loss weighted absolute squared geometric l2
+2025-09-16 12:40:45,579 - root - INFO - channel_weights auto
+2025-09-16 12:40:45,579 - root - INFO - optimizer_type AdamW
+2025-09-16 12:40:45,579 - root - INFO - metadata_json_path /work/choutilin1/out_vars33/vars33.json
+2025-09-16 12:40:45,580 - root - INFO - train_data_path /work/choutilin1/data_4d/train
+2025-09-16 12:40:45,580 - root - INFO - valid_data_path /work/choutilin1/data_4d/test
+2025-09-16 12:40:45,580 - root - INFO - inf_data_path /work/choutilin1/data_4d/inf
+2025-09-16 12:40:45,580 - root - INFO - global_means_path /work/choutilin1/out_vars33/global_means_2011-2014.npy
+2025-09-16 12:40:45,580 - root - INFO - global_stds_path /work/choutilin1/out_vars33/global_stds_2011-2014.npy
+2025-09-16 12:40:45,580 - root - INFO - time_means_path /work/choutilin1/out_vars33/time_means_2011-2014.npy
+2025-09-16 12:40:45,580 - root - INFO - exp_dir /work/choutilin1/out_vars33
+2025-09-16 12:40:45,580 - root - INFO - n_eval_samples 1460
+2025-09-16 12:40:45,580 - root - INFO - n_train_samples_per_epoch 21900
+2025-09-16 12:40:45,581 - root - INFO - wandb_group sfno_linear_73chq_sc3_layers8_edim384_asgl2
+2025-09-16 12:40:45,581 - root - INFO - hard_thresholding_fraction 1.0
+2025-09-16 12:40:45,581 - root - INFO - n_years 1
+2025-09-16 12:40:45,581 - root - INFO - img_shape_y 1440
+2025-09-16 12:40:45,581 - root - INFO - img_shape_x 721
+2025-09-16 12:40:45,581 - root - INFO - min_path 
+2025-09-16 12:40:45,581 - root - INFO - max_path 
+2025-09-16 12:40:45,581 - root - INFO - time_diff_means_path 
+2025-09-16 12:40:45,582 - root - INFO - time_diff_stds_path 
+2025-09-16 12:40:45,582 - root - INFO - nettype SFNO
+2025-09-16 12:40:45,582 - root - INFO - model_grid_type equiangular
+2025-09-16 12:40:45,582 - root - INFO - sht_grid_type legendre-gauss
+2025-09-16 12:40:45,582 - root - INFO - filter_type linear
+2025-09-16 12:40:45,582 - root - INFO - complex_activation real
+2025-09-16 12:40:45,582 - root - INFO - normalization_layer instance_norm
+2025-09-16 12:40:45,583 - root - INFO - use_mlp True
+2025-09-16 12:40:45,583 - root - INFO - mlp_mode serial
+2025-09-16 12:40:45,583 - root - INFO - mlp_ratio 2
+2025-09-16 12:40:45,583 - root - INFO - separable False
+2025-09-16 12:40:45,583 - root - INFO - operator_type dhconv
+2025-09-16 12:40:45,583 - root - INFO - activation_function gelu
+2025-09-16 12:40:45,583 - root - INFO - pos_embed none
+2025-09-16 12:40:45,583 - root - INFO - lr 0.001
+2025-09-16 12:40:45,584 - root - INFO - weight_decay 0.0
+2025-09-16 12:40:45,584 - root - INFO - scheduler StepLR
+2025-09-16 12:40:45,584 - root - INFO - scheduler_T_max 70
+2025-09-16 12:40:45,584 - root - INFO - scheduler_factor 0.1
+2025-09-16 12:40:45,584 - root - INFO - scheduler_patience 10
+2025-09-16 12:40:45,584 - root - INFO - scheduler_step_size 100
+2025-09-16 12:40:45,584 - root - INFO - scheduler_gamma 0.5
+2025-09-16 12:40:45,584 - root - INFO - lr_warmup_steps 0
+2025-09-16 12:40:45,584 - root - INFO - verbose False
+2025-09-16 12:40:45,585 - root - INFO - wireup_info mpi
+2025-09-16 12:40:45,585 - root - INFO - wireup_store tcp
+2025-09-16 12:40:45,585 - root - INFO - num_data_workers 1
+2025-09-16 12:40:45,585 - root - INFO - num_visualization_workers 1
+2025-09-16 12:40:45,585 - root - INFO - dt 1
+2025-09-16 12:40:45,585 - root - INFO - n_history 0
+2025-09-16 12:40:45,585 - root - INFO - prediction_type iterative
+2025-09-16 12:40:45,586 - root - INFO - prediction_length 35
+2025-09-16 12:40:45,586 - root - INFO - n_initial_conditions 5
+2025-09-16 12:40:45,586 - root - INFO - ics_type specify_number
+2025-09-16 12:40:45,586 - root - INFO - save_raw_forecasts True
+2025-09-16 12:40:45,586 - root - INFO - save_channel False
+2025-09-16 12:40:45,586 - root - INFO - masked_acc False
+2025-09-16 12:40:45,586 - root - INFO - maskpath None
+2025-09-16 12:40:45,586 - root - INFO - perturb False
+2025-09-16 12:40:45,587 - root - INFO - add_noise False
+2025-09-16 12:40:45,587 - root - INFO - noise_std 0.0
+2025-09-16 12:40:45,587 - root - INFO - target default
+2025-09-16 12:40:45,587 - root - INFO - normalize_residual False
+2025-09-16 12:40:45,587 - root - INFO - normalization zscore
+2025-09-16 12:40:45,587 - root - INFO - add_grid False
+2025-09-16 12:40:45,587 - root - INFO - gridtype sinusoidal
+2025-09-16 12:40:45,587 - root - INFO - grid_num_frequencies 16
+2025-09-16 12:40:45,588 - root - INFO - roll False
+2025-09-16 12:40:45,588 - root - INFO - add_zenith True
+2025-09-16 12:40:45,588 - root - INFO - add_orography True
+2025-09-16 12:40:45,588 - root - INFO - orography_path /work/lkkbox945/models/makani/v250508/datasets/source/invariant/orography.nc
+2025-09-16 12:40:45,588 - root - INFO - add_landmask True
+2025-09-16 12:40:45,588 - root - INFO - landmask_path /home/choutilin1/makani/datasets/source/invariant/land_sea_mask.nc
+2025-09-16 12:40:45,588 - root - INFO - finetune False
+2025-09-16 12:40:45,588 - root - INFO - log_to_screen True
+2025-09-16 12:40:45,589 - root - INFO - log_to_wandb False
+2025-09-16 12:40:45,589 - root - INFO - log_video 0
+2025-09-16 12:40:45,589 - root - INFO - save_checkpoint legacy
+2025-09-16 12:40:45,589 - root - INFO - optimizer_beta1 0.9
+2025-09-16 12:40:45,589 - root - INFO - optimizer_beta2 0.95
+2025-09-16 12:40:45,589 - root - INFO - optimizer_max_grad_norm 32
+2025-09-16 12:40:45,589 - root - INFO - crop_size_x None
+2025-09-16 12:40:45,589 - root - INFO - crop_size_y None
+2025-09-16 12:40:45,589 - root - INFO - wandb_name vars33_U_inference_01
+2025-09-16 12:40:45,590 - root - INFO - wandb_project sfno architecture validation
+2025-09-16 12:40:45,590 - root - INFO - wandb_entity choutilin-national-taiwan-university
+2025-09-16 12:40:45,590 - root - INFO - epsilon_factor 0
+2025-09-16 12:40:45,590 - root - INFO - fin_parallel_size 1
+2025-09-16 12:40:45,590 - root - INFO - fout_parallel_size 1
+2025-09-16 12:40:45,590 - root - INFO - h_parallel_size 1
+2025-09-16 12:40:45,590 - root - INFO - w_parallel_size 1
+2025-09-16 12:40:45,591 - root - INFO - model_parallel_sizes [1, 1, 1, 1]
+2025-09-16 12:40:45,591 - root - INFO - model_parallel_names ['h', 'w', 'fin', 'fout']
+2025-09-16 12:40:45,591 - root - INFO - load_checkpoint legacy
+2025-09-16 12:40:45,591 - root - INFO - world_size 1
+2025-09-16 12:40:45,591 - root - INFO - global_batch_size 1
+2025-09-16 12:40:45,591 - root - INFO - experiment_dir /work/choutilin1/out_vars33/vars33_U/01
+2025-09-16 12:40:45,591 - root - INFO - checkpoint_path /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar
+2025-09-16 12:40:45,591 - root - INFO - best_checkpoint_path /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/best_ckpt_mp{mp_rank}.tar
+2025-09-16 12:40:45,591 - root - INFO - resuming False
+2025-09-16 12:40:45,592 - root - INFO - amp_mode none
+2025-09-16 12:40:45,592 - root - INFO - jit_mode none
+2025-09-16 12:40:45,592 - root - INFO - cuda_graph_mode none
+2025-09-16 12:40:45,592 - root - INFO - enable_odirect False
+2025-09-16 12:40:45,592 - root - INFO - enable_benchy False
+2025-09-16 12:40:45,592 - root - INFO - disable_ddp False
+2025-09-16 12:40:45,592 - root - INFO - enable_nhwc False
+2025-09-16 12:40:45,592 - root - INFO - checkpointing 0
+2025-09-16 12:40:45,593 - root - INFO - enable_synthetic_data False
+2025-09-16 12:40:45,593 - root - INFO - split_data_channels False
+2025-09-16 12:40:45,593 - root - INFO - n_future 0
+2025-09-16 12:40:45,593 - root - INFO - wandb_dir /work/choutilin1/out_vars33/vars33_U/01/deterministic_scores
+2025-09-16 12:40:45,593 - root - INFO - _yaml_filename /home/choutilin1/v250508/config/sfnonet.yaml
+2025-09-16 12:40:45,593 - root - INFO - _config_name vars33_U
+2025-09-16 12:40:45,593 - root - INFO - ---------------------------------------------------
+2025-09-16 12:40:45,595 - root - INFO - output_path = '/work/choutilin1/out_vars33/vars33_U/out_0000.nc'
+2025-09-16 12:40:45,596 - root - INFO - initializing data loader
+2025-09-16 12:40:46,436 - root - INFO - Getting file stats from /work/choutilin1/data_4d/inf/2015.h5
+2025-09-16 12:40:46,441 - root - INFO - Average number of samples per year: 1460.0
+2025-09-16 12:40:46,441 - root - INFO - Found data at path ['/work/choutilin1/data_4d/inf']. Number of examples: 1460. Full image Shape: 721 x 1440 x 33. Read Shape: 721 x 1440 x 31
+2025-09-16 12:40:46,441 - root - INFO - Using 1460 from the total number of available samples with 1460 samples per epoch (corresponds to 1460 steps for 1 shards with local batch size 1)
+2025-09-16 12:40:46,442 - root - INFO - Delta t: 6 hours
+2025-09-16 12:40:46,442 - root - INFO - Including 6 hours of past history in training at a frequency of 6 hours
+2025-09-16 12:40:46,442 - root - INFO - Including 1086 hours of future targets in training at a frequency of 6 hours
+2025-09-16 12:41:03,637 - root - INFO - data loader initialized
+2025-09-16 12:41:08,332 - root - INFO - Loading checkpoint /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp0.tar in legacy mode
+2025-09-16 15:19:21,267 - root - INFO - --------------- Versions ---------------
+2025-09-16 15:19:21,272 - root - INFO - Torch: 2.7.0+cu126
+2025-09-16 15:19:21,273 - root - INFO - ----------------------------------------
+2025-09-16 15:19:21,273 - root - INFO - ------------------ Configuration ------------------
+2025-09-16 15:19:21,273 - root - INFO - Configuration file: /home/choutilin1/v250508/config/sfnonet.yaml
+2025-09-16 15:19:21,273 - root - INFO - Configuration name: vars33_U
+2025-09-16 15:19:21,274 - root - INFO - valid_autoreg_steps 0
+2025-09-16 15:19:21,274 - root - INFO - batch_size 1
+2025-09-16 15:19:21,274 - root - INFO - max_epochs 200
+2025-09-16 15:19:21,274 - root - INFO - channel_names ['u10m', 'v10m', 'mslp', 't2m', 'sp', 'u1000', 'v1000', 'z1000', 't850', 'u850', 'v850', 'z850', 'r850', 't500', 'u500', 'v500', 'z500', 'r500', 'z50', 'tcwv', 'sst', 'ssh', 'ssu', 'ssv', 'D15', 'D20', 'snsh', 'snlh', 'snsw', 'snlw', 'sst-dt']
+2025-09-16 15:19:21,275 - root - INFO - num_layers 8
+2025-09-16 15:19:21,275 - root - INFO - embed_dim 128
+2025-09-16 15:19:21,275 - root - INFO - scale_factor 3
+2025-09-16 15:19:21,275 - root - INFO - loss weighted absolute squared geometric l2
+2025-09-16 15:19:21,276 - root - INFO - channel_weights auto
+2025-09-16 15:19:21,276 - root - INFO - optimizer_type AdamW
+2025-09-16 15:19:21,276 - root - INFO - metadata_json_path /work/choutilin1/out_vars33/vars33.json
+2025-09-16 15:19:21,276 - root - INFO - train_data_path /work/choutilin1/data_4d/train
+2025-09-16 15:19:21,277 - root - INFO - valid_data_path /work/choutilin1/data_4d/test
+2025-09-16 15:19:21,277 - root - INFO - inf_data_path /work/choutilin1/data_4d/inf
+2025-09-16 15:19:21,277 - root - INFO - global_means_path /work/choutilin1/out_vars33/global_means_2011-2014.npy
+2025-09-16 15:19:21,277 - root - INFO - global_stds_path /work/choutilin1/out_vars33/global_stds_2011-2014.npy
+2025-09-16 15:19:21,277 - root - INFO - time_means_path /work/choutilin1/out_vars33/time_means_2011-2014.npy
+2025-09-16 15:19:21,278 - root - INFO - exp_dir /work/choutilin1/out_vars33
+2025-09-16 15:19:21,278 - root - INFO - n_eval_samples 1460
+2025-09-16 15:19:21,278 - root - INFO - n_train_samples_per_epoch 21900
+2025-09-16 15:19:21,278 - root - INFO - wandb_group sfno_linear_73chq_sc3_layers8_edim384_asgl2
+2025-09-16 15:19:21,279 - root - INFO - hard_thresholding_fraction 1.0
+2025-09-16 15:19:21,279 - root - INFO - n_years 1
+2025-09-16 15:19:21,279 - root - INFO - img_shape_y 1440
+2025-09-16 15:19:21,279 - root - INFO - img_shape_x 721
+2025-09-16 15:19:21,280 - root - INFO - min_path 
+2025-09-16 15:19:21,280 - root - INFO - max_path 
+2025-09-16 15:19:21,280 - root - INFO - time_diff_means_path 
+2025-09-16 15:19:21,280 - root - INFO - time_diff_stds_path 
+2025-09-16 15:19:21,280 - root - INFO - nettype SFNO
+2025-09-16 15:19:21,281 - root - INFO - model_grid_type equiangular
+2025-09-16 15:19:21,281 - root - INFO - sht_grid_type legendre-gauss
+2025-09-16 15:19:21,281 - root - INFO - filter_type linear
+2025-09-16 15:19:21,281 - root - INFO - complex_activation real
+2025-09-16 15:19:21,282 - root - INFO - normalization_layer instance_norm
+2025-09-16 15:19:21,282 - root - INFO - use_mlp True
+2025-09-16 15:19:21,282 - root - INFO - mlp_mode serial
+2025-09-16 15:19:21,282 - root - INFO - mlp_ratio 2
+2025-09-16 15:19:21,283 - root - INFO - separable False
+2025-09-16 15:19:21,283 - root - INFO - operator_type dhconv
+2025-09-16 15:19:21,283 - root - INFO - activation_function gelu
+2025-09-16 15:19:21,283 - root - INFO - pos_embed none
+2025-09-16 15:19:21,284 - root - INFO - lr 0.001
+2025-09-16 15:19:21,284 - root - INFO - weight_decay 0.0
+2025-09-16 15:19:21,284 - root - INFO - scheduler StepLR
+2025-09-16 15:19:21,284 - root - INFO - scheduler_T_max 70
+2025-09-16 15:19:21,284 - root - INFO - scheduler_factor 0.1
+2025-09-16 15:19:21,285 - root - INFO - scheduler_patience 10
+2025-09-16 15:19:21,285 - root - INFO - scheduler_step_size 100
+2025-09-16 15:19:21,285 - root - INFO - scheduler_gamma 0.5
+2025-09-16 15:19:21,285 - root - INFO - lr_warmup_steps 0
+2025-09-16 15:19:21,286 - root - INFO - verbose False
+2025-09-16 15:19:21,286 - root - INFO - wireup_info mpi
+2025-09-16 15:19:21,286 - root - INFO - wireup_store tcp
+2025-09-16 15:19:21,286 - root - INFO - num_data_workers 1
+2025-09-16 15:19:21,287 - root - INFO - num_visualization_workers 1
+2025-09-16 15:19:21,287 - root - INFO - dt 1
+2025-09-16 15:19:21,287 - root - INFO - n_history 0
+2025-09-16 15:19:21,287 - root - INFO - prediction_type iterative
+2025-09-16 15:19:21,287 - root - INFO - prediction_length 35
+2025-09-16 15:19:21,288 - root - INFO - n_initial_conditions 5
+2025-09-16 15:19:21,288 - root - INFO - ics_type specify_number
+2025-09-16 15:19:21,288 - root - INFO - save_raw_forecasts True
+2025-09-16 15:19:21,288 - root - INFO - save_channel False
+2025-09-16 15:19:21,289 - root - INFO - masked_acc False
+2025-09-16 15:19:21,289 - root - INFO - maskpath None
+2025-09-16 15:19:21,289 - root - INFO - perturb False
+2025-09-16 15:19:21,289 - root - INFO - add_noise False
+2025-09-16 15:19:21,289 - root - INFO - noise_std 0.0
+2025-09-16 15:19:21,290 - root - INFO - target default
+2025-09-16 15:19:21,290 - root - INFO - normalize_residual False
+2025-09-16 15:19:21,290 - root - INFO - normalization zscore
+2025-09-16 15:19:21,290 - root - INFO - add_grid False
+2025-09-16 15:19:21,291 - root - INFO - gridtype sinusoidal
+2025-09-16 15:19:21,291 - root - INFO - grid_num_frequencies 16
+2025-09-16 15:19:21,291 - root - INFO - roll False
+2025-09-16 15:19:21,291 - root - INFO - add_zenith True
+2025-09-16 15:19:21,292 - root - INFO - add_orography True
+2025-09-16 15:19:21,292 - root - INFO - orography_path /work/lkkbox945/models/makani/v250508/datasets/source/invariant/orography.nc
+2025-09-16 15:19:21,292 - root - INFO - add_landmask True
+2025-09-16 15:19:21,292 - root - INFO - landmask_path /home/choutilin1/makani/datasets/source/invariant/land_sea_mask.nc
+2025-09-16 15:19:21,292 - root - INFO - finetune False
+2025-09-16 15:19:21,293 - root - INFO - log_to_screen True
+2025-09-16 15:19:21,293 - root - INFO - log_to_wandb False
+2025-09-16 15:19:21,293 - root - INFO - log_video 0
+2025-09-16 15:19:21,293 - root - INFO - save_checkpoint legacy
+2025-09-16 15:19:21,294 - root - INFO - optimizer_beta1 0.9
+2025-09-16 15:19:21,294 - root - INFO - optimizer_beta2 0.95
+2025-09-16 15:19:21,294 - root - INFO - optimizer_max_grad_norm 32
+2025-09-16 15:19:21,294 - root - INFO - crop_size_x None
+2025-09-16 15:19:21,294 - root - INFO - crop_size_y None
+2025-09-16 15:19:21,295 - root - INFO - wandb_name None
+2025-09-16 15:19:21,295 - root - INFO - wandb_project sfno architecture validation
+2025-09-16 15:19:21,295 - root - INFO - wandb_entity choutilin-national-taiwan-university
+2025-09-16 15:19:21,295 - root - INFO - epsilon_factor 0
+2025-09-16 15:19:21,296 - root - INFO - fin_parallel_size 1
+2025-09-16 15:19:21,296 - root - INFO - fout_parallel_size 1
+2025-09-16 15:19:21,296 - root - INFO - h_parallel_size 1
+2025-09-16 15:19:21,296 - root - INFO - w_parallel_size 1
+2025-09-16 15:19:21,296 - root - INFO - model_parallel_sizes [1, 1, 1, 1]
+2025-09-16 15:19:21,297 - root - INFO - model_parallel_names ['h', 'w', 'fin', 'fout']
+2025-09-16 15:19:21,297 - root - INFO - parameters_reduction_buffer_count 1
+2025-09-16 15:19:21,297 - root - INFO - load_checkpoint legacy
+2025-09-16 15:19:21,297 - root - INFO - world_size 4
+2025-09-16 15:19:21,298 - root - INFO - global_batch_size 4
+2025-09-16 15:19:21,298 - root - INFO - experiment_dir /work/choutilin1/out_vars33/vars33_U/01
+2025-09-16 15:19:21,298 - root - INFO - checkpoint_path /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar
+2025-09-16 15:19:21,298 - root - INFO - best_checkpoint_path /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/best_ckpt_mp{mp_rank}.tar
+2025-09-16 15:19:21,299 - root - INFO - resuming True
+2025-09-16 15:19:21,299 - root - INFO - amp_mode none
+2025-09-16 15:19:21,299 - root - INFO - jit_mode none
+2025-09-16 15:19:21,299 - root - INFO - cuda_graph_mode none
+2025-09-16 15:19:21,300 - root - INFO - skip_validation False
+2025-09-16 15:19:21,300 - root - INFO - enable_odirect False
+2025-09-16 15:19:21,300 - root - INFO - checkpointing 0
+2025-09-16 15:19:21,300 - root - INFO - enable_synthetic_data False
+2025-09-16 15:19:21,300 - root - INFO - split_data_channels False
+2025-09-16 15:19:21,301 - root - INFO - print_timings_frequency -1
+2025-09-16 15:19:21,301 - root - INFO - multistep_count 1
+2025-09-16 15:19:21,301 - root - INFO - n_future 0
+2025-09-16 15:19:21,301 - root - INFO - enable_benchy False
+2025-09-16 15:19:21,302 - root - INFO - disable_ddp False
+2025-09-16 15:19:21,302 - root - INFO - enable_grad_anomaly_detection False
+2025-09-16 15:19:21,302 - root - INFO - wandb_dir /work/choutilin1/out_vars33/vars33_U/01
+2025-09-16 15:19:21,302 - root - INFO - _yaml_filename /home/choutilin1/v250508/config/sfnonet.yaml
+2025-09-16 15:19:21,303 - root - INFO - _config_name vars33_U
+2025-09-16 15:19:21,303 - root - INFO - ---------------------------------------------------
+2025-09-16 15:19:21,955 - root - INFO - Using channel names: ['u10m', 'v10m', 'mslp', 't2m', 'sp', 'u1000', 'v1000', 'z1000', 't850', 'u850', 'v850', 'z850', 'r850', 't500', 'u500', 'v500', 'z500', 'r500', 'z50', 'tcwv', 'sst', 'ssh', 'ssu', 'ssv', 'D15', 'D20', 'snsh', 'snlh', 'snsw', 'snlw', 'sst-dt']
+2025-09-16 15:19:21,956 - root - INFO - initializing data loader
+2025-09-16 15:19:21,956 - root - INFO - nvmlDeviceGetMemoryInfo used log1: 7.6046142578125 GB (4.76837158203125e-07 GB for pytorch)
+2025-09-16 15:19:36,254 - root - INFO - Getting file stats from /work/choutilin1/data_4d/train/2011.h5
+2025-09-16 15:20:02,960 - root - INFO - Average number of samples per year: 1461.3
+2025-09-16 15:20:02,961 - root - INFO - Found data at path ['/work/choutilin1/data_4d/train']. Number of examples: 4384. Full image Shape: 721 x 1440 x 33. Read Shape: 721 x 1440 x 31
+2025-09-16 15:20:02,961 - root - INFO - Using 4384 from the total number of available samples with 21900 samples per epoch (corresponds to 5475 steps for 4 shards with local batch size 1)
+2025-09-16 15:20:02,961 - root - INFO - Delta t: 6 hours
+2025-09-16 15:20:02,961 - root - INFO - Including 6 hours of past history in training at a frequency of 6 hours
+2025-09-16 15:20:02,962 - root - INFO - Including 6 hours of future targets in training at a frequency of 6 hours
+2025-09-16 15:20:10,648 - root - INFO - nvmlDeviceGetMemoryInfo used log2: 9.88153076171875 GB (0.24754571914672852 GB for pytorch)
+2025-09-16 15:20:12,380 - root - INFO - Getting file stats from /work/choutilin1/data_4d/test/2014.h5
+2025-09-16 15:20:12,385 - root - INFO - Average number of samples per year: 1460.0
+2025-09-16 15:20:12,386 - root - INFO - Found data at path ['/work/choutilin1/data_4d/test']. Number of examples: 1460. Full image Shape: 721 x 1440 x 33. Read Shape: 721 x 1440 x 31
+2025-09-16 15:20:12,386 - root - INFO - Using 1460 from the total number of available samples with 1460 samples per epoch (corresponds to 365 steps for 4 shards with local batch size 1)
+2025-09-16 15:20:12,387 - root - INFO - Delta t: 6 hours
+2025-09-16 15:20:12,387 - root - INFO - Including 6 hours of past history in training at a frequency of 6 hours
+2025-09-16 15:20:12,387 - root - INFO - Including 6 hours of future targets in training at a frequency of 6 hours
+2025-09-16 15:20:20,218 - root - INFO - data loader initialized
+2025-09-16 15:20:20,218 - root - INFO - nvmlDeviceGetMemoryInfo used log3: 12.078369140625 GB (0.49509096145629883 GB for pytorch)
+2025-09-16 15:20:22,535 - root - INFO - Auxiliary channel names: ['xzen', 'xoro', 'xlsml', 'xlsms']
+2025-09-16 15:20:22,536 - root - INFO - nvmlDeviceGetMemoryInfo used log4: 12.744384765625 GB (1.1597380638122559 GB for pytorch)
+2025-09-16 15:20:22,550 - root - INFO - 
+SingleStepWrapper(
+  (preprocessor): Preprocessor2D()
+  (model): SphericalFourierNeuralOperatorNet(
+    (trans_down): RealSHT(
+      nlat=721, nlon=1440,
+       lmax=240, mmax=241,
+       grid=equiangular, csphase=True
+    )
+    (itrans_up): InverseRealSHT(
+      nlat=721, nlon=1440,
+       lmax=240, mmax=241,
+       grid=equiangular, csphase=True
+    )
+    (trans): RealSHT(
+      nlat=240, nlon=480,
+       lmax=240, mmax=241,
+       grid=legendre-gauss, csphase=True
+    )
+    (itrans): InverseRealSHT(
+      nlat=240, nlon=480,
+       lmax=240, mmax=241,
+       grid=legendre-gauss, csphase=True
+    )
+    (encoder): EncoderDecoder(
+      (fwd): Sequential(
+        (0): Conv2d(35, 128, kernel_size=(1, 1), stride=(1, 1))
+        (1): GELU(approximate='none')
+        (2): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+    )
+    (pos_drop): Identity()
+    (blocks): ModuleList(
+      (0): FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=721, nlon=1440,
+               lmax=240, mmax=241,
+               grid=equiangular, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+      (1-6): 6 x FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+      (7): FourierNeuralOperatorBlock(
+        (norm0): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (filter): SpectralFilterLayer(
+          (filter): SpectralConv(
+            (forward_transform): RealSHT(
+              nlat=240, nlon=480,
+               lmax=240, mmax=241,
+               grid=legendre-gauss, csphase=True
+            )
+            (inverse_transform): InverseRealSHT(
+              nlat=721, nlon=1440,
+               lmax=240, mmax=241,
+               grid=equiangular, csphase=True
+            )
+          )
+        )
+        (act_layer0): GELU(approximate='none')
+        (norm1): InstanceNorm2d(128, eps=1e-06, momentum=0.1, affine=True, track_running_stats=False)
+        (outer_skip): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (mlp): MLP(
+          (fwd): Sequential(
+            (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1))
+            (1): GELU(approximate='none')
+            (2): Identity()
+            (3): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1))
+            (4): Identity()
+          )
+        )
+        (drop_path): Identity()
+      )
+    )
+    (decoder): EncoderDecoder(
+      (fwd): Sequential(
+        (0): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1))
+        (1): GELU(approximate='none')
+        (2): Conv2d(128, 31, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      )
+    )
+    (residual_transform): Conv2d(35, 31, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  )
+)
+2025-09-16 15:20:22,550 - root - INFO - nvmlDeviceGetMemoryInfo used log5: 12.777587890625 GB (1.1890349388122559 GB for pytorch)
+2025-09-16 15:20:25,150 - root - INFO - using AdamW
+2025-09-16 15:20:25,671 - root - INFO - Loading checkpoint /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp0.tar in legacy mode
+2025-09-16 15:20:26,373 - root - INFO - Number of trainable model parameters: 32162365
+2025-09-16 15:20:26,374 - root - INFO - nvmlDeviceGetMemoryInfo used log6: 13.908447265625 GB (2.0063118934631348 GB for pytorch)
+2025-09-16 15:20:26,374 - root - INFO - Scaffolding memory high watermark: 13.908447265625 GB (2.0063118934631348 GB for pytorch)
+2025-09-16 15:20:26,374 - root - INFO - Starting Training Loop...
+2025-09-16 15:34:34,103 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 15:34:34,923 - root - INFO - Save checkpoint (legacy): 0.82 sec (3.3527612686157227e-07) GB
+2025-09-16 15:34:34,924 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/best_ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 15:34:35,696 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 15:34:35,698 - root - INFO - --------------------------------------------------
+2025-09-16 15:34:35,698 - root - INFO - Epoch 76 summary:
+2025-09-16 15:34:35,698 - root - INFO - Performance Parameters:
+2025-09-16 15:34:35,698 - root - INFO -     training steps: 5474
+2025-09-16 15:34:35,699 - root - INFO -     validation steps: 365
+2025-09-16 15:34:35,699 - root - INFO -     memory footprint [GB]: 20.38
+2025-09-16 15:34:35,699 - root - INFO -     epoch time [s]: 849.32
+2025-09-16 15:34:35,699 - root - INFO -     training time [s]: 772.49
+2025-09-16 15:34:35,700 - root - INFO -     validation time [s]: 75.15
+2025-09-16 15:34:35,700 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 15:34:35,700 - root - INFO -     training step time [ms]: 141.12
+2025-09-16 15:34:35,700 - root - INFO -     minimal IO rate [GB/s]: 6.80
+2025-09-16 15:34:35,701 - root - INFO - Metrics:
+2025-09-16 15:34:35,701 - root - INFO -     training loss:   0.02681881934404373
+2025-09-16 15:34:35,701 - root - INFO -     validation loss: 0.07188741862773895
+2025-09-16 15:34:35,702 - root - INFO -     validation L1:   0.17905201017856598
+2025-09-16 15:34:35,702 - root - INFO -     validation u10m: 0.921250581741333
+2025-09-16 15:34:35,702 - root - INFO -     validation t2m:  0.8722336888313293
+2025-09-16 15:34:35,702 - root - INFO -     validation u500: 1.9105477333068848
+2025-09-16 15:34:35,702 - root - INFO -     validation z500: 77.35904693603516
+2025-09-16 15:34:35,703 - root - INFO -     validation r500: 10.499554634094238
+2025-09-16 15:34:35,703 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 15:34:35,703 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 15:34:35,703 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 15:34:35,704 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 15:34:35,704 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 15:34:35,704 - root - INFO - --------------------------------------------------
+2025-09-16 15:48:13,032 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 15:48:13,790 - root - INFO - Save checkpoint (legacy): 0.76 sec (3.3527612686157227e-07) GB
+2025-09-16 15:48:13,791 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/best_ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 15:48:14,534 - root - INFO - Save checkpoint (legacy): 0.74 sec (3.3527612686157227e-07) GB
+2025-09-16 15:48:14,536 - root - INFO - --------------------------------------------------
+2025-09-16 15:48:14,537 - root - INFO - Epoch 77 summary:
+2025-09-16 15:48:14,537 - root - INFO - Performance Parameters:
+2025-09-16 15:48:14,538 - root - INFO -     training steps: 5475
+2025-09-16 15:48:14,538 - root - INFO -     validation steps: 365
+2025-09-16 15:48:14,539 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 15:48:14,540 - root - INFO -     epoch time [s]: 818.83
+2025-09-16 15:48:14,540 - root - INFO -     training time [s]: 764.15
+2025-09-16 15:48:14,540 - root - INFO -     validation time [s]: 53.13
+2025-09-16 15:48:14,540 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 15:48:14,541 - root - INFO -     training step time [ms]: 139.57
+2025-09-16 15:48:14,541 - root - INFO -     minimal IO rate [GB/s]: 6.87
+2025-09-16 15:48:14,541 - root - INFO - Metrics:
+2025-09-16 15:48:14,541 - root - INFO -     training loss:   0.026816707104444504
+2025-09-16 15:48:14,541 - root - INFO -     validation loss: 0.07183106988668442
+2025-09-16 15:48:14,542 - root - INFO -     validation L1:   0.17904353141784668
+2025-09-16 15:48:14,542 - root - INFO -     validation u10m: 0.9246039986610413
+2025-09-16 15:48:14,542 - root - INFO -     validation t2m:  0.8742095232009888
+2025-09-16 15:48:14,542 - root - INFO -     validation u500: 1.913530707359314
+2025-09-16 15:48:14,543 - root - INFO -     validation z500: 77.58634185791016
+2025-09-16 15:48:14,543 - root - INFO -     validation r500: 10.5130615234375
+2025-09-16 15:48:14,543 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 15:48:14,543 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 15:48:14,544 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 15:48:14,544 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 15:48:14,544 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 15:48:14,544 - root - INFO - --------------------------------------------------
+2025-09-16 16:02:25,346 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 16:02:26,073 - root - INFO - Save checkpoint (legacy): 0.73 sec (3.3527612686157227e-07) GB
+2025-09-16 16:02:26,074 - root - INFO - --------------------------------------------------
+2025-09-16 16:02:26,074 - root - INFO - Epoch 78 summary:
+2025-09-16 16:02:26,074 - root - INFO - Performance Parameters:
+2025-09-16 16:02:26,074 - root - INFO -     training steps: 5475
+2025-09-16 16:02:26,074 - root - INFO -     validation steps: 365
+2025-09-16 16:02:26,074 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 16:02:26,074 - root - INFO -     epoch time [s]: 851.53
+2025-09-16 16:02:26,074 - root - INFO -     training time [s]: 797.16
+2025-09-16 16:02:26,074 - root - INFO -     validation time [s]: 53.57
+2025-09-16 16:02:26,075 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 16:02:26,075 - root - INFO -     training step time [ms]: 145.60
+2025-09-16 16:02:26,075 - root - INFO -     minimal IO rate [GB/s]: 6.59
+2025-09-16 16:02:26,075 - root - INFO - Metrics:
+2025-09-16 16:02:26,075 - root - INFO -     training loss:   0.02696945145726204
+2025-09-16 16:02:26,075 - root - INFO -     validation loss: 0.07225801795721054
+2025-09-16 16:02:26,075 - root - INFO -     validation L1:   0.17925293743610382
+2025-09-16 16:02:26,075 - root - INFO -     validation u10m: 0.9228924512863159
+2025-09-16 16:02:26,075 - root - INFO -     validation t2m:  0.8720936179161072
+2025-09-16 16:02:26,075 - root - INFO -     validation u500: 1.9101840257644653
+2025-09-16 16:02:26,075 - root - INFO -     validation z500: 78.47837829589844
+2025-09-16 16:02:26,075 - root - INFO -     validation r500: 10.517136573791504
+2025-09-16 16:02:26,075 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 16:02:26,075 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 16:02:26,075 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 16:02:26,075 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 16:02:26,075 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 16:02:26,075 - root - INFO - --------------------------------------------------
+2025-09-16 16:16:22,962 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 16:16:23,677 - root - INFO - Save checkpoint (legacy): 0.72 sec (3.3527612686157227e-07) GB
+2025-09-16 16:16:23,679 - root - INFO - --------------------------------------------------
+2025-09-16 16:16:23,679 - root - INFO - Epoch 79 summary:
+2025-09-16 16:16:23,679 - root - INFO - Performance Parameters:
+2025-09-16 16:16:23,679 - root - INFO -     training steps: 5475
+2025-09-16 16:16:23,679 - root - INFO -     validation steps: 365
+2025-09-16 16:16:23,679 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 16:16:23,679 - root - INFO -     epoch time [s]: 837.60
+2025-09-16 16:16:23,679 - root - INFO -     training time [s]: 785.81
+2025-09-16 16:16:23,679 - root - INFO -     validation time [s]: 50.99
+2025-09-16 16:16:23,679 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 16:16:23,679 - root - INFO -     training step time [ms]: 143.53
+2025-09-16 16:16:23,679 - root - INFO -     minimal IO rate [GB/s]: 6.68
+2025-09-16 16:16:23,679 - root - INFO - Metrics:
+2025-09-16 16:16:23,679 - root - INFO -     training loss:   0.026452600955963135
+2025-09-16 16:16:23,679 - root - INFO -     validation loss: 0.07207673043012619
+2025-09-16 16:16:23,679 - root - INFO -     validation L1:   0.17907069623470306
+2025-09-16 16:16:23,679 - root - INFO -     validation u10m: 0.9245098829269409
+2025-09-16 16:16:23,679 - root - INFO -     validation t2m:  0.8744940161705017
+2025-09-16 16:16:23,679 - root - INFO -     validation u500: 1.9126380681991577
+2025-09-16 16:16:23,679 - root - INFO -     validation z500: 77.62907409667969
+2025-09-16 16:16:23,679 - root - INFO -     validation r500: 10.506904602050781
+2025-09-16 16:16:23,679 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 16:16:23,679 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 16:16:23,679 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 16:16:23,679 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 16:16:23,679 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 16:16:23,679 - root - INFO - --------------------------------------------------
+2025-09-16 16:30:25,635 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 16:30:26,402 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 16:30:26,403 - root - INFO - --------------------------------------------------
+2025-09-16 16:30:26,403 - root - INFO - Epoch 80 summary:
+2025-09-16 16:30:26,403 - root - INFO - Performance Parameters:
+2025-09-16 16:30:26,403 - root - INFO -     training steps: 5475
+2025-09-16 16:30:26,403 - root - INFO -     validation steps: 365
+2025-09-16 16:30:26,404 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 16:30:26,404 - root - INFO -     epoch time [s]: 842.72
+2025-09-16 16:30:26,404 - root - INFO -     training time [s]: 790.86
+2025-09-16 16:30:26,404 - root - INFO -     validation time [s]: 51.03
+2025-09-16 16:30:26,405 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 16:30:26,405 - root - INFO -     training step time [ms]: 144.45
+2025-09-16 16:30:26,405 - root - INFO -     minimal IO rate [GB/s]: 6.64
+2025-09-16 16:30:26,405 - root - INFO - Metrics:
+2025-09-16 16:30:26,405 - root - INFO -     training loss:   0.026446839794516563
+2025-09-16 16:30:26,405 - root - INFO -     validation loss: 0.0722714439034462
+2025-09-16 16:30:26,405 - root - INFO -     validation L1:   0.17931252717971802
+2025-09-16 16:30:26,405 - root - INFO -     validation u10m: 0.924897313117981
+2025-09-16 16:30:26,405 - root - INFO -     validation t2m:  0.8710927367210388
+2025-09-16 16:30:26,405 - root - INFO -     validation u500: 1.9108052253723145
+2025-09-16 16:30:26,405 - root - INFO -     validation z500: 77.14625549316406
+2025-09-16 16:30:26,405 - root - INFO -     validation r500: 10.524029731750488
+2025-09-16 16:30:26,405 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 16:30:26,405 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 16:30:26,405 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 16:30:26,405 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 16:30:26,405 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 16:30:26,405 - root - INFO - --------------------------------------------------
+2025-09-16 16:44:28,273 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 16:44:28,989 - root - INFO - Save checkpoint (legacy): 0.71 sec (3.3527612686157227e-07) GB
+2025-09-16 16:44:28,990 - root - INFO - --------------------------------------------------
+2025-09-16 16:44:28,990 - root - INFO - Epoch 81 summary:
+2025-09-16 16:44:28,990 - root - INFO - Performance Parameters:
+2025-09-16 16:44:28,990 - root - INFO -     training steps: 5475
+2025-09-16 16:44:28,990 - root - INFO -     validation steps: 365
+2025-09-16 16:44:28,991 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 16:44:28,991 - root - INFO -     epoch time [s]: 842.58
+2025-09-16 16:44:28,992 - root - INFO -     training time [s]: 790.66
+2025-09-16 16:44:28,992 - root - INFO -     validation time [s]: 51.08
+2025-09-16 16:44:28,992 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 16:44:28,992 - root - INFO -     training step time [ms]: 144.41
+2025-09-16 16:44:28,992 - root - INFO -     minimal IO rate [GB/s]: 6.64
+2025-09-16 16:44:28,992 - root - INFO - Metrics:
+2025-09-16 16:44:28,992 - root - INFO -     training loss:   0.026521585881710052
+2025-09-16 16:44:28,993 - root - INFO -     validation loss: 0.07312053442001343
+2025-09-16 16:44:28,993 - root - INFO -     validation L1:   0.17951492965221405
+2025-09-16 16:44:28,993 - root - INFO -     validation u10m: 0.9235353469848633
+2025-09-16 16:44:28,993 - root - INFO -     validation t2m:  0.8706715106964111
+2025-09-16 16:44:28,993 - root - INFO -     validation u500: 1.9037320613861084
+2025-09-16 16:44:28,993 - root - INFO -     validation z500: 78.09185791015625
+2025-09-16 16:44:28,993 - root - INFO -     validation r500: 10.557371139526367
+2025-09-16 16:44:28,993 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 16:44:28,994 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 16:44:28,994 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 16:44:28,994 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 16:44:28,994 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 16:44:28,994 - root - INFO - --------------------------------------------------
+2025-09-16 16:58:31,685 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 16:58:32,437 - root - INFO - Save checkpoint (legacy): 0.75 sec (3.3527612686157227e-07) GB
+2025-09-16 16:58:32,442 - root - INFO - --------------------------------------------------
+2025-09-16 16:58:32,443 - root - INFO - Epoch 82 summary:
+2025-09-16 16:58:32,443 - root - INFO - Performance Parameters:
+2025-09-16 16:58:32,443 - root - INFO -     training steps: 5475
+2025-09-16 16:58:32,443 - root - INFO -     validation steps: 365
+2025-09-16 16:58:32,443 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 16:58:32,443 - root - INFO -     epoch time [s]: 843.45
+2025-09-16 16:58:32,444 - root - INFO -     training time [s]: 791.46
+2025-09-16 16:58:32,444 - root - INFO -     validation time [s]: 51.18
+2025-09-16 16:58:32,444 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 16:58:32,444 - root - INFO -     training step time [ms]: 144.56
+2025-09-16 16:58:32,444 - root - INFO -     minimal IO rate [GB/s]: 6.64
+2025-09-16 16:58:32,444 - root - INFO - Metrics:
+2025-09-16 16:58:32,444 - root - INFO -     training loss:   0.027099642902612686
+2025-09-16 16:58:32,445 - root - INFO -     validation loss: 0.07344744354486465
+2025-09-16 16:58:32,445 - root - INFO -     validation L1:   0.1795966625213623
+2025-09-16 16:58:32,445 - root - INFO -     validation u10m: 0.9259905815124512
+2025-09-16 16:58:32,445 - root - INFO -     validation t2m:  0.8691896200180054
+2025-09-16 16:58:32,445 - root - INFO -     validation u500: 1.9058938026428223
+2025-09-16 16:58:32,445 - root - INFO -     validation z500: 77.54756927490234
+2025-09-16 16:58:32,445 - root - INFO -     validation r500: 10.569881439208984
+2025-09-16 16:58:32,445 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 16:58:32,446 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 16:58:32,446 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 16:58:32,446 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 16:58:32,446 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 16:58:32,446 - root - INFO - --------------------------------------------------
+2025-09-16 17:12:32,976 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 17:12:33,702 - root - INFO - Save checkpoint (legacy): 0.73 sec (3.3527612686157227e-07) GB
+2025-09-16 17:12:33,704 - root - INFO - --------------------------------------------------
+2025-09-16 17:12:33,704 - root - INFO - Epoch 83 summary:
+2025-09-16 17:12:33,704 - root - INFO - Performance Parameters:
+2025-09-16 17:12:33,704 - root - INFO -     training steps: 5475
+2025-09-16 17:12:33,705 - root - INFO -     validation steps: 365
+2025-09-16 17:12:33,705 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 17:12:33,705 - root - INFO -     epoch time [s]: 841.26
+2025-09-16 17:12:33,705 - root - INFO -     training time [s]: 789.29
+2025-09-16 17:12:33,705 - root - INFO -     validation time [s]: 51.16
+2025-09-16 17:12:33,705 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 17:12:33,705 - root - INFO -     training step time [ms]: 144.16
+2025-09-16 17:12:33,706 - root - INFO -     minimal IO rate [GB/s]: 6.65
+2025-09-16 17:12:33,706 - root - INFO - Metrics:
+2025-09-16 17:12:33,706 - root - INFO -     training loss:   0.0265398807823658
+2025-09-16 17:12:33,706 - root - INFO -     validation loss: 0.07343056797981262
+2025-09-16 17:12:33,706 - root - INFO -     validation L1:   0.17958010733127594
+2025-09-16 17:12:33,706 - root - INFO -     validation u10m: 0.9253382682800293
+2025-09-16 17:12:33,706 - root - INFO -     validation t2m:  0.8676458597183228
+2025-09-16 17:12:33,706 - root - INFO -     validation u500: 1.9024542570114136
+2025-09-16 17:12:33,707 - root - INFO -     validation z500: 76.65072631835938
+2025-09-16 17:12:33,707 - root - INFO -     validation r500: 10.582883834838867
+2025-09-16 17:12:33,707 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 17:12:33,707 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 17:12:33,707 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 17:12:33,707 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 17:12:33,707 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 17:12:33,708 - root - INFO - --------------------------------------------------
+2025-09-16 17:26:38,246 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 17:26:38,975 - root - INFO - Save checkpoint (legacy): 0.73 sec (3.3527612686157227e-07) GB
+2025-09-16 17:26:38,976 - root - INFO - --------------------------------------------------
+2025-09-16 17:26:38,976 - root - INFO - Epoch 84 summary:
+2025-09-16 17:26:38,976 - root - INFO - Performance Parameters:
+2025-09-16 17:26:38,976 - root - INFO -     training steps: 5475
+2025-09-16 17:26:38,976 - root - INFO -     validation steps: 365
+2025-09-16 17:26:38,976 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 17:26:38,976 - root - INFO -     epoch time [s]: 845.27
+2025-09-16 17:26:38,976 - root - INFO -     training time [s]: 793.35
+2025-09-16 17:26:38,976 - root - INFO -     validation time [s]: 51.12
+2025-09-16 17:26:38,976 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 17:26:38,976 - root - INFO -     training step time [ms]: 144.90
+2025-09-16 17:26:38,976 - root - INFO -     minimal IO rate [GB/s]: 6.62
+2025-09-16 17:26:38,976 - root - INFO - Metrics:
+2025-09-16 17:26:38,976 - root - INFO -     training loss:   0.025514669716358185
+2025-09-16 17:26:38,976 - root - INFO -     validation loss: 0.07312101870775223
+2025-09-16 17:26:38,976 - root - INFO -     validation L1:   0.1794101893901825
+2025-09-16 17:26:38,976 - root - INFO -     validation u10m: 0.925881564617157
+2025-09-16 17:26:38,976 - root - INFO -     validation t2m:  0.8684853911399841
+2025-09-16 17:26:38,976 - root - INFO -     validation u500: 1.9072303771972656
+2025-09-16 17:26:38,976 - root - INFO -     validation z500: 76.48563385009766
+2025-09-16 17:26:38,976 - root - INFO -     validation r500: 10.57726764678955
+2025-09-16 17:26:38,976 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 17:26:38,976 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 17:26:38,976 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 17:26:38,976 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 17:26:38,976 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 17:26:38,977 - root - INFO - --------------------------------------------------
+2025-09-16 17:40:27,646 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 17:40:28,419 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 17:40:28,421 - root - INFO - --------------------------------------------------
+2025-09-16 17:40:28,421 - root - INFO - Epoch 85 summary:
+2025-09-16 17:40:28,421 - root - INFO - Performance Parameters:
+2025-09-16 17:40:28,421 - root - INFO -     training steps: 5475
+2025-09-16 17:40:28,421 - root - INFO -     validation steps: 365
+2025-09-16 17:40:28,421 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 17:40:28,421 - root - INFO -     epoch time [s]: 829.44
+2025-09-16 17:40:28,421 - root - INFO -     training time [s]: 777.35
+2025-09-16 17:40:28,421 - root - INFO -     validation time [s]: 51.23
+2025-09-16 17:40:28,421 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 17:40:28,421 - root - INFO -     training step time [ms]: 141.98
+2025-09-16 17:40:28,421 - root - INFO -     minimal IO rate [GB/s]: 6.76
+2025-09-16 17:40:28,421 - root - INFO - Metrics:
+2025-09-16 17:40:28,421 - root - INFO -     training loss:   0.026060916483402252
+2025-09-16 17:40:28,421 - root - INFO -     validation loss: 0.07369235157966614
+2025-09-16 17:40:28,421 - root - INFO -     validation L1:   0.17978979647159576
+2025-09-16 17:40:28,421 - root - INFO -     validation u10m: 0.9264100193977356
+2025-09-16 17:40:28,421 - root - INFO -     validation t2m:  0.8699513673782349
+2025-09-16 17:40:28,421 - root - INFO -     validation u500: 1.907244324684143
+2025-09-16 17:40:28,421 - root - INFO -     validation z500: 78.66735076904297
+2025-09-16 17:40:28,421 - root - INFO -     validation r500: 10.611065864562988
+2025-09-16 17:40:28,421 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 17:40:28,421 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 17:40:28,421 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 17:40:28,421 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 17:40:28,421 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 17:40:28,421 - root - INFO - --------------------------------------------------
+2025-09-16 17:54:24,083 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 17:54:24,854 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 17:54:24,855 - root - INFO - --------------------------------------------------
+2025-09-16 17:54:24,855 - root - INFO - Epoch 86 summary:
+2025-09-16 17:54:24,855 - root - INFO - Performance Parameters:
+2025-09-16 17:54:24,855 - root - INFO -     training steps: 5475
+2025-09-16 17:54:24,855 - root - INFO -     validation steps: 365
+2025-09-16 17:54:24,855 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 17:54:24,855 - root - INFO -     epoch time [s]: 836.43
+2025-09-16 17:54:24,855 - root - INFO -     training time [s]: 784.01
+2025-09-16 17:54:24,855 - root - INFO -     validation time [s]: 51.58
+2025-09-16 17:54:24,855 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 17:54:24,855 - root - INFO -     training step time [ms]: 143.20
+2025-09-16 17:54:24,855 - root - INFO -     minimal IO rate [GB/s]: 6.70
+2025-09-16 17:54:24,855 - root - INFO - Metrics:
+2025-09-16 17:54:24,855 - root - INFO -     training loss:   0.026528310030698776
+2025-09-16 17:54:24,855 - root - INFO -     validation loss: 0.07384033501148224
+2025-09-16 17:54:24,855 - root - INFO -     validation L1:   0.17994306981563568
+2025-09-16 17:54:24,855 - root - INFO -     validation u10m: 0.9277949929237366
+2025-09-16 17:54:24,855 - root - INFO -     validation t2m:  0.867422342300415
+2025-09-16 17:54:24,855 - root - INFO -     validation u500: 1.8999724388122559
+2025-09-16 17:54:24,856 - root - INFO -     validation z500: 81.92400360107422
+2025-09-16 17:54:24,856 - root - INFO -     validation r500: 10.603231430053711
+2025-09-16 17:54:24,856 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 17:54:24,856 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 17:54:24,856 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 17:54:24,856 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 17:54:24,856 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 17:54:24,856 - root - INFO - --------------------------------------------------
+2025-09-16 18:08:10,363 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 18:08:11,137 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 18:08:11,139 - root - INFO - --------------------------------------------------
+2025-09-16 18:08:11,139 - root - INFO - Epoch 87 summary:
+2025-09-16 18:08:11,139 - root - INFO - Performance Parameters:
+2025-09-16 18:08:11,139 - root - INFO -     training steps: 5475
+2025-09-16 18:08:11,139 - root - INFO -     validation steps: 365
+2025-09-16 18:08:11,139 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 18:08:11,139 - root - INFO -     epoch time [s]: 826.28
+2025-09-16 18:08:11,139 - root - INFO -     training time [s]: 773.56
+2025-09-16 18:08:11,139 - root - INFO -     validation time [s]: 51.89
+2025-09-16 18:08:11,139 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 18:08:11,139 - root - INFO -     training step time [ms]: 141.29
+2025-09-16 18:08:11,139 - root - INFO -     minimal IO rate [GB/s]: 6.79
+2025-09-16 18:08:11,139 - root - INFO - Metrics:
+2025-09-16 18:08:11,139 - root - INFO -     training loss:   0.027051113545894623
+2025-09-16 18:08:11,139 - root - INFO -     validation loss: 0.07389401644468307
+2025-09-16 18:08:11,139 - root - INFO -     validation L1:   0.18011516332626343
+2025-09-16 18:08:11,139 - root - INFO -     validation u10m: 0.930001437664032
+2025-09-16 18:08:11,139 - root - INFO -     validation t2m:  0.8752395510673523
+2025-09-16 18:08:11,139 - root - INFO -     validation u500: 1.914197325706482
+2025-09-16 18:08:11,139 - root - INFO -     validation z500: 77.56689453125
+2025-09-16 18:08:11,139 - root - INFO -     validation r500: 10.624149322509766
+2025-09-16 18:08:11,139 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 18:08:11,139 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 18:08:11,139 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 18:08:11,139 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 18:08:11,139 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 18:08:11,139 - root - INFO - --------------------------------------------------
+2025-09-16 18:21:50,968 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 18:21:51,757 - root - INFO - Save checkpoint (legacy): 0.79 sec (3.3527612686157227e-07) GB
+2025-09-16 18:21:51,758 - root - INFO - --------------------------------------------------
+2025-09-16 18:21:51,758 - root - INFO - Epoch 88 summary:
+2025-09-16 18:21:51,758 - root - INFO - Performance Parameters:
+2025-09-16 18:21:51,758 - root - INFO -     training steps: 5475
+2025-09-16 18:21:51,758 - root - INFO -     validation steps: 365
+2025-09-16 18:21:51,759 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 18:21:51,759 - root - INFO -     epoch time [s]: 820.62
+2025-09-16 18:21:51,759 - root - INFO -     training time [s]: 768.12
+2025-09-16 18:21:51,759 - root - INFO -     validation time [s]: 51.64
+2025-09-16 18:21:51,759 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 18:21:51,759 - root - INFO -     training step time [ms]: 140.30
+2025-09-16 18:21:51,759 - root - INFO -     minimal IO rate [GB/s]: 6.84
+2025-09-16 18:21:51,759 - root - INFO - Metrics:
+2025-09-16 18:21:51,759 - root - INFO -     training loss:   0.026385771110653877
+2025-09-16 18:21:51,760 - root - INFO -     validation loss: 0.07338209450244904
+2025-09-16 18:21:51,760 - root - INFO -     validation L1:   0.17962011694908142
+2025-09-16 18:21:51,760 - root - INFO -     validation u10m: 0.9260762929916382
+2025-09-16 18:21:51,760 - root - INFO -     validation t2m:  0.8661721348762512
+2025-09-16 18:21:51,760 - root - INFO -     validation u500: 1.901718020439148
+2025-09-16 18:21:51,760 - root - INFO -     validation z500: 77.26337432861328
+2025-09-16 18:21:51,760 - root - INFO -     validation r500: 10.633820533752441
+2025-09-16 18:21:51,760 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 18:21:51,760 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 18:21:51,760 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 18:21:51,760 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 18:21:51,760 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 18:21:51,760 - root - INFO - --------------------------------------------------
+2025-09-16 18:35:42,324 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 18:35:43,030 - root - INFO - Save checkpoint (legacy): 0.71 sec (3.3527612686157227e-07) GB
+2025-09-16 18:35:43,031 - root - INFO - --------------------------------------------------
+2025-09-16 18:35:43,031 - root - INFO - Epoch 89 summary:
+2025-09-16 18:35:43,031 - root - INFO - Performance Parameters:
+2025-09-16 18:35:43,031 - root - INFO -     training steps: 5475
+2025-09-16 18:35:43,031 - root - INFO -     validation steps: 365
+2025-09-16 18:35:43,031 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 18:35:43,031 - root - INFO -     epoch time [s]: 831.27
+2025-09-16 18:35:43,032 - root - INFO -     training time [s]: 778.37
+2025-09-16 18:35:43,032 - root - INFO -     validation time [s]: 52.14
+2025-09-16 18:35:43,032 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 18:35:43,032 - root - INFO -     training step time [ms]: 142.17
+2025-09-16 18:35:43,032 - root - INFO -     minimal IO rate [GB/s]: 6.75
+2025-09-16 18:35:43,032 - root - INFO - Metrics:
+2025-09-16 18:35:43,032 - root - INFO -     training loss:   0.025766950100660324
+2025-09-16 18:35:43,032 - root - INFO -     validation loss: 0.07394774258136749
+2025-09-16 18:35:43,032 - root - INFO -     validation L1:   0.17990124225616455
+2025-09-16 18:35:43,032 - root - INFO -     validation u10m: 0.927639365196228
+2025-09-16 18:35:43,032 - root - INFO -     validation t2m:  0.8676710724830627
+2025-09-16 18:35:43,032 - root - INFO -     validation u500: 1.9003727436065674
+2025-09-16 18:35:43,032 - root - INFO -     validation z500: 77.12841796875
+2025-09-16 18:35:43,032 - root - INFO -     validation r500: 10.650230407714844
+2025-09-16 18:35:43,032 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 18:35:43,032 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 18:35:43,032 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 18:35:43,032 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 18:35:43,032 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 18:35:43,032 - root - INFO - --------------------------------------------------
+2025-09-16 18:49:22,502 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 18:49:23,241 - root - INFO - Save checkpoint (legacy): 0.74 sec (3.3527612686157227e-07) GB
+2025-09-16 18:49:23,242 - root - INFO - --------------------------------------------------
+2025-09-16 18:49:23,242 - root - INFO - Epoch 90 summary:
+2025-09-16 18:49:23,242 - root - INFO - Performance Parameters:
+2025-09-16 18:49:23,242 - root - INFO -     training steps: 5475
+2025-09-16 18:49:23,242 - root - INFO -     validation steps: 365
+2025-09-16 18:49:23,242 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 18:49:23,242 - root - INFO -     epoch time [s]: 820.21
+2025-09-16 18:49:23,242 - root - INFO -     training time [s]: 767.50
+2025-09-16 18:49:23,242 - root - INFO -     validation time [s]: 51.86
+2025-09-16 18:49:23,242 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 18:49:23,242 - root - INFO -     training step time [ms]: 140.18
+2025-09-16 18:49:23,242 - root - INFO -     minimal IO rate [GB/s]: 6.84
+2025-09-16 18:49:23,242 - root - INFO - Metrics:
+2025-09-16 18:49:23,242 - root - INFO -     training loss:   0.026125382632017136
+2025-09-16 18:49:23,242 - root - INFO -     validation loss: 0.07361853122711182
+2025-09-16 18:49:23,242 - root - INFO -     validation L1:   0.17977343499660492
+2025-09-16 18:49:23,242 - root - INFO -     validation u10m: 0.9270849227905273
+2025-09-16 18:49:23,242 - root - INFO -     validation t2m:  0.8725321888923645
+2025-09-16 18:49:23,242 - root - INFO -     validation u500: 1.8959733247756958
+2025-09-16 18:49:23,242 - root - INFO -     validation z500: 79.01670837402344
+2025-09-16 18:49:23,242 - root - INFO -     validation r500: 10.663990020751953
+2025-09-16 18:49:23,242 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 18:49:23,242 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 18:49:23,242 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 18:49:23,242 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 18:49:23,242 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 18:49:23,243 - root - INFO - --------------------------------------------------
+2025-09-16 19:02:56,648 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 19:02:57,393 - root - INFO - Save checkpoint (legacy): 0.74 sec (3.3527612686157227e-07) GB
+2025-09-16 19:02:57,394 - root - INFO - --------------------------------------------------
+2025-09-16 19:02:57,394 - root - INFO - Epoch 91 summary:
+2025-09-16 19:02:57,394 - root - INFO - Performance Parameters:
+2025-09-16 19:02:57,394 - root - INFO -     training steps: 5475
+2025-09-16 19:02:57,394 - root - INFO -     validation steps: 365
+2025-09-16 19:02:57,394 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 19:02:57,394 - root - INFO -     epoch time [s]: 814.15
+2025-09-16 19:02:57,394 - root - INFO -     training time [s]: 761.60
+2025-09-16 19:02:57,394 - root - INFO -     validation time [s]: 51.76
+2025-09-16 19:02:57,394 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 19:02:57,394 - root - INFO -     training step time [ms]: 139.10
+2025-09-16 19:02:57,394 - root - INFO -     minimal IO rate [GB/s]: 6.90
+2025-09-16 19:02:57,394 - root - INFO - Metrics:
+2025-09-16 19:02:57,394 - root - INFO -     training loss:   0.025855280458927155
+2025-09-16 19:02:57,394 - root - INFO -     validation loss: 0.07349961996078491
+2025-09-16 19:02:57,394 - root - INFO -     validation L1:   0.17981937527656555
+2025-09-16 19:02:57,394 - root - INFO -     validation u10m: 0.9272542595863342
+2025-09-16 19:02:57,394 - root - INFO -     validation t2m:  0.8648775219917297
+2025-09-16 19:02:57,394 - root - INFO -     validation u500: 1.8995217084884644
+2025-09-16 19:02:57,394 - root - INFO -     validation z500: 77.02794647216797
+2025-09-16 19:02:57,394 - root - INFO -     validation r500: 10.694000244140625
+2025-09-16 19:02:57,394 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 19:02:57,394 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 19:02:57,394 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 19:02:57,394 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 19:02:57,394 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 19:02:57,394 - root - INFO - --------------------------------------------------
+2025-09-16 19:16:32,191 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 19:16:32,894 - root - INFO - Save checkpoint (legacy): 0.70 sec (3.3527612686157227e-07) GB
+2025-09-16 19:16:32,895 - root - INFO - --------------------------------------------------
+2025-09-16 19:16:32,895 - root - INFO - Epoch 92 summary:
+2025-09-16 19:16:32,895 - root - INFO - Performance Parameters:
+2025-09-16 19:16:32,895 - root - INFO -     training steps: 5475
+2025-09-16 19:16:32,895 - root - INFO -     validation steps: 365
+2025-09-16 19:16:32,895 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 19:16:32,895 - root - INFO -     epoch time [s]: 815.50
+2025-09-16 19:16:32,895 - root - INFO -     training time [s]: 762.81
+2025-09-16 19:16:32,895 - root - INFO -     validation time [s]: 51.93
+2025-09-16 19:16:32,895 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 19:16:32,895 - root - INFO -     training step time [ms]: 139.33
+2025-09-16 19:16:32,895 - root - INFO -     minimal IO rate [GB/s]: 6.88
+2025-09-16 19:16:32,895 - root - INFO - Metrics:
+2025-09-16 19:16:32,895 - root - INFO -     training loss:   0.025849614292383194
+2025-09-16 19:16:32,895 - root - INFO -     validation loss: 0.07394056767225266
+2025-09-16 19:16:32,895 - root - INFO -     validation L1:   0.18017297983169556
+2025-09-16 19:16:32,895 - root - INFO -     validation u10m: 0.9308208227157593
+2025-09-16 19:16:32,895 - root - INFO -     validation t2m:  0.8681568503379822
+2025-09-16 19:16:32,896 - root - INFO -     validation u500: 1.9008431434631348
+2025-09-16 19:16:32,896 - root - INFO -     validation z500: 78.49932861328125
+2025-09-16 19:16:32,896 - root - INFO -     validation r500: 10.70709228515625
+2025-09-16 19:16:32,896 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 19:16:32,896 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 19:16:32,896 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 19:16:32,896 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 19:16:32,896 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 19:16:32,896 - root - INFO - --------------------------------------------------
+2025-09-16 19:30:15,805 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 19:30:16,550 - root - INFO - Save checkpoint (legacy): 0.74 sec (3.3527612686157227e-07) GB
+2025-09-16 19:30:16,551 - root - INFO - --------------------------------------------------
+2025-09-16 19:30:16,551 - root - INFO - Epoch 93 summary:
+2025-09-16 19:30:16,551 - root - INFO - Performance Parameters:
+2025-09-16 19:30:16,551 - root - INFO -     training steps: 5475
+2025-09-16 19:30:16,551 - root - INFO -     validation steps: 365
+2025-09-16 19:30:16,551 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 19:30:16,551 - root - INFO -     epoch time [s]: 823.65
+2025-09-16 19:30:16,551 - root - INFO -     training time [s]: 770.68
+2025-09-16 19:30:16,551 - root - INFO -     validation time [s]: 52.17
+2025-09-16 19:30:16,551 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 19:30:16,551 - root - INFO -     training step time [ms]: 140.76
+2025-09-16 19:30:16,551 - root - INFO -     minimal IO rate [GB/s]: 6.81
+2025-09-16 19:30:16,551 - root - INFO - Metrics:
+2025-09-16 19:30:16,551 - root - INFO -     training loss:   0.02561773732304573
+2025-09-16 19:30:16,551 - root - INFO -     validation loss: 0.0743052139878273
+2025-09-16 19:30:16,551 - root - INFO -     validation L1:   0.17999033629894257
+2025-09-16 19:30:16,551 - root - INFO -     validation u10m: 0.9287198781967163
+2025-09-16 19:30:16,551 - root - INFO -     validation t2m:  0.8719499707221985
+2025-09-16 19:30:16,551 - root - INFO -     validation u500: 1.9012047052383423
+2025-09-16 19:30:16,551 - root - INFO -     validation z500: 76.86627960205078
+2025-09-16 19:30:16,551 - root - INFO -     validation r500: 10.685473442077637
+2025-09-16 19:30:16,551 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 19:30:16,551 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 19:30:16,551 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 19:30:16,551 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 19:30:16,551 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 19:30:16,551 - root - INFO - --------------------------------------------------
+2025-09-16 19:44:06,181 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 19:44:06,899 - root - INFO - Save checkpoint (legacy): 0.72 sec (3.3527612686157227e-07) GB
+2025-09-16 19:44:06,900 - root - INFO - --------------------------------------------------
+2025-09-16 19:44:06,900 - root - INFO - Epoch 94 summary:
+2025-09-16 19:44:06,900 - root - INFO - Performance Parameters:
+2025-09-16 19:44:06,900 - root - INFO -     training steps: 5475
+2025-09-16 19:44:06,900 - root - INFO -     validation steps: 365
+2025-09-16 19:44:06,900 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 19:44:06,900 - root - INFO -     epoch time [s]: 830.35
+2025-09-16 19:44:06,900 - root - INFO -     training time [s]: 777.65
+2025-09-16 19:44:06,900 - root - INFO -     validation time [s]: 51.88
+2025-09-16 19:44:06,900 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 19:44:06,900 - root - INFO -     training step time [ms]: 142.04
+2025-09-16 19:44:06,900 - root - INFO -     minimal IO rate [GB/s]: 6.75
+2025-09-16 19:44:06,900 - root - INFO - Metrics:
+2025-09-16 19:44:06,900 - root - INFO -     training loss:   0.025252923369407654
+2025-09-16 19:44:06,900 - root - INFO -     validation loss: 0.0746259093284607
+2025-09-16 19:44:06,900 - root - INFO -     validation L1:   0.18023592233657837
+2025-09-16 19:44:06,900 - root - INFO -     validation u10m: 0.9309558868408203
+2025-09-16 19:44:06,900 - root - INFO -     validation t2m:  0.8688491582870483
+2025-09-16 19:44:06,900 - root - INFO -     validation u500: 1.9020007848739624
+2025-09-16 19:44:06,900 - root - INFO -     validation z500: 81.08370971679688
+2025-09-16 19:44:06,900 - root - INFO -     validation r500: 10.724203109741211
+2025-09-16 19:44:06,900 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 19:44:06,900 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 19:44:06,900 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 19:44:06,900 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 19:44:06,900 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 19:44:06,900 - root - INFO - --------------------------------------------------
+2025-09-16 19:57:58,809 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 19:57:59,510 - root - INFO - Save checkpoint (legacy): 0.70 sec (3.3527612686157227e-07) GB
+2025-09-16 19:57:59,511 - root - INFO - --------------------------------------------------
+2025-09-16 19:57:59,511 - root - INFO - Epoch 95 summary:
+2025-09-16 19:57:59,511 - root - INFO - Performance Parameters:
+2025-09-16 19:57:59,511 - root - INFO -     training steps: 5475
+2025-09-16 19:57:59,511 - root - INFO -     validation steps: 365
+2025-09-16 19:57:59,511 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 19:57:59,511 - root - INFO -     epoch time [s]: 832.61
+2025-09-16 19:57:59,511 - root - INFO -     training time [s]: 779.73
+2025-09-16 19:57:59,511 - root - INFO -     validation time [s]: 52.09
+2025-09-16 19:57:59,511 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 19:57:59,511 - root - INFO -     training step time [ms]: 142.42
+2025-09-16 19:57:59,511 - root - INFO -     minimal IO rate [GB/s]: 6.74
+2025-09-16 19:57:59,511 - root - INFO - Metrics:
+2025-09-16 19:57:59,511 - root - INFO -     training loss:   0.025878507643938065
+2025-09-16 19:57:59,511 - root - INFO -     validation loss: 0.07478747516870499
+2025-09-16 19:57:59,511 - root - INFO -     validation L1:   0.18036800622940063
+2025-09-16 19:57:59,511 - root - INFO -     validation u10m: 0.9324166774749756
+2025-09-16 19:57:59,511 - root - INFO -     validation t2m:  0.8684483170509338
+2025-09-16 19:57:59,512 - root - INFO -     validation u500: 1.9023637771606445
+2025-09-16 19:57:59,512 - root - INFO -     validation z500: 76.94523620605469
+2025-09-16 19:57:59,512 - root - INFO -     validation r500: 10.732170104980469
+2025-09-16 19:57:59,512 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 19:57:59,512 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 19:57:59,512 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 19:57:59,512 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 19:57:59,512 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 19:57:59,512 - root - INFO - --------------------------------------------------
+2025-09-16 20:12:01,898 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 20:12:02,640 - root - INFO - Save checkpoint (legacy): 0.74 sec (3.3527612686157227e-07) GB
+2025-09-16 20:12:02,641 - root - INFO - --------------------------------------------------
+2025-09-16 20:12:02,641 - root - INFO - Epoch 96 summary:
+2025-09-16 20:12:02,641 - root - INFO - Performance Parameters:
+2025-09-16 20:12:02,641 - root - INFO -     training steps: 5475
+2025-09-16 20:12:02,641 - root - INFO -     validation steps: 365
+2025-09-16 20:12:02,642 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 20:12:02,642 - root - INFO -     epoch time [s]: 843.13
+2025-09-16 20:12:02,642 - root - INFO -     training time [s]: 790.01
+2025-09-16 20:12:02,642 - root - INFO -     validation time [s]: 52.28
+2025-09-16 20:12:02,642 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 20:12:02,642 - root - INFO -     training step time [ms]: 144.29
+2025-09-16 20:12:02,642 - root - INFO -     minimal IO rate [GB/s]: 6.65
+2025-09-16 20:12:02,642 - root - INFO - Metrics:
+2025-09-16 20:12:02,642 - root - INFO -     training loss:   0.025215357542037964
+2025-09-16 20:12:02,642 - root - INFO -     validation loss: 0.07408931851387024
+2025-09-16 20:12:02,642 - root - INFO -     validation L1:   0.1802266538143158
+2025-09-16 20:12:02,642 - root - INFO -     validation u10m: 0.9294033646583557
+2025-09-16 20:12:02,642 - root - INFO -     validation t2m:  0.8651816844940186
+2025-09-16 20:12:02,642 - root - INFO -     validation u500: 1.896096110343933
+2025-09-16 20:12:02,642 - root - INFO -     validation z500: 77.58028411865234
+2025-09-16 20:12:02,642 - root - INFO -     validation r500: 10.749077796936035
+2025-09-16 20:12:02,642 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 20:12:02,642 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 20:12:02,642 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 20:12:02,642 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 20:12:02,642 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 20:12:02,642 - root - INFO - --------------------------------------------------
+2025-09-16 20:25:58,459 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 20:25:59,190 - root - INFO - Save checkpoint (legacy): 0.73 sec (3.3527612686157227e-07) GB
+2025-09-16 20:25:59,191 - root - INFO - --------------------------------------------------
+2025-09-16 20:25:59,191 - root - INFO - Epoch 97 summary:
+2025-09-16 20:25:59,191 - root - INFO - Performance Parameters:
+2025-09-16 20:25:59,191 - root - INFO -     training steps: 5475
+2025-09-16 20:25:59,191 - root - INFO -     validation steps: 365
+2025-09-16 20:25:59,192 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 20:25:59,192 - root - INFO -     epoch time [s]: 836.55
+2025-09-16 20:25:59,192 - root - INFO -     training time [s]: 783.38
+2025-09-16 20:25:59,192 - root - INFO -     validation time [s]: 52.38
+2025-09-16 20:25:59,192 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 20:25:59,192 - root - INFO -     training step time [ms]: 143.08
+2025-09-16 20:25:59,192 - root - INFO -     minimal IO rate [GB/s]: 6.70
+2025-09-16 20:25:59,192 - root - INFO - Metrics:
+2025-09-16 20:25:59,192 - root - INFO -     training loss:   0.024816351011395454
+2025-09-16 20:25:59,192 - root - INFO -     validation loss: 0.07428142428398132
+2025-09-16 20:25:59,192 - root - INFO -     validation L1:   0.18031731247901917
+2025-09-16 20:25:59,192 - root - INFO -     validation u10m: 0.9314581751823425
+2025-09-16 20:25:59,192 - root - INFO -     validation t2m:  0.869240939617157
+2025-09-16 20:25:59,192 - root - INFO -     validation u500: 1.896640419960022
+2025-09-16 20:25:59,192 - root - INFO -     validation z500: 77.05574035644531
+2025-09-16 20:25:59,192 - root - INFO -     validation r500: 10.803369522094727
+2025-09-16 20:25:59,192 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 20:25:59,192 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 20:25:59,192 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 20:25:59,192 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 20:25:59,192 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 20:25:59,192 - root - INFO - --------------------------------------------------
+2025-09-16 20:39:53,034 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 20:39:53,787 - root - INFO - Save checkpoint (legacy): 0.75 sec (3.3527612686157227e-07) GB
+2025-09-16 20:39:53,788 - root - INFO - --------------------------------------------------
+2025-09-16 20:39:53,788 - root - INFO - Epoch 98 summary:
+2025-09-16 20:39:53,789 - root - INFO - Performance Parameters:
+2025-09-16 20:39:53,789 - root - INFO -     training steps: 5475
+2025-09-16 20:39:53,789 - root - INFO -     validation steps: 365
+2025-09-16 20:39:53,790 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 20:39:53,790 - root - INFO -     epoch time [s]: 834.60
+2025-09-16 20:39:53,790 - root - INFO -     training time [s]: 781.31
+2025-09-16 20:39:53,790 - root - INFO -     validation time [s]: 52.38
+2025-09-16 20:39:53,791 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 20:39:53,791 - root - INFO -     training step time [ms]: 142.71
+2025-09-16 20:39:53,791 - root - INFO -     minimal IO rate [GB/s]: 6.72
+2025-09-16 20:39:53,791 - root - INFO - Metrics:
+2025-09-16 20:39:53,792 - root - INFO -     training loss:   0.025568388402462006
+2025-09-16 20:39:53,792 - root - INFO -     validation loss: 0.07445193827152252
+2025-09-16 20:39:53,792 - root - INFO -     validation L1:   0.18023088574409485
+2025-09-16 20:39:53,792 - root - INFO -     validation u10m: 0.9309790134429932
+2025-09-16 20:39:53,792 - root - INFO -     validation t2m:  0.8736448287963867
+2025-09-16 20:39:53,793 - root - INFO -     validation u500: 1.8962202072143555
+2025-09-16 20:39:53,793 - root - INFO -     validation z500: 77.3988037109375
+2025-09-16 20:39:53,793 - root - INFO -     validation r500: 10.76363468170166
+2025-09-16 20:39:53,793 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 20:39:53,794 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 20:39:53,794 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 20:39:53,794 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 20:39:53,794 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 20:39:53,795 - root - INFO - --------------------------------------------------
+2025-09-16 20:53:55,278 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 20:53:56,051 - root - INFO - Save checkpoint (legacy): 0.77 sec (3.3527612686157227e-07) GB
+2025-09-16 20:53:56,057 - root - INFO - --------------------------------------------------
+2025-09-16 20:53:56,058 - root - INFO - Epoch 99 summary:
+2025-09-16 20:53:56,058 - root - INFO - Performance Parameters:
+2025-09-16 20:53:56,058 - root - INFO -     training steps: 5475
+2025-09-16 20:53:56,058 - root - INFO -     validation steps: 365
+2025-09-16 20:53:56,059 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 20:53:56,059 - root - INFO -     epoch time [s]: 842.26
+2025-09-16 20:53:56,059 - root - INFO -     training time [s]: 789.32
+2025-09-16 20:53:56,059 - root - INFO -     validation time [s]: 52.09
+2025-09-16 20:53:56,060 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 20:53:56,060 - root - INFO -     training step time [ms]: 144.17
+2025-09-16 20:53:56,060 - root - INFO -     minimal IO rate [GB/s]: 6.65
+2025-09-16 20:53:56,060 - root - INFO - Metrics:
+2025-09-16 20:53:56,060 - root - INFO -     training loss:   0.024265622720122337
+2025-09-16 20:53:56,061 - root - INFO -     validation loss: 0.07419788092374802
+2025-09-16 20:53:56,061 - root - INFO -     validation L1:   0.18020617961883545
+2025-09-16 20:53:56,061 - root - INFO -     validation u10m: 0.9340815544128418
+2025-09-16 20:53:56,061 - root - INFO -     validation t2m:  0.8706955909729004
+2025-09-16 20:53:56,062 - root - INFO -     validation u500: 1.89352285861969
+2025-09-16 20:53:56,062 - root - INFO -     validation z500: 77.9569320678711
+2025-09-16 20:53:56,062 - root - INFO -     validation r500: 10.779709815979004
+2025-09-16 20:53:56,062 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 20:53:56,063 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 20:53:56,063 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 20:53:56,063 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 20:53:56,063 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 20:53:56,064 - root - INFO - --------------------------------------------------
+2025-09-16 21:07:57,991 - root - INFO - Writing checkpoint to /work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/ckpt_mp{mp_rank}.tar (legacy format)
+2025-09-16 21:07:58,753 - root - INFO - Save checkpoint (legacy): 0.76 sec (3.3527612686157227e-07) GB
+2025-09-16 21:07:58,755 - root - INFO - --------------------------------------------------
+2025-09-16 21:07:58,755 - root - INFO - Epoch 100 summary:
+2025-09-16 21:07:58,755 - root - INFO - Performance Parameters:
+2025-09-16 21:07:58,756 - root - INFO -     training steps: 5475
+2025-09-16 21:07:58,756 - root - INFO -     validation steps: 365
+2025-09-16 21:07:58,756 - root - INFO -     memory footprint [GB]: 20.14
+2025-09-16 21:07:58,757 - root - INFO -     epoch time [s]: 842.69
+2025-09-16 21:07:58,757 - root - INFO -     training time [s]: 789.49
+2025-09-16 21:07:58,757 - root - INFO -     validation time [s]: 52.36
+2025-09-16 21:07:58,757 - root - INFO -     visualization time [s]: 0.00
+2025-09-16 21:07:58,757 - root - INFO -     training step time [ms]: 144.20
+2025-09-16 21:07:58,758 - root - INFO -     minimal IO rate [GB/s]: 6.65
+2025-09-16 21:07:58,758 - root - INFO - Metrics:
+2025-09-16 21:07:58,758 - root - INFO -     training loss:   0.02489132434129715
+2025-09-16 21:07:58,758 - root - INFO -     validation loss: 0.07471662014722824
+2025-09-16 21:07:58,759 - root - INFO -     validation L1:   0.18041524291038513
+2025-09-16 21:07:58,759 - root - INFO -     validation u10m: 0.9332442879676819
+2025-09-16 21:07:58,759 - root - INFO -     validation t2m:  0.8658883571624756
+2025-09-16 21:07:58,759 - root - INFO -     validation u500: 1.8931374549865723
+2025-09-16 21:07:58,760 - root - INFO -     validation z500: 80.0599136352539
+2025-09-16 21:07:58,760 - root - INFO -     validation r500: 10.802834510803223
+2025-09-16 21:07:58,760 - root - INFO -     ACC AUC u10m:    0.0
+2025-09-16 21:07:58,760 - root - INFO -     ACC AUC t2m:     0.0
+2025-09-16 21:07:58,760 - root - INFO -     ACC AUC u500:    0.0
+2025-09-16 21:07:58,761 - root - INFO -     ACC AUC z500:    0.0
+2025-09-16 21:07:58,761 - root - INFO -     ACC AUC r500:    0.0
+2025-09-16 21:07:58,761 - root - INFO - --------------------------------------------------
