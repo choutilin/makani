@@ -251,24 +251,25 @@ vars43:
 
 vars33: &vars33
     <<: *OUT_OF_BOX_CONFIG
-    num_layers: 8  # we are getting CUDA out of memory issues!???  #choutilin 250623
+    num_layers: 8 #4  # choutilin 250911:  Prof. Bo-Fu said we are under-training
+    embed_dim: 128 # choutilin 250911:  Prof. Bo-Fu's group said this should roughly be 4* N(variables)
+    scale_factor: 3 # choutilin250911: 6? 8?
     valid_autoreg_steps: 180  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
     loss: "weighted absolute squared geometric l2"
     channel_weights: "auto"
-    batch_size: 1 # must be the N * num(gpus) originally 64 lkkbox250429
     optimizer_type: "AdamW"
     #metadata_json_path: "/work/lkkbox945/models/makani/v250508/datasets/era5/data_fcn1Vars20.json"
     metadata_json_path: "/work/choutilin1/out_vars33/vars33.json"
     train_data_path: "/work/choutilin1/data_4d/train"
     valid_data_path: "/work/choutilin1/data_4d/test"
     inf_data_path: "/work/choutilin1/data_4d/inf"
-    global_means_path: "/work/choutilin1/out_vars33/global_means_2011-2016.npy"
-    global_stds_path: "/work/choutilin1/out_vars33/global_stds_2011-2016.npy"
-    time_means_path: "/work/choutilin1/out_vars33/time_means_2011-2016.npy"
+    global_means_path: "/work/choutilin1/out_vars33/global_means_2011-2014.npy"
+    global_stds_path: "/work/choutilin1/out_vars33/global_stds_2011-2014.npy"
+    time_means_path: "/work/choutilin1/out_vars33/time_means_2011-2014.npy"
     exp_dir: "/work/choutilin1/out_vars33"
-    n_eval_samples: 1460 # for validation
+    n_eval_samples: 1460 # Prof. Bo-Fu said L2 loss curve is not very meaningful anyways
     max_epochs: 29
-    n_train_samples_per_epoch: 7300  # for training
+    n_train_samples_per_epoch: 21900  # for training
     channel_names: [ "u10m" , "v10m" , "mslp" , "t2m" , "sp"  ,
                      "u1000", "v1000", "z1000",
                      "t850" , "u850" , "v850" , "z850", "r850",
@@ -292,32 +293,7 @@ vars33_H:
                      "snsh" , "snlh" , "snsw" , "snlw"]
 
 
-vars33_I:
-    <<: *vars33
-    valid_autoreg_steps: 0 #19  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
-    max_epochs: 37
-    channel_names: [ "u10m" , "v10m" , "mslp" , "t2m" ,
-                     "u1000", "v1000", "z1000",
-                     "t850" , "u850" , "v850" , "z850", "r850",
-                     "t500" , "u500" , "v500" , "z500", "r500",
-                     "tcwv" ,
-                     "sst"  , "ssu"  , "ssv" ,
-                     "snsh" , "snlh" , "snsw" , "snlw",
-                     "gx-mslp" , "gy-mslp" ]
 
-
-vars33_J:
-    <<: *vars33
-    valid_autoreg_steps: 19  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
-    max_epochs: 29
-    channel_names: [ "u10m" , "v10m" , "mslp" , "t2m" , "sp"  ,
-                     "u1000", "v1000", "z1000",
-                     "t850" , "u850" , "v850" , "z850", "r850",
-                     "t500" , "u500" , "v500" , "z500", "r500",
-                     "z50"  , "tcwv" ,
-                     "sst"  , "ssh"  , "ssu"  , "ssv" ,
-                     "snsh" , "snlh" , "snsw" , "snlw",
-                     "gx-mslp" , "gy-mslp" ]
 
 
 vars33_L:
@@ -351,6 +327,47 @@ vars33_O:
                      "t850" , "u850" , "v850" , "z850", "r850",
                      "t500" , "u500" , "v500" , "z500", "r500",
                      "z50"  , "tcwv" , "ssu"  ]
+
+
+vars33_T:
+    <<: *vars33
+    valid_autoreg_steps: 180  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
+    max_epochs: 60
+    channel_names: [ "u10m" , "v10m" , "mslp" , "t2m" , "sp"  ,
+                     "u1000", "v1000", "z1000",
+                     "t850" , "u850" , "v850" , "z850", "r850",
+                     "t500" , "u500" , "v500" , "z500", "r500",
+                     "z50"  , "tcwv" ,
+                     "sst"  , "ssu"  , "ssv"  ,
+                     "MLD"  , "D15"  , "D20"  ,
+                     "snsh" , "snlh" , "snsw" , "snlw"]
+
+
+vars33_U:
+    <<: *vars33
+    valid_autoreg_steps: 180  # choutilin 250708: Set this to 0 during training, otherwise you will OOM
+    batch_size: 1 # must be the N * num(gpus) originally 64 lkkbox250429
+    max_epochs: 78 #60
+    n_eval_samples: 10 # Prof. Bo-Fu said L2 loss curve is not very meaningful anyways
+    n_train_samples_per_epoch: 365 #1460  # for training
+    finetune: !!bool True
+    pretrained_checkpoint_path: "/work/choutilin1/out_vars33/vars33_U/01/training_checkpoints/main_branch/epoch77_ckpt_mp0.tar"
+    lr: 1E-3
+    scheduler: "None"
+    lr_warmup_steps: 0
+    optimizer_type: "Adam"
+    optimizer_beta1: 0.  # 0.9
+    optimizer_beta2: 0.  # 0.95
+    optimizer_max_grad_norm: 32  # only used in FusedLAMB
+    channel_names: [ "u10m" , "v10m" , "mslp" , "t2m" , "sp"  ,
+                     "u1000", "v1000", "z1000",
+                     "t850" , "u850" , "v850" , "z850", "r850",
+                     "t500" , "u500" , "v500" , "z500", "r500",
+                     "z50"  , "tcwv" ,
+                     "sst"  , "ssh"  , "ssu"  , "ssv" ,
+                     "D15"  , "D20"  ,
+                     "snsh" , "snlh" , "snsw" , "snlw",
+                     "sst-dt"]
 
 
 
