@@ -65,6 +65,7 @@ if __name__ == "__main__":
     parser.add_argument("--overwrite_output_path", default=False, type=bool, help="overwrite the output path path")
     parser.add_argument("--inference_ic", default=0, type=int, help="num of inits to infer")
     parser.add_argument("--inference_num_channels", default=False, type=bool, help="num of channels to infer")
+    parser.add_argument("--samples_offset", default=0, type=int, help="inference IC (choutilin version)")
 
     # parse
     args = parser.parse_args()
@@ -73,6 +74,7 @@ if __name__ == "__main__":
     params = YParams(os.path.abspath(args.yaml_config), args.config)
     params["epsilon_factor"] = args.epsilon_factor
 
+    params["samples_offset"] = args.samples_offset
     # distributed
     params["fin_parallel_size"] = args.fin_parallel_size
     params["fout_parallel_size"] = args.fout_parallel_size
@@ -345,4 +347,3 @@ if __name__ == "__main__":
 
     else:
         raise ValueError(f"Unknown training mode {args.mode}")
-
