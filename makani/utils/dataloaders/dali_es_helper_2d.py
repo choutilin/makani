@@ -72,6 +72,7 @@ class GeneralES(object):
         enable_odirect=False,
         seed=333,
         is_parallel=True,
+        samples_offset=0,
     ):
         self.batch_size = batch_size
         self.location = location
@@ -97,6 +98,7 @@ class GeneralES(object):
         self.zenith_angle = zenith_angle
         self.dataset_path = dataset_path
         self.lat_lon = lat_lon
+        self.samples_offset = samples_offset
 
         # O_DIRECT specific stuff
         self.file_driver = "direct" if enable_odirect else None
@@ -299,7 +301,9 @@ class GeneralES(object):
             self.n_samples_offset = 0
 
         # choutilin 250822
-        #self.n_samples_offset = 222
+        #self.n_samples_offset = 372 #1092 #724 #360
+        if self.samples_offset >0:
+            self.n_samples_offset = self.samples_offset
         #
 
         # number of steps per epoch
@@ -438,6 +442,8 @@ class GeneralES(object):
             self.last_cycle_epoch = cycle_epoch_idx
             # generate a unique seed and permutation:
             rng = np.random.default_rng(seed=self.base_seed + cycle_epoch_idx)
+            # choutilin 250922
+            #rng = np.random.default_rng(seed=33503 + cycle_epoch_idx)
 
             # shufle if requested
             if self.shuffle:
