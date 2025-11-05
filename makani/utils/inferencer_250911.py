@@ -207,11 +207,6 @@ class Inferencer(Trainer):
 
 
     def _autoregressive_inf_lite(self, data, output_data=False, output_channels=[0, 1]):
-        
-        #choutilin 251021:  Try to "turn off" SST
-        time_means = torch.from_numpy( (np.load("/work/choutilin1/out_vars33/time_means_2006-2015.npy")-np.load("/work/choutilin1/out_vars33/global_means_2006-2015.npy"))/np.load("/work/choutilin1/out_vars33/global_stds_2006-2015.npy") )
-        #
-
         # map to gpu
         gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
 
@@ -234,33 +229,17 @@ class Inferencer(Trainer):
         #inpt[0, 2] += torch.normal( mean=0., std=3e-3, size=(721,1440), dtype=torch.float32, device=self.device )
         #inpt[0, 3] += torch.normal( mean=0., std=4e-3, size=(721,1440), dtype=torch.float32, device=self.device )
         #inpt[0,20] += torch.normal( mean=0., std=3e-1, size=(721,1440), dtype=torch.float32, device=self.device )
-        ###choutilin 251021:  Try to "turn off" SST
-        #inpt[0,20] = time_means[0,20] #SST
-        #inpt[0,21] = time_means[0,21] #SSH
-        #inpt[0,22] = time_means[0,22] #SSU
-        #inpt[0,23] = time_means[0,23] #SSV
-        #inpt[0,24] = time_means[0,25] #D15
-        #inpt[0,25] = time_means[0,26] #D20
-        #inpt[0,30] = time_means[0,31] #sst-dt
-        ###
 
         for idt in range(self.params.valid_autoreg_steps+1):  # idt starts with 0
             # FW pass
             with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
                 pred = self.model(inpt)
 
+            #choutilin 250829  # Give up on predicting SST, always use the first image instead
             #if not (idt+1)%4==0:   # Predict SST once every day (every four steps)
             if True:
-                ###choutilin 251021:  Try to "turn off" SST
-                #pred[0,20] = inpt[0,20] #SST
-                #pred[0,21] = inpt[0,21] #SSH
-                #pred[0,22] = inpt[0,22] #SSU
-                #pred[0,23] = inpt[0,23] #SSV
-                #pred[0,30] = inpt[0,30] #sst-dt
-                # sst + sst-dt  # Be careful about normalization
-                pred[0,20] = inpt[0,20] + pred[0,30]*0.055006623/11.664563 +1.0467988e-05/11.664563  # vars33_V
-                ### Ugh put in all the means and stds
-                #pred[0,23] = inpt[0,23] #MLD
+                #pred[0,20] = inpt[0,20] #sst
+                pred[0,23] = inpt[0,23] #MLD
                 pred[0,24] = inpt[0,24] #D15
                 pred[0,25] = inpt[0,25] #D20
 

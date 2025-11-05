@@ -49,7 +49,6 @@ class SingleStepWrapper(nn.Module):
         inpans[0,24,:,:] *= inpans[0,-1,:,:]
         inpans[0,25,:,:] *= inpans[0,-1,:,:]
         #inpans[0,26,:,:] *= inpans[0,-1,:,:]
-        inpans[0,30,:,:] *= 0
         # forward pass
         yn = self.model(inpans)
 
@@ -58,17 +57,16 @@ class SingleStepWrapper(nn.Module):
         # mask not just the input, but also the DENORMALIZED output of the model
         #y[0,18,:,:] *= inpans[0,-1,:,:]
         #y[0,19,:,:] *= inpans[0,-1,:,:]
-        #y[0,20,:,:] *= inpans[0,-1,:,:]  # f20 is gonna be overwritten by the previous f20 + f31
+        y[0,20,:,:] *= inpans[0,-1,:,:]
         y[0,21,:,:] *= inpans[0,-1,:,:]
         y[0,22,:,:] *= inpans[0,-1,:,:]
         y[0,23,:,:] *= inpans[0,-1,:,:]
         y[0,24,:,:] *= inpans[0,-1,:,:]
         y[0,25,:,:] *= inpans[0,-1,:,:]
         #y[0,26,:,:] *= inpans[0,-1,:,:]
-        y[0,30,:,:] *= inpans[0,-1,:,:]
         #
         # add residual (for residual learning, no-op for direct learning
-        y = self.preprocessor.add_residual(inp, y)
+        #y = self.preprocessor.add_residual(inp, y)
 
         return y
 
@@ -149,7 +147,7 @@ class MultiStepWrapper(nn.Module):
     def forward(self, inp):
         # choutilin 250618
         raise Exception("Let me make sure we're not using MultiStepWrapper")
-
+        return None
         # decide which routine to call
         if self.training:
             y = self._forward_train(inp)

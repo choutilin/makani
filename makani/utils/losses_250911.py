@@ -60,10 +60,8 @@ class LossHandler(nn.Module):
             if params.channel_weights == "auto":
                 channel_weights = torch.ones(params.N_out_channels, dtype=torch.float32)
                 for c, chn in enumerate(params.channel_names):
-                    if chn in ["sst","MLD","D15","D20"]:
+                    if chn in ["MLD","D15","D20"]:
                         channel_weights[c] = 0.0 #1.0
-                        #elif chn in ["sst-dt"]:
-                        #channel_weights[c] = 3.0
                     else:
                         channel_weights[c] = 1.0 #0.2 #0.25 #0.1
                     '''
