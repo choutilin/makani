@@ -213,7 +213,7 @@ class ERA5DaliESDataloader(object):
             enable_logging=params.log_to_screen,
             seed=333,
             is_parallel=True,
-            samples_offset=params.samples_offset,
+            samples_offset = params.samples_offset if hasattr(params,"samples_offset") else 0,
         )
 
         # grid types
