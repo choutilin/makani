@@ -250,7 +250,7 @@ if __name__ == "__main__":
 
             # variables
             for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
+                h.createVariable(varName, 'f4', dimNames)
                 h[varName][:] = predictions[:, iVar, :, :].squeeze()
 
         print(f'predictions saved to {output_path}')
@@ -266,7 +266,7 @@ if __name__ == "__main__":
                 h[dimName][:] = dimVal
             # variables
             for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
+                h.createVariable(varName, 'f4', dimNames)
                 h[varName][:] = targets[:, iVar, :, :].squeeze()
 
 
@@ -340,7 +340,7 @@ if __name__ == "__main__":
 
             # variables
             for iVar, varName in enumerate(varNames):
-                h.createVariable(varName, 'float', dimNames)
+                h.createVariable(varName, 'f4', dimNames)
                 h[varName][:] = predictions[:, iVar, :, :].squeeze()
 
         print(f'predictions saved to {output_path}')
