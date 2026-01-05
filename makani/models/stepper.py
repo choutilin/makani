@@ -43,8 +43,10 @@ class SingleStepWrapper(nn.Module):
         #       and the inverted mask is inpans[0,-2,:,:]
 
         for i,channel_name in enumerate(self.channel_names):
-            if channel_name in ["sst","ssh","ssu","ssv","D15","D20","MLD","sst-dt"]:
+            if channel_name in ["sst","ssh","ssu","ssv","D15","D20","MLD"]:
                 inpans[0,i,:,:] *= inpans[0,-1,:,:]
+            elif channel_name in ["sst-dt"]:
+                inpans[0,i,:,:] *= 0  # DO NOT learn sst-dt based on the previous sst-dt
 
         # forward pass
         yn = self.model(inpans)
@@ -54,8 +56,10 @@ class SingleStepWrapper(nn.Module):
         # mask not just the input, but also the DENORMALIZED output of the model
 
         for i,channel_name in enumerate(self.channel_names):
-            if channel_name in ["sst","ssh","ssu","ssv","D15","D20","MLD","sst-dt"]:
+            if channel_name in ["ssh","ssu","ssv","D15","D20","MLD","sst-dt"]:
                 y[0,i,:,:] *= inpans[0,-1,:,:]
+            elif channel_name in ["sst"]:
+                pass  # no need to handle the output sst because it's gonna be ignored anyway
 
         # add residual (for residual learning, no-op for direct learning
         #y = self.preprocessor.add_residual(inp, y)
