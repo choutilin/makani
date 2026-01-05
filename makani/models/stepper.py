@@ -23,6 +23,7 @@ class SingleStepWrapper(nn.Module):
         super(SingleStepWrapper, self).__init__()
         self.preprocessor = Preprocessor2D(params)
         self.model = model_handle()
+        self.channel_names = params.channel_names
 
     def forward(self, inp):
         # first append unpredicted features
@@ -40,31 +41,22 @@ class SingleStepWrapper(nn.Module):
         #raise Exception
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
-        #inpans[0,18,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,19,:,:] *= inpans[0,-1,:,:]
-        inpans[0,20,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,21,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,22,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,23,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,24,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,25,:,:] *= inpans[0,-1,:,:]
-        #inpans[0,26,:,:] *= inpans[0,-1,:,:]
+
+        for i,channel_name in enumerate(self.channel_names):
+            if channel_name in ["sst","ssh","ssu","ssv","D15","D20","MLD","sst-dt"]:
+                inpans[0,i,:,:] *= inpans[0,-1,:,:]
+
         # forward pass
         yn = self.model(inpans)
 
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
         # mask not just the input, but also the DENORMALIZED output of the model
-        #y[0,18,:,:] *= inpans[0,-1,:,:]
-        #y[0,19,:,:] *= inpans[0,-1,:,:]
-        y[0,20,:,:] *= inpans[0,-1,:,:]
-        #y[0,21,:,:] *= inpans[0,-1,:,:]
-        #y[0,22,:,:] *= inpans[0,-1,:,:]
-        #y[0,23,:,:] *= inpans[0,-1,:,:]
-        #y[0,24,:,:] *= inpans[0,-1,:,:]
-        #y[0,25,:,:] *= inpans[0,-1,:,:]
-        #y[0,26,:,:] *= inpans[0,-1,:,:]
-        #
+
+        for i,channel_name in enumerate(self.channel_names):
+            if channel_name in ["sst","ssh","ssu","ssv","D15","D20","MLD","sst-dt"]:
+                y[0,i,:,:] *= inpans[0,-1,:,:]
+
         # add residual (for residual learning, no-op for direct learning
         #y = self.preprocessor.add_residual(inp, y)
 
