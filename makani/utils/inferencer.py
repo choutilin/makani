@@ -130,7 +130,7 @@ class Inferencer(Trainer):
         # print(f'{params.N_in_channels = }')
         # print(f'{params.N_out_channels = }')
         # print(f'{params["n_future"] = }')
-        
+
         self.model = model_registry.get_model(params).to(self.device)
         self.preprocessor = self.model.preprocessor
 
@@ -160,10 +160,6 @@ class Inferencer(Trainer):
         self.global_means_paths = params.global_means_path
         self.global_stds_paths = params.global_stds_path
 
-        # choutilin 250725
-        self.RMSE_over_time  = torch.zeros((params.valid_autoreg_steps+1, params.N_out_channels), dtype=torch.float32, device=self.device)
-        self.RMSE_over_space = torch.zeros((params.N_out_channels, 721, 1440), dtype=torch.float32, device=self.device)
-
     def _autoregressive_inference(self, data, compute_metrics=False, output_data=False, output_channels=[0, 1]):
         # map to gpu
         gdata = map(lambda x: x.to(self.device, dtype=torch.float32), data)
@@ -189,12 +185,6 @@ class Inferencer(Trainer):
             # put in the metrics handler
             if compute_metrics:
                 self.metrics.update(pred, targ, loss, idt)
-                # choutilin 250725  # pred and targ have shapes (1, 26, 721, 1440)
-                sqdif = (pred-targ)[0]**2
-                sqdif_over_time  = torch.mean(sqdif,dim=(-1,-2))
-                #sqdif_over_space = torch.mean(sqdif,dim=0)
-                self.RMSE_over_time[idt] += sqdif_over_time
-                self.RMSE_over_space     += sqdif
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))
@@ -207,9 +197,9 @@ class Inferencer(Trainer):
 
 
     def _autoregressive_inf_lite(self, data, output_data=False, output_channels=[0, 1]):
-        
+
         #choutilin 251021:  Try to "turn off" SST
-        time_means = torch.from_numpy( (np.load("/work/choutilin1/out_vars33/time_means_2006-2015.npy")-np.load("/work/choutilin1/out_vars33/global_means_2006-2015.npy"))/np.load("/work/choutilin1/out_vars33/global_stds_2006-2015.npy") )
+        #time_means = torch.from_numpy( (np.load("/work/choutilin1/out_vars85/time_means_2006-2015.npy")-np.load("/work/choutilin1/out_vars85/global_means_2006-2015.npy"))/np.load("/work/choutilin1/out_vars85/global_stds_2006-2015.npy") )
         #
 
         # map to gpu
@@ -230,18 +220,14 @@ class Inferencer(Trainer):
 
             break ### I'm not sure this is the right path to take...
 
-        ### Perturb ###
-        #inpt[0, 2] += torch.normal( mean=0., std=3e-3, size=(721,1440), dtype=torch.float32, device=self.device )
-        #inpt[0, 3] += torch.normal( mean=0., std=4e-3, size=(721,1440), dtype=torch.float32, device=self.device )
-        #inpt[0,20] += torch.normal( mean=0., std=3e-1, size=(721,1440), dtype=torch.float32, device=self.device )
         ###choutilin 251021:  Try to "turn off" SST
-        #inpt[0,20] = time_means[0,20] #SST
-        #inpt[0,21] = time_means[0,21] #SSH
-        #inpt[0,22] = time_means[0,22] #SSU
-        #inpt[0,23] = time_means[0,23] #SSV
-        #inpt[0,24] = time_means[0,25] #D15
-        #inpt[0,25] = time_means[0,26] #D20
-        #inpt[0,30] = time_means[0,31] #sst-dt
+        #inpt[0,77] = time_means[0,77] #sst-dt
+        #inpt[0,78] = time_means[0,78] #SST
+        #inpt[0,79] = time_means[0,79] #SSH
+        #inpt[0,80] = time_means[0,80] #SSU
+        #inpt[0,81] = time_means[0,81] #SSV
+        #inpt[0,82] = time_means[0,82] #D15
+        #inpt[0,83] = time_means[0,83] #D20
         ###
 
         for idt in range(self.params.valid_autoreg_steps+1):  # idt starts with 0
@@ -251,18 +237,19 @@ class Inferencer(Trainer):
 
             #if not (idt+1)%4==0:   # Predict SST once every day (every four steps)
             if True:
+                pass
                 ###choutilin 251021:  Try to "turn off" SST
-                #pred[0,20] = inpt[0,20] #SST
-                #pred[0,21] = inpt[0,21] #SSH
-                #pred[0,22] = inpt[0,22] #SSU
-                #pred[0,23] = inpt[0,23] #SSV
-                #pred[0,30] = inpt[0,30] #sst-dt
-                # sst + sst-dt  # Be careful about normalization
-                pred[0,20] = inpt[0,20] + pred[0,30]*0.055006623/11.664563 +1.0467988e-05/11.664563  # vars33_V
-                ### Ugh put in all the means and stds
-                #pred[0,23] = inpt[0,23] #MLD
-                pred[0,24] = inpt[0,24] #D15
-                pred[0,25] = inpt[0,25] #D20
+                #pred[0,77] = inpt[0,77] #sst-dt
+                #pred[0,78] = inpt[0,78] #SST
+                #pred[0,79] = inpt[0,79] #SSH
+                #pred[0,80] = inpt[0,80] #SSU
+                #pred[0,81] = inpt[0,81] #SSV
+                #### sst + sst-dt  # Be careful about normalization
+                #### Ugh put in all the means and stds
+                pred[0,78] = inpt[0,78] + pred[0,77]*0.055006623/11.664563 +1.0467988e-05/11.664563  # vars85_S 2006~2015
+                #pred[0,78] = inpt[0,78] + pred[0,77]*0.0554899834/11.6495190 -1.84335946e-07/11.6495190  # vars86 2006~2014
+                pred[0,82] = inpt[0,82]  # keep D15 fixed
+                pred[0,83] = inpt[0,83]  # keep D20 fixed
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))
@@ -391,13 +378,6 @@ class Inferencer(Trainer):
                     eval_steps += 1
 
                     self._autoregressive_inference(data, compute_metrics=True, output_data=False, output_channels=False)
-
-        # choutilin 250725
-        self.RMSE_over_space /= (self.params.valid_autoreg_steps+1)
-        self.RMSE_over_time  /= eval_steps
-        self.RMSE_over_space /= eval_steps
-        self.RMSE_over_time   = torch.sqrt(self.RMSE_over_time)
-        self.RMSE_over_space  = torch.sqrt(self.RMSE_over_space)
 
         # create final logs
         logs, acc_curves, rmse_curves = self.metrics.finalize(final_inference=True)
