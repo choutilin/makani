@@ -56,7 +56,8 @@ class SingleStepWrapper(nn.Module):
         y = self.preprocessor.history_denormalize(yn, target=True)
         # mask not just the input, but also the DENORMALIZED output of the model
         for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
-            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD","sst-dt"]: # no need to handle the output sst because it's gonna be ignored later on anyway
+            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD","sst-dt"]:
+                # no need to handle the output sst because it's gonna be ignored later on, but whatever
                 y[0,i,:,:] *= lsm
 
         # add residual (for residual learning, no-op for direct learning
