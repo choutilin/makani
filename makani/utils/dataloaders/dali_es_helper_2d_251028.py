@@ -72,7 +72,6 @@ class GeneralES(object):
         enable_odirect=False,
         seed=333,
         is_parallel=True,
-        samples_offset=0,
     ):
         self.batch_size = batch_size
         self.location = location
@@ -98,7 +97,6 @@ class GeneralES(object):
         self.zenith_angle = zenith_angle
         self.dataset_path = dataset_path
         self.lat_lon = lat_lon
-        self.samples_offset = samples_offset
 
         # O_DIRECT specific stuff
         self.file_driver = "direct" if enable_odirect else None
@@ -301,9 +299,7 @@ class GeneralES(object):
             self.n_samples_offset = 0
 
         # choutilin 250822
-        #self.n_samples_offset = 372 #1092 #724 #360
-        if self.samples_offset >0:
-            self.n_samples_offset = self.samples_offset
+        self.n_samples_offset = 372 #1092 #724 #360
         #
 
         # number of steps per epoch
@@ -510,4 +506,3 @@ class GeneralES(object):
         torch.cuda.nvtx.range_pop()
 
         return result
-
