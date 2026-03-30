@@ -23,7 +23,6 @@ class SingleStepWrapper(nn.Module):
         super(SingleStepWrapper, self).__init__()
         self.preprocessor = Preprocessor2D(params)
         self.model = model_handle()
-        self.channel_names = params.channel_names
 
     def forward(self, inp):
         # first append unpredicted features
@@ -41,24 +40,27 @@ class SingleStepWrapper(nn.Module):
         #raise Exception
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
-        lsm = inpans[0,-1,:,:]
-
-        for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
-            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD"]:
-                inpans[0,i,:,:] *= lsm
-            elif channel_name in ["sst-dt"]:
-                inpans[0,i,:,:] *= 0  # DO NOT learn sst-dt based on the previous sst-dt
-
+        inpans[0,77,:,:] *= 0
+        inpans[0,78,:,:] *= inpans[0,-1,:,:]
+        inpans[0,79,:,:] *= inpans[0,-1,:,:]
+        inpans[0,80,:,:] *= inpans[0,-1,:,:]
+        inpans[0,81,:,:] *= inpans[0,-1,:,:]
+        inpans[0,82,:,:] *= inpans[0,-1,:,:]
+        inpans[0,83,:,:] *= inpans[0,-1,:,:]
         # forward pass
         yn = self.model(inpans)
 
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
         # mask not just the input, but also the DENORMALIZED output of the model
-        for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
-            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD","sst-dt"]: # no need to handle the output sst because it's gonna be ignored later on anyway
-                y[0,i,:,:] *= lsm
-
+        y[0,77,:,:] *= inpans[0,-1,:,:]
+        #y[0,78,:,:] *= inpans[0,-1,:,:]  # f78 is gonna be overwritten by f77 + the previous f78
+        y[0,79,:,:] *= inpans[0,-1,:,:]
+        y[0,80,:,:] *= inpans[0,-1,:,:]
+        y[0,81,:,:] *= inpans[0,-1,:,:]
+        y[0,82,:,:] *= inpans[0,-1,:,:]
+        y[0,83,:,:] *= inpans[0,-1,:,:]
+        #
         # add residual (for residual learning, no-op for direct learning
         y = self.preprocessor.add_residual(inp, y)
 
