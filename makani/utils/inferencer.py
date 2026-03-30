@@ -130,7 +130,7 @@ class Inferencer(Trainer):
         # print(f'{params.N_in_channels = }')
         # print(f'{params.N_out_channels = }')
         # print(f'{params["n_future"] = }')
-
+        
         self.model = model_registry.get_model(params).to(self.device)
         self.preprocessor = self.model.preprocessor
 
@@ -197,9 +197,9 @@ class Inferencer(Trainer):
 
 
     def _autoregressive_inf_lite(self, data, output_data=False, output_channels=[0, 1]):
-
+        
         #choutilin 251021:  Try to "turn off" SST
-        #time_means = torch.from_numpy( (np.load("/work/choutilin1/out_vars85/time_means_2006-2015.npy")-np.load("/work/choutilin1/out_vars85/global_means_2006-2015.npy"))/np.load("/work/choutilin1/out_vars85/global_stds_2006-2015.npy") )
+        #time_means = torch.from_numpy( (np.load("/work/choutilin1/out_vars90/time_means_2006-2016.npy")-np.load("/work/choutilin1/out_vars90/global_means_2006-2016.npy"))/np.load("/work/choutilin1/out_vars90/global_stds_2006-2016.npy") )
         #
 
         # map to gpu
@@ -222,12 +222,18 @@ class Inferencer(Trainer):
 
         ###choutilin 251021:  Try to "turn off" SST
         #inpt[0,77] = time_means[0,77] #sst-dt
-        #inpt[0,78] = time_means[0,78] #SST
-        #inpt[0,79] = time_means[0,79] #SSH
-        #inpt[0,80] = time_means[0,80] #SSU
-        #inpt[0,81] = time_means[0,81] #SSV
-        #inpt[0,82] = time_means[0,82] #D15
-        #inpt[0,83] = time_means[0,83] #D20
+        #inpt[0,78] = time_means[0,78] #sst
+        #inpt[0,79] = time_means[0,79] #ssh
+        #inpt[0,80] = time_means[0,80] #ssha
+        #inpt[0,81] = time_means[0,81] #ssu
+        #inpt[0,82] = time_means[0,82] #ssv
+        #inpt[0,83] = time_means[0,83]
+        #inpt[0,84] = time_means[0,84]
+        #inpt[0,85] = time_means[0,85]
+        #inpt[0,86] = time_means[0,86]
+        #inpt[0,87] = time_means[0,87]
+        #inpt[0,88] = time_means[0,88]
+        #inpt[0,89] = time_means[0,89]
         ###
 
         for idt in range(self.params.valid_autoreg_steps+1):  # idt starts with 0
@@ -240,16 +246,26 @@ class Inferencer(Trainer):
                 pass
                 ###choutilin 251021:  Try to "turn off" SST
                 #pred[0,77] = inpt[0,77] #sst-dt
-                #pred[0,78] = inpt[0,78] #SST
-                #pred[0,79] = inpt[0,79] #SSH
-                #pred[0,80] = inpt[0,80] #SSU
-                #pred[0,81] = inpt[0,81] #SSV
-                #### sst + sst-dt  # Be careful about normalization
-                #### Ugh put in all the means and stds
+                #pred[0,78] = inpt[0,78] #sst
+                #pred[0,79] = inpt[0,79] #ssh
+                #pred[0,80] = inpt[0,80] #ssha
+                #pred[0,81] = inpt[0,81] #ssu
+                #pred[0,82] = inpt[0,82] #ssv
+                #pred[0,83] = inpt[0,83]
+                #pred[0,84] = inpt[0,84]
+                #pred[0,85] = inpt[0,85]
+                #pred[0,86] = inpt[0,86]
+                #pred[0,87] = inpt[0,87]
+                #pred[0,88] = inpt[0,88]
+                #pred[0,89] = inpt[0,89]
+
+                #### sst + sst-dt ### Be careful about normalization, put in all the means and stds
                 pred[0,78] = inpt[0,78] + pred[0,77]*0.055006623/11.664563 +1.0467988e-05/11.664563  # vars85_S 2006~2015
                 #pred[0,78] = inpt[0,78] + pred[0,77]*0.0554899834/11.6495190 -1.84335946e-07/11.6495190  # vars86 2006~2014
-                pred[0,82] = inpt[0,82]  # keep D15 fixed
-                pred[0,83] = inpt[0,83]  # keep D20 fixed
+
+                #pred[0,81] = inpt[0,81]  # keep D15 fixed
+                #pred[0,82] = inpt[0,82]  # keep D15 fixed
+                #pred[0,83] = inpt[0,83]  # keep D20 fixed  # choutilin: because ssh is omitted, these move up to 81 and 82...maybe....
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))

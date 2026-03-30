@@ -67,7 +67,7 @@ class LossHandler(nn.Module):
                         channel_weights[c] = 3.0  #exp'03' uses 1.0
                     else:
                         channel_weights[c] = 1.0
-                    '''
+                    ''' # original by NVIDIA
                     if chn in ["u10m", "v10m", "u100m", "v100m", "tp", "sp", "msl", "tcwv"]:
                         channel_weights[c] = 0.1
                     elif chn in ["t2m", "2d"]:
@@ -156,7 +156,7 @@ class LossHandler(nn.Module):
         xh = gather_from_parallel_region(x, -2, self.gather_shapes_h, "h")
         # w
         x = gather_from_parallel_region(xh, -1, self.gather_shapes_w, "w")
-
+        
         return x
 
     def is_distributed(self):

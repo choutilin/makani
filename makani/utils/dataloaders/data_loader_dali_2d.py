@@ -113,7 +113,8 @@ class ERA5DaliESDataloader(object):
         # choutilin1 250723
         #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33.npy").gpu()
         #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars85_P.npy").gpu()
-        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars85_RS.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars85_RS.npy").gpu()
+        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars90_W.npy").gpu()
         #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/land_sea_mask.npy").gpu()
         #
         self.num_data_workers = params.num_data_workers
