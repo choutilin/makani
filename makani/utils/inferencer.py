@@ -244,28 +244,25 @@ class Inferencer(Trainer):
             #if not (idt+1)%4==0:   # Predict SST once every day (every four steps)
             if True:
                 pass
-                ###choutilin 251021:  Try to "turn off" SST
+                ###choutilin 251021:
                 #pred[0,77] = inpt[0,77] #sst-dt
                 #pred[0,78] = inpt[0,78] #sst
                 #pred[0,79] = inpt[0,79] #ssh
                 #pred[0,80] = inpt[0,80] #ssha
                 #pred[0,81] = inpt[0,81] #ssu
                 #pred[0,82] = inpt[0,82] #ssv
-                #pred[0,83] = inpt[0,83]
-                #pred[0,84] = inpt[0,84]
-                #pred[0,85] = inpt[0,85]
-                #pred[0,86] = inpt[0,86]
-                #pred[0,87] = inpt[0,87]
-                #pred[0,88] = inpt[0,88]
-                #pred[0,89] = inpt[0,89]
+                pred[0,83] = inpt[0,83]
+                pred[0,84] = inpt[0,84]
+                pred[0,85] = inpt[0,85]
+                pred[0,86] = inpt[0,86]
+                pred[0,87] = inpt[0,87]
+                pred[0,88] = inpt[0,88]
+                pred[0,89] = inpt[0,89]
 
                 #### sst + sst-dt ### Be careful about normalization, put in all the means and stds
-                pred[0,78] = inpt[0,78] + pred[0,77]*0.055006623/11.664563 +1.0467988e-05/11.664563  # vars85_S 2006~2015
-                #pred[0,78] = inpt[0,78] + pred[0,77]*0.0554899834/11.6495190 -1.84335946e-07/11.6495190  # vars86 2006~2014
-
-                #pred[0,81] = inpt[0,81]  # keep D15 fixed
-                #pred[0,82] = inpt[0,82]  # keep D15 fixed
-                #pred[0,83] = inpt[0,83]  # keep D20 fixed  # choutilin: because ssh is omitted, these move up to 81 and 82...maybe....
+                #pred[0,78] = inpt[0,78] + pred[0,77]*0.055006623/11.664563  +1.04679880e-05/11.664563   # vars85_S 2006~2015
+                #pred[0,78] = inpt[0,78] + pred[0,77]*0.055489983/11.6495190 -1.84335946e-07/11.6495190  # vars86   2006~2014
+                pred[0,78] = inpt[0,78] + pred[0,77]*0.041768257/11.6641245 +1.20923805e-05/11.6641245  # vars90   2006~2016
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))
