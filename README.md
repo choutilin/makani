@@ -21,7 +21,7 @@ Makani is a research code built for massively parallel training of weather and c
 Makani can be installed by running
 
 ```bash
-git clone git@github.com:NVIDIA/makani.git
+git clone git@github.com:choutilin/makani.git
 cd makani
 pip install -e .
 ```
