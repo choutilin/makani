@@ -41,7 +41,7 @@ class SingleStepWrapper(nn.Module):
         #raise Exception
         # currently the land-sea mask is inpans[0,-1,:,:]
         #       and the inverted mask is inpans[0,-2,:,:]
-        lsm = inpans[0,-1,:,:]
+        lsm = inpans[0,-2,:,:]
 
         for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
             if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD"]:
