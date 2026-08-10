@@ -16,6 +16,7 @@
 import torch
 import torch.nn as nn
 #import numpy as np  # choutilin
+#import os           # choutilin
 from makani.models.preprocessor import Preprocessor2D
 
 class SingleStepWrapper(nn.Module):
@@ -37,10 +38,14 @@ class SingleStepWrapper(nn.Module):
         inpans = self.preprocessor.add_static_features(inpan)
         #
         # choutilin1 250613
-        #np.save("/work/choutilin1/inpans.npy",inpans.detach().cpu().numpy())  # remember to import numpy first
-        #raise Exception
-        # currently the land-sea mask is inpans[0,-1,:,:]
-        #       and the inverted mask is inpans[0,-2,:,:]
+        #filo_name = 0
+        #while os.path.exists("/work/choutilin1/out_vars103/earth2sfno/inpans/inpans"+str(filo_name).zfill(3)+".npy"):
+        #    filo_name += 1
+        #np.save("/work/choutilin1/out_vars103/earth2sfno/inpans/inpans"+str(filo_name).zfill(3)+".npy",inpans.cpu().numpy())  # remember to import numpy first
+        #
+
+        # I changed the land-sea mask:  inpans[0,-1,:,:]
+        #              to its inverse:  inpans[0,-2,:,:]
         lsm = inpans[0,-2,:,:]
 
         for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
@@ -51,13 +56,13 @@ class SingleStepWrapper(nn.Module):
 
         # forward pass
         yn = self.model(inpans)
-
+        #np.save("/work/choutilin1/out_vars103/earth2sfno/inpans/yn"+str(filo_name).zfill(3)+".npy",yn.cpu().numpy())  # remember to import numpy first
+        #
         # undo normalization
         y = self.preprocessor.history_denormalize(yn, target=True)
         # mask not just the input, but also the DENORMALIZED output of the model
         for i,channel_name in enumerate(self.channel_names):  # solution by Sherman
-            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD","sst-dt"]:
-                # no need to handle the output sst because it's gonna be ignored later on, but whatever
+            if channel_name in ["sst","ssh","ssha","ssu","ssv","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500","D15","D20","MLD","sst-dt"]: # no need to handle the output sst because it's gonna be ignored later on anyway
                 y[0,i,:,:] *= lsm
 
         # add residual (for residual learning, no-op for direct learning
