@@ -111,10 +111,10 @@ class ERA5DaliESDataloader(object):
 
     def __init__(self, params, location, train, seed=333, final_eval=False):
         # choutilin1 250723
-        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars33.npy").gpu()
-        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars85_P.npy").gpu()
-        #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars85_RS.npy").gpu()
-        self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/lsm_vars90.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/mnt/home/choutilin-ntu_-efeb0f/makani/datasets/source/invariant/lsm_vars90.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/mnt/home/choutilin-ntu_-efeb0f/makani/datasets/source/invariant/lsm_vars103_AG.npy").gpu()
+        #self.lsm_static = fn.readers.numpy(files="/mnt/home/choutilin-ntu_-efeb0f/makani/datasets/source/invariant/lsm_vars103_AIJKLMN.npy").gpu()
+        self.lsm_static = fn.readers.numpy(files="/mnt/home/choutilin-ntu_-efeb0f/makani/datasets/source/invariant/lsm_vars103_BFGHI.npy").gpu()
         #self.lsm_static = fn.readers.numpy(files="/home/choutilin1/makani/datasets/source/invariant/land_sea_mask.npy").gpu()
         #
         self.num_data_workers = params.num_data_workers

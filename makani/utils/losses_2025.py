@@ -61,14 +61,10 @@ class LossHandler(nn.Module):
                 channel_weights = torch.ones(params.N_out_channels, dtype=torch.float32)
                 for c, chn in enumerate(params.channel_names):
                     # choutilin1
-                    if chn in ["sst","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500"]:
+                    if chn in ["sst","MLD","D15","D20","OHC_30","OHC_50","OHC_75","OHC_100","OHC_200","OHC_300","OHC_500"]:
                         channel_weights[c] = 0.0
-                    elif chn in ["t2m"]:
-                        channel_weights[c] = 3.0
-                    elif chn in ["mslp"]:
-                        channel_weights[c] = 2.0
                     elif chn in ["sst-dt"]:
-                        channel_weights[c] = 0.03
+                        channel_weights[c] = 3.0
                     else:
                         channel_weights[c] = 1.0
                     ''' # original by NVIDIA

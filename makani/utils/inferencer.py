@@ -241,28 +241,38 @@ class Inferencer(Trainer):
             with amp.autocast(enabled=self.amp_enabled, dtype=self.amp_dtype):
                 pred = self.model(inpt)
 
-            #if not (idt+1)%4==0:   # Predict SST once every day (every four steps)
+            N = 5
+            if N>0:
+                for ivar in range(pred.shape[1]):
+                    if ivar >= 78:
+                        # Do not touch the oceanic variables
+                        # Actually, touch sst-dt
+                        continue
+                    fill_000 = torch.mean(pred[0,ivar,N,:])
+                    fill_721 = torch.mean(pred[0,ivar,720-N,:])
+                    pred[0,ivar,:N,:] = fill_000
+                    pred[0,ivar,721-N:,:] = fill_721
+
             if True:
-                pass
-                ###choutilin 251021:
+                pass ###choutilin 251021:
                 #pred[0,77] = inpt[0,77] #sst-dt
                 #pred[0,78] = inpt[0,78] #sst
-                #pred[0,79] = inpt[0,79] #ssh
-                #pred[0,80] = inpt[0,80] #ssha
-                #pred[0,81] = inpt[0,81] #ssu
-                #pred[0,82] = inpt[0,82] #ssv
+                #pred[0,79] = inpt[0,79]
+                #pred[0,80] = inpt[0,80]
+                pred[0,81] = inpt[0,81] #OHC_30
+                pred[0,82] = inpt[0,82] #OHC
                 pred[0,83] = inpt[0,83]
                 pred[0,84] = inpt[0,84]
                 pred[0,85] = inpt[0,85]
                 pred[0,86] = inpt[0,86]
                 pred[0,87] = inpt[0,87]
-                pred[0,88] = inpt[0,88]
-                pred[0,89] = inpt[0,89]
+                #pred[0,88] = inpt[0,88]
+                #pred[0,89] = inpt[0,89]
 
                 #### sst + sst-dt ### Be careful about normalization, put in all the means and stds
                 #pred[0,78] = inpt[0,78] + pred[0,77]*0.055006623/11.664563  +1.04679880e-05/11.664563   # vars85_S 2006~2015
-                #pred[0,78] = inpt[0,78] + pred[0,77]*0.055489983/11.6495190 -1.84335946e-07/11.6495190  # vars86   2006~2014
-                pred[0,78] = inpt[0,78] + pred[0,77]*0.041768257/11.6641245 +1.20923805e-05/11.6641245  # vars90   2006~2016
+                #pred[0,78] = inpt[0,78] + pred[0,77]*0.041768257/11.6641245 +1.20923805e-05/11.6641245  # vars90   2006~2016
+                pred[0,78] = inpt[0,78] + pred[0,77]*0.041622642/11.6624975 +1.28637e-05   /11.6624975  # vars103  1993~2025
 
             if output_data:
                 self.pred_outputs.append(pred[:, output_channels].to("cpu"))
